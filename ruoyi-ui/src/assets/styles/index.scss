@@ -189,3 +189,88 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+//hf
+%flex {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  // flex: 1;
+}
+.flex {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+}
+.flex_column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column !important;
+}
+//.justify_order($order) {
+//  justify-content: $order;
+//}
+.flex_center {
+  @extend %flex;
+  justify-content: center;
+
+}
+.flex_end {
+  @extend %flex;
+
+  justify-content: flex-end;
+}
+.flex_around {
+  @extend %flex;
+
+  justify-content: space-around;
+}
+.flex_between {
+  @extend %flex;
+
+  justify-content: space-between;
+
+}
+.align_center {
+  align-items: center;
+}
+.align_start {
+  align-items: start !important;
+}
+.flex_wrap {
+  @extend %flex;
+  flex-wrap: wrap;
+}
+.i_title {
+  font-size: 18px;
+  font-weight: 700;
+
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    width: 3px;
+    height: 20px;
+    background: $menuActiveText;
+    position: absolute;
+    left: -9px;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+  }
+}
+.tabEditor {
+    .edit {
+      a {
+        display: inline-block;
+        border-right: 1px solid rgba(233, 233, 233, 1);
+        padding: 0 5px;
+        color: $menuActiveText;
+        &:nth-last-child(1) {
+          border-right: none;
+        }
+      }
+    }
+}
+

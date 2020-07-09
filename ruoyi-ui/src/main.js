@@ -6,7 +6,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
-
+import 'ant-design-vue/dist/antd.less';
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/ruoyi.scss' // ruoyi css
 import App from './App'
@@ -20,6 +20,7 @@ import { getDicts } from "@/api/system/dict/data";
 import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, download, handleTree } from "@/utils/ruoyi";
 import Pagination from "@/components/Pagination";
+import Ant from 'ant-design-vue';
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -47,6 +48,7 @@ Vue.prototype.msgInfo = function (msg) {
 Vue.component('Pagination', Pagination)
 
 Vue.use(permission)
+Vue.use(Ant);
 
 /**
  * If you don't want to use mock-server
