@@ -33,7 +33,7 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://localhost:8085`,
+        target: `http://47.110.80.108:8085`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -126,5 +126,19 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
-  }
+  },
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          modifyVars: {
+            // 'primary-color': '#1DA57A',
+            // 'link-color': '#1DA57A',
+            'border-radius-base': '2px',
+          },
+          javascriptEnabled: true,
+        },
+      },
+    },
+  },
 }
