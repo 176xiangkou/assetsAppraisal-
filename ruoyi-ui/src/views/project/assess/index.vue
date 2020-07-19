@@ -81,7 +81,7 @@
       <el-table-column label="创建者" align="center" prop="createBy" :show-overflow-tooltip="true" />
       <el-table-column label="委托方名称" align="center" prop="entrustName" :show-overflow-tooltip="true" />
       <el-table-column label="创建者" align="center" prop="entrustCreateBy" width="120" /> 
-      <el-table-column label="委托方创建时间" align="center" prop="entrustCreateTime" width="160">
+      <el-table-column label="创建时间" align="center" prop="entrustCreateTime" width="160">
         <template slot-scope="scope">
            <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>

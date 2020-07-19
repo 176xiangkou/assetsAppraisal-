@@ -2,48 +2,26 @@
   <div class="app-container"> 
       <!--项目数据--> 
         <el-form :model="queryParams" ref="queryForm" :inline="true"  >
-          <el-form-item label="项目编码" prop="userName">
+             <el-form-item label="项目编码" prop="entrustId">
+              <el-input
+                v-model="queryParams.entrustId"
+                placeholder="请输入委托方编号"
+                clearable
+                size="small"
+                style="width: 240px"
+                @keyup.enter.native="handleQuery"
+              />
+            </el-form-item>
+            <el-form-item label="委托方名称" prop="entrustName">
             <el-input
-              v-model="queryParams.userName"
-              placeholder="请输入项目编码"
-              clearable
-              size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item label="项目名称" prop="phonenumber">
-            <el-input
-              v-model="queryParams.phonenumber"
-              placeholder="请输入项目名称"
-              clearable
-              size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-            <el-form-item label="委托方名称" prop="phonenumber">
-            <el-input
-              v-model="queryParams.phonenumber"
+              v-model="queryParams.entrustName"
               placeholder="请输入委托方名称"
               clearable
               size="small"
               style="width: 240px"
               @keyup.enter.native="handleQuery"
             />
-          </el-form-item>
-          <el-form-item label="项目创建时间">
-            <el-date-picker
-              v-model="dateRange"
-              size="small"
-              style="width: 240px"
-              value-format="yyyy-MM-dd"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            ></el-date-picker>
-          </el-form-item>
+          </el-form-item> 
           <el-form-item label="委托方创建时间">
             <el-date-picker
               v-model="dateRange"
@@ -57,8 +35,7 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button> 
           </el-form-item>
         </el-form>
 
@@ -69,7 +46,7 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleAdd"
-              v-hasPermi="['system:user:add']"
+              v-hasPermi="['system:entrust:add']"
             >新增</el-button>
           </el-col>
           <el-col :span="1.5">
@@ -79,7 +56,7 @@
               size="mini"
               :disabled="single"
               @click="handleUpdate"
-              v-hasPermi="['system:user:edit']"
+              v-hasPermi="['system:entrust:edit']"
             >修改</el-button>
           </el-col>
           <el-col :span="1.5">
@@ -89,25 +66,18 @@
               size="mini"
               :disabled="multiple"
               @click="handleDelete"
-              v-hasPermi="['system:user:remove']"
+              v-hasPermi="['system:entrust:remove']"
             >删除</el-button>
           </el-col>
           
         </el-row>
 
-        <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="40" align="center" />
-          <el-table-column label="项目编码" align="center" prop="userId" />
-          <el-table-column label="项目名称" align="center" prop="userName" :show-overflow-tooltip="true" />
-          <el-table-column label="牵头人" align="center" prop="nickName" :show-overflow-tooltip="true" />
-          <el-table-column label="技术负责人" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
-          <el-table-column label="图纸复核" align="center" prop="phonenumber" width="120" />
-          <el-table-column label="创建时间" align="center" prop="userId" />
-          <el-table-column label="创建者" align="center" prop="userName" :show-overflow-tooltip="true" />
-          <el-table-column label="委托方名称" align="center" prop="nickName" :show-overflow-tooltip="true" />
-          <el-table-column label="创建时间" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
-          <el-table-column label="创建者" align="center" prop="phonenumber" width="120" /> 
-          <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+        <el-table v-loading="loading" :data="entrustList" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55" align="center" />
+          <el-table-column label="委托方编号" align="center" prop="entrustId"   />
+          <el-table-column label="委托方名称" align="center" prop="entrustName"   />
+          <el-table-column label="创建者" align="center" prop="createBy"   /> 
+          <el-table-column label="创建时间" align="center" prop="createTime" >
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
@@ -124,23 +94,16 @@
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
-                v-hasPermi="['system:user:edit']"
+                v-hasPermi="['system:entrust:edit']"
               >修改</el-button>
               <el-button
-                v-if="scope.row.userId !== 1"
+                v-if="scope.row.entrustId !== 1"
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
-                v-hasPermi="['system:user:remove']"
-              >删除</el-button>
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-key"
-                @click="handleResetPwd(scope.row)"
-                v-hasPermi="['system:user:resetPwd']"
-              >重置</el-button>
+                v-hasPermi="['system:entrust:remove']"
+              >删除</el-button> 
             </template>
           </el-table-column>
         </el-table>
@@ -158,90 +121,10 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户昵称" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
+            <el-form-item label="委托方名称" prop="entrustName">
+              <el-input v-model="form.entrustName" placeholder="请输入委托方名称" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="归属部门" prop="deptId">
-              <treeselect v-model="form.deptId" :options="deptOptions" placeholder="请选择归属部门" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="手机号码" prop="phonenumber">
-              <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户密码" prop="password">
-              <el-input v-model="form.password" placeholder="请输入用户密码" type="password" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="用户性别">
-              <el-select v-model="form.sex" placeholder="请选择">
-                <el-option
-                  v-for="dict in sexOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictLabel"
-                  :value="dict.dictValue"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
-                <el-radio
-                  v-for="dict in statusOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictValue"
-                >{{dict.dictLabel}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="12">
-            <el-form-item label="岗位">
-              <el-select v-model="form.postIds" multiple placeholder="请选择">
-                <el-option
-                  v-for="item in postOptions"
-                  :key="item.postId"
-                  :label="item.postName"
-                  :value="item.postId"
-                  :disabled="item.status == 1"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="角色">
-              <el-select v-model="form.roleIds" multiple placeholder="请选择">
-                <el-option
-                  v-for="item in roleOptions"
-                  :key="item.roleId"
-                  :label="item.roleName"
-                  :value="item.roleId"
-                  :disabled="item.status == 1"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="备注">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
-            </el-form-item>
-          </el-col>
+          </el-col> 
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -284,7 +167,7 @@
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate } from "@/api/system/user";
+import { listEntrust, getEntrust, delEntrust, addEntrust, updateEntrust, exportUser, resetUserPwd, changeUserStatus, importTemplate } from "@/api/project/entrust";
 import { getToken } from "@/utils/auth";
 import { treeselect } from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
@@ -306,7 +189,7 @@ export default {
       // 总条数
       total: 0,
       // 用户表格数据
-      userList: null,
+      entrustList: null,
       // 弹出层标题
       title: "",
       // 部门树选项
@@ -322,11 +205,7 @@ export default {
       // 状态数据字典
       statusOptions: [],
       // 性别状态字典
-      sexOptions: [],
-      // 岗位选项
-      postOptions: [],
-      // 角色选项
-      roleOptions: [],
+      sexOptions: [], 
       // 表单参数
       form: {},
       defaultProps: {
@@ -352,41 +231,14 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userName: undefined,
-        phonenumber: undefined,
-        status: undefined,
-        deptId: undefined
+        entrustName: undefined,
+        entrustId: undefined 
       },
       // 表单校验
       rules: {
-        userName: [
-          { required: true, message: "用户名称不能为空", trigger: "blur" }
-        ],
-        nickName: [
-          { required: true, message: "用户昵称不能为空", trigger: "blur" }
-        ],
-        deptId: [
-          { required: true, message: "归属部门不能为空", trigger: "blur" }
-        ],
-        password: [
-          { required: true, message: "用户密码不能为空", trigger: "blur" }
-        ],
-        email: [
-          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
-          {
-            type: "email",
-            message: "'请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
-        ],
-        phonenumber: [
-          { required: true, message: "手机号码不能为空", trigger: "blur" },
-          {
-            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: "请输入正确的手机号码",
-            trigger: "blur"
-          }
-        ]
+        entrustName: [
+          { required: true, message: "委托方名称不能为空", trigger: "blur" }
+        ] 
       }
     };
   },
@@ -413,8 +265,8 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true;
-      listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-          this.userList = response.rows;
+      listEntrust(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+          this.entrustList = response.rows;
           this.total = response.total;
           this.loading = false;
         }
@@ -459,18 +311,9 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        userId: undefined,
-        deptId: undefined,
-        userName: undefined,
-        nickName: undefined,
-        password: undefined,
-        phonenumber: undefined,
-        email: undefined,
-        sex: undefined,
-        status: "0",
-        remark: undefined,
-        postIds: [],
-        roleIds: []
+        entrustId: undefined,
+        entrustName: undefined,
+        createTime: undefined 
       };
       this.resetForm("form");
     },
@@ -492,30 +335,19 @@ export default {
       this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.getTreeselect();
-      getUser().then(response => {
-        this.postOptions = response.posts;
-        this.roleOptions = response.roles;
-        this.open = true;
-        this.title = "添加用户";
-        this.form.password = this.initPassword;
-      });
+    handleAdd() { 
+      this.reset(); 
+      this.open = true;
+      this.title = "添加委托方";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset();
-      this.getTreeselect();
-      const userId = row.userId || this.ids;
-      getUser(userId).then(response => {
-        this.form = response.data;
-        this.postOptions = response.posts;
-        this.roleOptions = response.roles;
-        this.form.postIds = response.postIds;
-        this.form.roleIds = response.roleIds;
+      this.reset(); 
+      const entrustId = row.entrustId || this.ids;
+      getEntrust(entrustId).then(response => {
+        this.form = response.data; 
         this.open = true;
-        this.title = "修改用户";
+        this.title = "修改委托方";
         this.form.password = "";
       });
     },
@@ -538,8 +370,8 @@ export default {
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.userId != undefined) {
-            updateUser(this.form).then(response => {
+          if (this.form.entrustId != undefined) {
+            updateEntrust(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
                 this.open = false;
@@ -549,7 +381,7 @@ export default {
               }
             });
           } else {
-            addUser(this.form).then(response => {
+            addEntrust(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");
                 this.open = false;
@@ -564,13 +396,13 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const userIds = row.userId || this.ids;
-      this.$confirm('是否确认删除用户编号为"' + userIds + '"的数据项?', "警告", {
+      const entrustIds = row.entrustId || this.ids;
+      this.$confirm('是否确认删除编号为"' + entrustIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delUser(userIds);
+          return delEntrust(entrustIds);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
