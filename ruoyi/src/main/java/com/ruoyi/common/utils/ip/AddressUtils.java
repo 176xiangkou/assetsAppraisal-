@@ -20,7 +20,8 @@ public class AddressUtils
 
     public static String getRealAddressByIP(String ip)
     {
-        String address = "XX XX";
+        return "内网IP";
+       /* String address = "XX XX";
         // 内网不查询
         if (IpUtils.internalIp(ip))
         {
@@ -40,6 +41,7 @@ public class AddressUtils
             String city = data.getString("city");
             address = region + " " + city;
         }
-        return address;
+        return address;*/
+
     }
 }

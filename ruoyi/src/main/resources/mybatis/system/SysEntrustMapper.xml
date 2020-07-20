@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysEntrustMapper">
+
+	<resultMap type="SysEntrust" id="SysEntrustResult">
+		<id     property="entrustId"       column="entrust_id"        />
+		<result property="entrustName"      column="entrust_name"       />
+		<result property="createBy"     column="create_by"      />
+		<result property="createTime"   column="create_time"    />
+		<result property="updateBy"     column="update_by"      />
+		<result property="updateTime"   column="update_time"    />
+	</resultMap>
+	
+	<sql id="selectRoleVo">
+	    select distinct r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope,
+            r.status, r.del_flag, r.create_time, r.remark 
+        from sys_role r
+	        left join sys_user_role ur on ur.role_id = r.role_id
+	        left join sys_user u on u.user_id = ur.user_id
+	        left join sys_dept d on u.dept_id = d.dept_id
+    </sql>
+
+	<sql id="selectProjectVo">
+	   select r.project_id,r.entrust_id,r.project_name,r.initiator,r.technical_director,r.drawing_review,r.create_by,r.create_time
+	   from sys_project r
+
+    </sql>
+
+	<sql id="selectEntrustVo">
+	   select  r.entrust_id,r.entrust_name,r.create_by,r.create_time
+	   from sys_entrust r
+
+    </sql>
+
+
+
+    <select id="selectEntrustList" parameterType="SysEntrust" resultMap="SysEntrustResult">
+		<include refid="selectEntrustVo"/>
+			where 1=1
+		<if test="entrustId != null and entrustId != ''">
+			AND r.entrust_id = #{entrustId}
+		</if>
+		<if test="entrustName != null and entrustName != ''">
+			AND r.entrust_name like concat('%', #{entrustName}, '%')
+		</if>
+		<if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+		</if>
+		<if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+		</if>
+		<!-- 数据范围过滤 -->
+		${dataScope}
+	</select>
+
+	<select id="selectEntrustById" parameterType="Long" resultMap="SysEntrustResult">
+		<include refid="selectEntrustVo"/>
+		where 1=1
+		<if test="_parameter != null and _parameter != ''">
+			AND r.entrust_id = #{_parameter}
+		</if>
+	</select>
+	
+	<select id="selectRoleListByUserId" parameterType="Long" resultType="Integer">
+		select r.role_id
+        from sys_role r
+	        left join sys_user_role ur on ur.role_id = r.role_id
+	        left join sys_user u on u.user_id = ur.user_id
+	    where u.user_id = #{userId}
+	</select>
+	
+
+	<insert id="insertEntrust" parameterType="SysEntrust" useGeneratedKeys="true" keyProperty="entrustId">
+ 		insert into sys_entrust(
+ 		    <if test="entrustId != null and entrustId != ''">entrust_id,</if>
+ 			<if test="entrustName != null and entrustName != ''">entrust_name,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+ 			<if test="entrustId != null and entrustId != ''">#{entrustId},</if>
+ 			<if test="entrustName != null and entrustName != ''">#{entrustName},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<update id="updateEntrust" parameterType="SysEntrust">
+ 		update sys_entrust
+ 		<set>
+ 			<if test="entrustName != null and entrustName != ''">entrust_name = #{entrustName},</if>
+ 			<if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where entrust_id = #{entrustId}
+	</update>
+	
+	<update id="updateRoleStatus" parameterType="SysRole">
+ 		update sys_user set status = #{status} where user_id = #{userId}
+	</update>
+	
+	<delete id="deleteEntrustById" parameterType="Long">
+ 		delete from sys_entrust where entrust_id = #{entrustId}
+ 	</delete>
+ 	
+ 	<delete id="deleteEntrustByIds" parameterType="Long">
+		 delete from  sys_entrust   where entrust_id in
+ 		<foreach collection="array" item="entrustId" open="(" separator="," close=")">
+ 			#{entrustId}
+        </foreach> 
+ 	</delete>
+
+</mapper> 

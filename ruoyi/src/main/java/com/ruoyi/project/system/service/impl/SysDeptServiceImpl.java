@@ -58,7 +58,7 @@ public class SysDeptServiceImpl implements ISysDeptService
         {
             SysDept dept = (SysDept) iterator.next();
             // 如果是顶级节点, 遍历该父节点的所有子节点
-            if (!tempList.contains(dept.getParentId()))
+                if (!tempList.contains(dept.getParentId()))
             {
                 recursionFn(depts, dept);
                 returnList.add(dept);

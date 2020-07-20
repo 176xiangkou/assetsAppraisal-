@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.house.mapper.HouseMapper">
+
+	<resultMap type="HouseBase" id="HouseBaseResult">
+		<id property="id"  column="id"  />
+		<result property="projectName"  column="projectName"  />
+		<result property="houseLocated"  column="houseLocated"  />
+		<result property="propertyOwner"  column="propertyOwner"  />
+		<result property="titleCertificateNumber"  column="titleCertificateNumber"  />
+		<result property="landNumber"  column="landNumber"  />
+		<result property="floorSpace"  column="floorSpace"  />
+		<result property="evaluateTime"  column="evaluateTime"  />
+		<result property="tenant"  column="tenant"  />
+		<result property="registrar"  column="registrar"  />
+		<result property="lodgmentTime"  column="lodgmentTime"  />
+		<result property="evaluator"  column="evaluator"  />
+		<result property="valuer"  column="valuer"  />
+		<result property="referencePrice"  column="referencePrice"  />
+		<result property="reportNumber"  column="reportNumber"  />
+		<result property="reportDate"  column="reportDate"  />
+		<result property="reportForm"  column="reportForm"  />
+		<result property="zgfArea"  column="zgfArea"  />
+		<result property="manageYear"  column="manageYear"  />
+		<result property="unitAs"  column="unitAs"  />
+		<result property="landProperty"  column="landProperty"  />
+		<result property="entrustingParty"  column="entrustingParty"  />
+		<result property="reportTitle"  column="reportTitle"  />
+		<result property="regionalLevel"  column="regionalLevel"  />
+		<result property="structureLevel"  column="structureLevel"  />
+		<result property="level"  column="level"  />
+		<result property="toward"  column="toward"  />
+		<result property="isComplete"  column="isComplete"  />
+		<result property="ddyfPrice"  column="ddyfPrice"  />
+		<result property="tableNote"  column="tableNote"  />
+		<result property="ddyfArea"  column="ddyfArea"  />
+		<result property="xjbmwnCompensation"  column="xjbmwnCompensation"  />
+		<result property="landUse"  column="landUse"  />
+		<result property="plotratio"  column="plotratio"  />
+		<result property="evaluationPurpose"  column="evaluationPurpose"  />
+		<result property="assessmentUnit"  column="assessmentUnit"  />
+		<result property="landGetPrice"  column="landGetPrice"  />
+		<result property="mark"  column="mark"  />
+		<result property="projectId"  column="projectId"  />
+		<result property="landArea"  column="landArea"  />
+		<result property="landUseTypy"  column="landUseTypy"  />
+		<result property="examinationMember"  column="examinationMember"  />
+		<association property="HouseInfo"    column="houseInfo" javaType="HouseInfo" resultMap="houseInfoResult" />
+	</resultMap>
+	
+	<resultMap  type="HouseInfo" id="houseInfoResult">
+		<id property="id"  column="id"  />
+		<result property="roomNumber"  column="roomNumber"  />
+		<result property="area"  column="area"  />
+		<result property="zgfArea"  column="zgfArea"  />
+		<result property="benchmark"  column="benchmark"  />
+		<result property="setCorrectionFactor"  column="setCorrectionFactor"  />
+		<result property="structuralCorrectionFactor"  column="structuralCorrectionFactor"  />
+		<result property="newCorrectionFactor"  column="newCorrectionFactor"  />
+		<result property="orientationCorrectionFactor"  column="orientationCorrectionFactor"  />
+		<result property="levelCorrectionFactor"  column="levelCorrectionFactor"  />
+		<result property="solidFactorCorrectionFactor"  column="solidFactorCorrectionFactor"  />
+		<result property="evaluateUnitPrice"  column="evaluateUnitPrice"  />
+		<result property="tompensationPropertyOwner"  column="tompensationPropertyOwner"  />
+		<result property="tenantCompensation"  column="tenantCompensation"  />
+		<result property="benchmarkVO"  column="benchmarkVO"  />
+		<result property="commercialUseCorrectionFactor"  column="commercialUseCorrectionFactor"  />
+		<result property="commercialStreetCorrectionFactor"  column="commercialStreetCorrectionFactor"  />
+		<result property="commercialEntityCorrectionFactor"  column="commercialEntityCorrectionFactor"  />
+		<result property="unitPrice"  column="unitPrice"  />
+		<result property="nonresidentialWeightingw"  column="nonresidentialWeightingw"  />
+		<result property="weightedUnitPriceBusinessPremises"  column="weightedUnitPriceBusinessPremises"  />
+	</resultMap>
+
+	<sql id="selectHouseVo">
+				 SELECT
+			t.id,
+			t.projectName,
+			t.houseLocated,
+			t.propertyOwner,
+			t.titleCertificateNumber,
+			t.landNumber,
+			t.floorSpace,
+			t.evaluateTime,
+			t.tenant,
+			t.registrar,
+			t.lodgmentTime,
+			t.evaluator,
+			t.valuer,
+			t.referencePrice,
+			t.reportNumber,
+			t.reportDate,
+			t.reportForm,
+			t.zgfArea,
+			t.manageYear,
+			t.unitAs,
+			t.landProperty,
+			t.entrustingParty,
+			t.reportTitle,
+			t.regionalLevel,
+			t.structureLevel,
+			t.LEVEL,
+			t.toward,
+			t.isComplete,
+			t.ddyfPrice,
+			t.tableNote,
+			t.ddyfArea,
+			t.xjbmwnCompensation,
+			t.landUse,
+			t.plotratio,
+			t.evaluationPurpose,
+			t.assessmentUnit,
+			t.landGetPrice,
+			t.mark,
+			t.projectId,
+			t.landArea,
+			t.landUseTypy,
+			t.examinationMember
+		FROM
+			h_project t where  1 = 1
+    </sql>
+	<sql id="selectHouseInfoVo">
+				 SELECT
+			t.id,
+			t.roomNumber,
+			t.area,
+			t.zgfArea,
+			t.benchmark,
+			t.setCorrectionFactor,
+			t.structuralCorrectionFactor,
+			t.newCorrectionFactor,
+			t.orientationCorrectionFactor,
+			t.levelCorrectionFactor,
+			t.solidFactorCorrectionFactor,
+			t.evaluateUnitPrice,
+			t.tompensationPropertyOwner,
+			t.tenantCompensation,
+			t.benchmarkVO,
+			t.commercialUseCorrectionFactor,
+			t.commercialStreetCorrectionFactor,
+			t.commercialEntityCorrectionFactor,
+			t.unitPrice,
+			t.nonresidentialWeightingw,
+			t.weightedUnitPriceBusinessPremises,
+			t.create_time,
+			t.houseInfoId
+		FROM
+			from h_houseinfo t
+    </sql>
+    
+    <select id="selectHouseList" parameterType="HouseBase" resultMap="HouseBaseResult">
+		<include refid="selectHouseVo"/>
+		<if test="id != null and id != 0">
+			AND t.id = #{id}
+		</if>
+	</select>
+    <select id="selectHouseInfoListByProjectId" parameterType="String" resultMap="HouseInfoResult">
+		<include refid="selectHouseInfoVo"/>
+		left join h_projecthouse hp on hp.houseId = t.houseInfoId where
+		<if test="projectId != null and projectId != ''">
+			AND  hp.projectId = #{projectId}
+		</if>
+	</select>
+
+	<insert id="insertHouse" parameterType="HouseBase" useGeneratedKeys="true" keyProperty="userId">
+ 		insert into h_project(
+		<if test="projectName != null and projectName != ''">projectName,</if>
+		<if test="houseLocated != null and houseLocated != ''">houseLocated,</if>
+		<if test="propertyOwner != null and propertyOwner != ''">propertyOwner,</if>
+		<if test="titleCertificateNumber != null and titleCertificateNumber != ''">titleCertificateNumber,</if>
+		<if test="landNumber != null and landNumber != ''">landNumber,</if>
+		<if test="floorSpace != null and floorSpace != ''">floorSpace,</if>
+		<if test="evaluateTime != null and evaluateTime != ''">evaluateTime,</if>
+		<if test="tenant != null and tenant != ''">tenant,</if>
+		<if test="registrar != null and registrar != ''">registrar,</if>
+		<if test="lodgmentTime != null and lodgmentTime != ''">lodgmentTime,</if>
+		<if test="evaluator != null and evaluator != ''">evaluator,</if>
+		<if test="valuer != null and valuer != ''">valuer,</if>
+		<if test="referencePrice != null and referencePrice != ''">referencePrice,</if>
+		<if test="reportNumber != null and reportNumber != ''">reportNumber,</if>
+		<if test="reportDate != null and reportDate != ''">reportDate,</if>
+		<if test="reportForm != null and reportForm != ''">reportForm,</if>
+		<if test="zgfArea != null and zgfArea != ''">zgfArea,</if>
+		<if test="manageYear != null and manageYear != ''">manageYear,</if>
+		<if test="unitAs != null and unitAs != ''">unitAs,</if>
+		<if test="landProperty != null and landProperty != ''">landProperty,</if>
+		<if test="entrustingParty != null and entrustingParty != ''">entrustingParty,</if>
+		<if test="reportTitle != null and reportTitle != ''">reportTitle,</if>
+		<if test="regionalLevel != null and regionalLevel != ''">regionalLevel,</if>
+		<if test="structureLevel != null and structureLevel != ''">structureLevel,</if>
+		<if test="level != null and level != ''">level,</if>
+		<if test="toward != null and toward != ''">toward,</if>
+		<if test="isComplete != null and isComplete != ''">isComplete,</if>
+		<if test="ddyfPrice != null and ddyfPrice != ''">ddyfPrice,</if>
+		<if test="tableNote != null and tableNote != ''">tableNote,</if>
+		<if test="ddyfArea != null and ddyfArea != ''">ddyfArea,</if>
+		<if test="xjbmwnCompensation != null and xjbmwnCompensation != ''">xjbmwnCompensation,</if>
+		<if test="landUse != null and landUse != ''">landUse,</if>
+		<if test="plotratio != null and plotratio != ''">plotratio,</if>
+		<if test="evaluationPurpose != null and evaluationPurpose != ''">evaluationPurpose,</if>
+		<if test="assessmentUnit != null and assessmentUnit != ''">assessmentUnit,</if>
+		<if test="landGetPrice != null and landGetPrice != ''">landGetPrice,</if>
+		<if test="mark != null and mark != ''">mark,</if>
+		<if test="projectId != null and projectId != ''">projectId,</if>
+		<if test="landArea != null and landArea != ''">landArea,</if>
+		<if test="landUseTypy != null and landUseTypy != ''">landUseTypy,</if>
+		<if test="examinationMember != null and examinationMember != ''">examinationMember,</if>
+ 			create_time
+ 		)values(
+		<if test="id != null and id != ''"> #{id},</if>
+		<if test="projectName != null and projectName != ''"> #{projectName},</if>
+		<if test="houseLocated != null and houseLocated != ''"> #{houseLocated},</if>
+		<if test="propertyOwner != null and propertyOwner != ''"> #{propertyOwner},</if>
+		<if test="titleCertificateNumber != null and titleCertificateNumber != ''"> #{titleCertificateNumber},</if>
+		<if test="landNumber != null and landNumber != ''"> #{landNumber},</if>
+		<if test="floorSpace != null and floorSpace != ''"> #{floorSpace},</if>
+		<if test="evaluateTime != null and evaluateTime != ''"> #{evaluateTime},</if>
+		<if test="tenant != null and tenant != ''"> #{tenant},</if>
+		<if test="registrar != null and registrar != ''"> #{registrar},</if>
+		<if test="lodgmentTime != null and lodgmentTime != ''"> #{lodgmentTime},</if>
+		<if test="evaluator != null and evaluator != ''"> #{evaluator},</if>
+		<if test="valuer != null and valuer != ''"> #{valuer},</if>
+		<if test="referencePrice != null and referencePrice != ''"> #{referencePrice},</if>
+		<if test="reportNumber != null and reportNumber != ''"> #{reportNumber},</if>
+		<if test="reportDate != null and reportDate != ''"> #{reportDate},</if>
+		<if test="reportForm != null and reportForm != ''"> #{reportForm},</if>
+		<if test="zgfArea != null and zgfArea != ''"> #{zgfArea},</if>
+		<if test="manageYear != null and manageYear != ''"> #{manageYear},</if>
+		<if test="unitAs != null and unitAs != ''"> #{unitAs},</if>
+		<if test="landProperty != null and landProperty != ''"> #{landProperty},</if>
+		<if test="entrustingParty != null and entrustingParty != ''"> #{entrustingParty},</if>
+		<if test="reportTitle != null and reportTitle != ''"> #{reportTitle},</if>
+		<if test="regionalLevel != null and regionalLevel != ''"> #{regionalLevel},</if>
+		<if test="structureLevel != null and structureLevel != ''"> #{structureLevel},</if>
+		<if test="level != null and level != ''"> #{level},</if>
+		<if test="toward != null and toward != ''"> #{toward},</if>
+		<if test="isComplete != null and isComplete != ''"> #{isComplete},</if>
+		<if test="ddyfPrice != null and ddyfPrice != ''"> #{ddyfPrice},</if>
+		<if test="tableNote != null and tableNote != ''"> #{tableNote},</if>
+		<if test="ddyfArea != null and ddyfArea != ''"> #{ddyfArea},</if>
+		<if test="xjbmwnCompensation != null and xjbmwnCompensation != ''"> #{xjbmwnCompensation},</if>
+		<if test="landUse != null and landUse != ''"> #{landUse},</if>
+		<if test="plotratio != null and plotratio != ''"> #{plotratio},</if>
+		<if test="evaluationPurpose != null and evaluationPurpose != ''"> #{evaluationPurpose},</if>
+		<if test="assessmentUnit != null and assessmentUnit != ''"> #{assessmentUnit},</if>
+		<if test="landGetPrice != null and landGetPrice != ''"> #{landGetPrice},</if>
+		<if test="mark != null and mark != ''"> #{mark},</if>
+		<if test="projectId != null and mark != ''"> #{projectId},</if>
+		<if test="landArea != null and landArea != ''"> #{landArea},</if>
+		<if test="landUseTypy != null and landUseTypy != ''"> #{landUseTypy},</if>
+		<if test="examinationMember != null and examinationMember != ''"> #{examinationMember},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<insert id="insertHouseInfo" parameterType="HouseInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into h_houseinfo(
+		<if test="roomNumber != null and roomNumber != ''">  roomNumber ,</if>
+		<if test="area != null and area != ''">  area ,</if>
+		<if test="zgfArea != null and zgfArea != ''">  zgfArea ,</if>
+		<if test="benchmark != null and benchmark != ''">  benchmark ,</if>
+		<if test="setCorrectionFactor != null and setCorrectionFactor != ''">  setCorrectionFactor ,</if>
+		<if test="structuralCorrectionFactor != null and structuralCorrectionFactor != ''">  structuralCorrectionFactor ,</if>
+		<if test="newCorrectionFactor != null and newCorrectionFactor != ''">  newCorrectionFactor ,</if>
+		<if test="orientationCorrectionFactor != null and orientationCorrectionFactor != ''">  orientationCorrectionFactor ,</if>
+		<if test="levelCorrectionFactor != null and levelCorrectionFactor != ''">  levelCorrectionFactor ,</if>
+		<if test="solidFactorCorrectionFactor != null and solidFactorCorrectionFactor != ''">  solidFactorCorrectionFactor ,</if>
+		<if test="evaluateUnitPrice != null and evaluateUnitPrice != ''">  evaluateUnitPrice ,</if>
+		<if test="tompensationPropertyOwner != null and tompensationPropertyOwner != ''">  tompensationPropertyOwner ,</if>
+		<if test="tenantCompensation != null and tenantCompensation != ''">  tenantCompensation ,</if>
+		<if test="benchmarkVO != null and benchmarkVO != ''">  benchmarkVO ,</if>
+		<if test="commercialUseCorrectionFactor != null and commercialUseCorrectionFactor != ''">  commercialUseCorrectionFactor ,</if>
+		<if test="commercialStreetCorrectionFactor != null and commercialStreetCorrectionFactor != ''">  commercialStreetCorrectionFactor ,</if>
+		<if test="commercialEntityCorrectionFactor != null and commercialEntityCorrectionFactor != ''">  commercialEntityCorrectionFactor ,</if>
+		<if test="unitPrice != null and unitPrice != ''">  unitPrice ,</if>
+		<if test="nonresidentialWeightingw != null and nonresidentialWeightingw != ''">  nonresidentialWeightingw ,</if>
+		<if test="weightedUnitPriceBusinessPremises != null and weightedUnitPriceBusinessPremises != ''">  weightedUnitPriceBusinessPremises ,</if>
+		create_time
+		)values(
+		<if test="roomNumber != null and roomNumber != ''">  #{roomNumber} ,</if>
+		<if test="area != null and area != ''">  #{area} ,</if>
+		<if test="zgfArea != null and zgfArea != ''">  #{zgfArea} ,</if>
+		<if test="benchmark != null and benchmark != ''">  #{benchmark} ,</if>
+		<if test="setCorrectionFactor != null and setCorrectionFactor != ''">  #{setCorrectionFactor} ,</if>
+		<if test="structuralCorrectionFactor != null and structuralCorrectionFactor != ''">  #{structuralCorrectionFactor} ,</if>
+		<if test="newCorrectionFactor != null and newCorrectionFactor != ''">  #{newCorrectionFactor} ,</if>
+		<if test="orientationCorrectionFactor != null and orientationCorrectionFactor != ''">  #{orientationCorrectionFactor} ,</if>
+		<if test="levelCorrectionFactor != null and levelCorrectionFactor != ''">  #{levelCorrectionFactor} ,</if>
+		<if test="solidFactorCorrectionFactor != null and solidFactorCorrectionFactor != ''">  #{solidFactorCorrectionFactor} ,</if>
+		<if test="evaluateUnitPrice != null and evaluateUnitPrice != ''">  #{evaluateUnitPrice} ,</if>
+		<if test="tompensationPropertyOwner != null and tompensationPropertyOwner != ''">  #{tompensationPropertyOwner} ,</if>
+		<if test="tenantCompensation != null and tenantCompensation != ''">  #{tenantCompensation} ,</if>
+		<if test="benchmarkVO != null and benchmarkVO != ''">  #{benchmarkVO} ,</if>
+		<if test="commercialUseCorrectionFactor != null and commercialUseCorrectionFactor != ''">  #{commercialUseCorrectionFactor} ,</if>
+		<if test="commercialStreetCorrectionFactor != null and commercialStreetCorrectionFactor != ''">  #{commercialStreetCorrectionFactor} ,</if>
+		<if test="commercialEntityCorrectionFactor != null and commercialEntityCorrectionFactor != ''">  #{commercialEntityCorrectionFactor} ,</if>
+		<if test="unitPrice != null and unitPrice != ''">  #{unitPrice} ,</if>
+		<if test="nonresidentialWeightingw != null and nonresidentialWeightingw != ''">  #{nonresidentialWeightingw} ,</if>
+		<if test="weightedUnitPriceBusinessPremises != null and weightedUnitPriceBusinessPremises != ''">  #{weightedUnitPriceBusinessPremises} ,</if>
+		sysdate()
+		)
+	</insert>
+	<insert id="insertHouseBaseInfo" parameterType="HouseBaseInfo" useGeneratedKeys="true" keyProperty="projectId">
+		insert into sys_project(
+		<if test="projectId != null and projectId != ''">projectId,</if>
+		<if test="houseId != null and houseId != ''">houseId,</if>
+		createTime
+		)values(
+		<if test="projectId != null and projectId != ''">#{projectId},</if>
+		<if test="houseId != null and houseId != ''">#{houseId},</if>
+		sysdate()
+		)
+	</insert>
+
+
+	<update id="updateHouse" parameterType="HouseBase">
+ 		update h_project
+ 		<set>
+			<if test="id != null and id != ''">  id = #{id},</if>
+			<if test="projectName != null and projectName != ''">  projectName = #{projectName},</if>
+			<if test="houseLocated != null and houseLocated != ''">  houseLocated = #{houseLocated},</if>
+			<if test="propertyOwner != null and propertyOwner != ''">  propertyOwner = #{propertyOwner},</if>
+			<if test="titleCertificateNumber != null and titleCertificateNumber != ''">  titleCertificateNumber = #{titleCertificateNumber},</if>
+			<if test="landNumber != null and landNumber != ''">  landNumber = #{landNumber},</if>
+			<if test="floorSpace != null and floorSpace != ''">  floorSpace = #{floorSpace},</if>
+			<if test="evaluateTime != null and evaluateTime != ''">  evaluateTime = #{evaluateTime},</if>
+			<if test="tenant != null and tenant != ''">  tenant = #{tenant},</if>
+			<if test="registrar != null and registrar != ''">  registrar = #{registrar},</if>
+			<if test="lodgmentTime != null and lodgmentTime != ''">  lodgmentTime = #{lodgmentTime},</if>
+			<if test="evaluator != null and evaluator != ''">  evaluator = #{evaluator},</if>
+			<if test="valuer != null and valuer != ''">  valuer = #{valuer},</if>
+			<if test="referencePrice != null and referencePrice != ''">  referencePrice = #{referencePrice},</if>
+			<if test="reportNumber != null and reportNumber != ''">  reportNumber = #{reportNumber},</if>
+			<if test="reportDate != null and reportDate != ''">  reportDate = #{reportDate},</if>
+			<if test="reportForm != null and reportForm != ''">  reportForm = #{reportForm},</if>
+			<if test="zgfArea != null and zgfArea != ''">  zgfArea = #{zgfArea},</if>
+			<if test="manageYear != null and manageYear != ''">  manageYear = #{manageYear},</if>
+			<if test="unitAs != null and unitAs != ''">  unitAs = #{unitAs},</if>
+			<if test="landProperty != null and landProperty != ''">  landProperty = #{landProperty},</if>
+			<if test="entrustingParty != null and entrustingParty != ''">  entrustingParty = #{entrustingParty},</if>
+			<if test="reportTitle != null and reportTitle != ''">  reportTitle = #{reportTitle},</if>
+			<if test="regionalLevel != null and regionalLevel != ''">  regionalLevel = #{regionalLevel},</if>
+			<if test="structureLevel != null and structureLevel != ''">  structureLevel = #{structureLevel},</if>
+			<if test="level != null and level != ''">  level = #{level},</if>
+			<if test="toward != null and toward != ''">  toward = #{toward},</if>
+			<if test="isComplete != null and isComplete != ''">  isComplete = #{isComplete},</if>
+			<if test="ddyfPrice != null and ddyfPrice != ''">  ddyfPrice = #{ddyfPrice},</if>
+			<if test="tableNote != null and tableNote != ''">  tableNote = #{tableNote},</if>
+			<if test="ddyfArea != null and ddyfArea != ''">  ddyfArea = #{ddyfArea},</if>
+			<if test="xjbmwnCompensation != null and xjbmwnCompensation != ''">  xjbmwnCompensation = #{xjbmwnCompensation},</if>
+			<if test="landUse != null and landUse != ''">  landUse = #{landUse},</if>
+			<if test="plotratio != null and plotratio != ''">  plotratio = #{plotratio},</if>
+			<if test="evaluationPurpose != null and evaluationPurpose != ''">  evaluationPurpose = #{evaluationPurpose},</if>
+			<if test="assessmentUnit != null and assessmentUnit != ''">  assessmentUnit = #{assessmentUnit},</if>
+			<if test="landGetPrice != null and landGetPrice != ''">  landGetPrice = #{landGetPrice},</if>
+			<if test="mark != null and mark != ''">  mark = #{mark},</if>
+			<if test="projectId != null and projectId != ''">  projectId = #{projectId},</if>
+			<if test="landArea != null and landArea != ''">  landArea = #{landArea},</if>
+			<if test="landUseTypy != null and landUseTypy != ''">  landUseTypy = #{landUseTypy},</if>
+			<if test="examinationMember != null and examinationMember != ''">  mark = #{examinationMember},</if>
+ 		</set>
+ 		where id = #{id}
+	</update>
+	
+
+	<delete id="deleteUserById" parameterType="Long">
+ 		delete from h_project where houseId = #{houseId}
+ 	</delete>
+
+	
+</mapper> 

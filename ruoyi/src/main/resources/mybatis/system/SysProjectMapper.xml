@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysProjectMapper">
+
+	<resultMap type="SysProject" id="SysProjectResult">
+		<id     property="projectId"       column="project_id"        />
+		<result property="entrustId"     column="entrust_id"      />
+		<result property="projectName"      column="project_name"       />
+		<result property="initiator"     column="initiator"      />
+		<result property="technicalDirector"    column="technical_director"     />
+		<result property="drawingReview"       column="drawing_review"         />
+		<result property="createBy"     column="create_by"      />
+		<result property="createTime"   column="create_time"    />
+		<result property="updateBy"     column="update_by"      />
+		<result property="updateTime"   column="update_time"    />
+		<result property="entrustName"   column="entrust_name"    />
+		<result property="entrustCreateBy"   column="entrust_create_by"    />
+		<result property="entrustCreateTime"   column="entrust_create_time"    />
+	</resultMap>
+	
+	<sql id="selectRoleVo">
+	    select distinct r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope,
+            r.status, r.del_flag, r.create_time, r.remark 
+        from sys_role r
+	        left join sys_user_role ur on ur.role_id = r.role_id
+	        left join sys_user u on u.user_id = ur.user_id
+	        left join sys_dept d on u.dept_id = d.dept_id
+    </sql>
+
+	<sql id="selectProjectVo">
+	   select r.project_id,r.entrust_id,r.project_name,r.initiator,r.technical_director,
+	   r.drawing_review,r.create_by,r.create_time,e.entrust_name,e.create_by entrust_create_by,e.create_time entrust_create_time
+	   from sys_project r left join sys_entrust e on r.entrust_id = e.entrust_id
+
+    </sql>
+
+
+
+    <select id="selectProjectList" parameterType="SysProject" resultMap="SysProjectResult">
+		<include refid="selectProjectVo"/>
+		where 1=1
+		<if test="projectId != null and projectId != ''">
+			AND r.project_id = #{projectId}
+		</if>
+		<if test="projectName != null and projectName != ''">
+			AND r.project_name like concat('%', #{projectName}, '%')
+		</if>
+		<if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+		</if>
+		<if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+		</if>
+		<!-- 数据范围过滤 -->
+		${dataScope}
+		 order by project_id
+	</select>
+    
+	<select id="selectRolePermissionByUserId" parameterType="Long" resultMap="SysProjectResult">
+		<include refid="selectRoleVo"/>
+		WHERE r.del_flag = '0' and ur.user_id = #{userId}
+	</select>
+	
+	<select id="selectRoleAll" resultMap="SysProjectResult">
+		<include refid="selectRoleVo"/>
+	</select>
+	
+	<select id="selectRoleListByUserId" parameterType="Long" resultType="Integer">
+		select r.role_id
+        from sys_role r
+	        left join sys_user_role ur on ur.role_id = r.role_id
+	        left join sys_user u on u.user_id = ur.user_id
+	    where u.user_id = #{userId}
+	</select>
+	
+	<select id="selectProjectById" parameterType="Long" resultMap="SysProjectResult">
+		<include refid="selectProjectVo"/>
+		where  r.project_id = #{projectId}
+	</select>
+	
+	<select id="selectRolesByUserName" parameterType="String" resultMap="SysProjectResult">
+		<include refid="selectRoleVo"/>
+		WHERE r.del_flag = '0' and u.user_name = #{userName}
+	</select>
+	
+	<select id="checkRoleNameUnique" parameterType="String" resultMap="SysProjectResult">
+		<include refid="selectRoleVo"/>
+		 where r.role_name=#{roleName}
+	</select>
+	
+	<select id="checkRoleKeyUnique" parameterType="String" resultMap="SysProjectResult">
+		<include refid="selectRoleVo"/>
+		 where r.role_key=#{roleKey}
+	</select>
+	<insert id="insertProject" parameterType="SysProject" useGeneratedKeys="true" keyProperty="projectId">
+ 		insert into sys_project(
+ 			<if test="projectId != null and projectId != 0">project_id,</if>
+ 			<if test="entrustId != null and entrustId != ''">entrust_id,</if>
+ 			<if test="projectName != null and projectName != ''">project_name,</if>
+ 			<if test="initiator != null and initiator != ''">initiator,</if>
+ 			<if test="technicalDirector != null and technicalDirector != ''">technical_director,</if>
+ 			<if test="drawingReview != null and drawingReview != ''">drawing_review,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+ 			<if test="projectId != null and projectId != 0">#{projectId},</if>
+ 			<if test="entrustId != null and entrustId != ''">#{entrustId},</if>
+ 			<if test="projectName != null and projectName != ''">#{projectName},</if>
+ 			<if test="initiator != null and initiator != ''">#{initiator},</if>
+ 			<if test="technicalDirector != null and technicalDirector != ''">#{technicalDirector},</if>
+ 			<if test="drawingReview != null and drawingReview != ''">#{drawingReview},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<update id="updateProject" parameterType="SysProject">
+ 		update sys_project
+ 		<set>
+ 			<if test="projectName != null and projectName != ''">project_name = #{projectName},</if>
+ 			<if test="entrustId != null and entrustId != ''">entrust_id = #{entrustId},</if>
+ 			<if test="initiator != null and initiator != ''">initiator = #{initiator},</if>
+ 			<if test="technicalDirector != null and technicalDirector != ''">technical_director = #{technicalDirector},</if>
+ 			<if test="drawingReview != null and drawingReview != ''">drawing_review = #{drawingReview},</if>
+ 			<if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where project_id = #{projectId}
+	</update>
+	
+	<update id="updateRoleStatus" parameterType="SysRole">
+ 		update sys_user set status = #{status} where user_id = #{userId}
+	</update>
+	
+	<delete id="deleteProjectById" parameterType="Long">
+ 		delete from sys_project where project_id = #{projectId}
+ 	</delete>
+ 	
+ 	<delete id="deleteProjectByIds" parameterType="Long">
+		 delete from  sys_project   where project_id in
+ 		<foreach collection="array" item="projectId" open="(" separator="," close=")">
+ 			#{projectId}
+        </foreach> 
+ 	</delete>
+
+</mapper> 
