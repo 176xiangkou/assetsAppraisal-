@@ -15,9 +15,9 @@
                      :isEditor="isEditor"
                      :nameObj="{label: '房屋信息', button: '新增', tabBasePramas: {objectType: '文本'}}"
                      @change="onChange"
-                     :columns="formList[formParams.tabClass]">
+                     :columns="formList[formParams.reportForm]">
           <template slot-scope="{tableRow}"
-                    v-for="(item, index) in formList[formParams.tabClass]"
+                    v-for="(item, index) in formList[formParams.reportForm]"
                     :slot="item.scopedSlots.customRender">
             <FormInput
               :whole-type="item.wholeType || (isEditor ? 'input' : 'span')"
@@ -33,7 +33,7 @@
         </editorTable>
     </div>
     <div style="margin: 0 auto;display: block;text-align: center">
-      <a-button type="primary" @click="submitAll">保存</a-button>
+      <a-button type="primary" @click="submitAll()">保存</a-button>
     </div>
   </div>
 </template>
@@ -44,6 +44,7 @@
   import FormInput from '@/components/form/Input'
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
+  import {houseBaseAdd} from "../../../api/project/assess";
   export default {
     name: "formDetail",
     components: {editorTable, BaseForm, FormInput},
@@ -53,15 +54,15 @@
         tabData: [],
         wholeType: 'input',
         isEditor: true,
-        formParams: {tabClass: 'tabColumns'},
+        formParams: {reportForm: 'tabColumns'},
       }
     },
     watch: {
       tabData: {
         deep: true,
         handler(val) {
-          this.$set(this.formParams, 'total', val.reduce((total, item) => {
-            return total + (item.total || 0)
+          this.$set(this.formParams, 'floorSpace', val.reduce((total, item) => {
+            return total + (item.area || 0)
           }, 0))
         }
       },
@@ -72,7 +73,9 @@
     },
     methods: {
       submitAll() {
+        houseBaseAdd({HouseBase: this.formParams, HouseInfo: this.tabData}).then(() => {
 
+        })
       },
       remove(index) {
         this.tabData.splice(index, 1);

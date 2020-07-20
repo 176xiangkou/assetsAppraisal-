@@ -44,36 +44,37 @@ const paramColumns = [
 
 const list = {
   baseInfo: {
+
     formColumns: [
       {
         title: '项目名称',
-        dataIndex: 'planName',
+        dataIndex: 'projectName',
         wrapperCol: {span: 9.2},
         inputType: 'select',
         selectList: [],
       },
       {
         title: '房屋坐落',
-        dataIndex: 'templateCode',
+        dataIndex: 'houseLocated',
         wrapperCol: {span: 9.2},
       },
       {
         title: '房屋产权人',
-        dataIndex: 'planTypeId',
+        dataIndex: 'propertyOwner',
       },
       {
         title: '产权证编号',
-        dataIndex: 'leadDeptName',
+        dataIndex: 'titleCertificateNumber',
         placeholder: '请选择',
       },
       {
         title: '土地证号',
-        dataIndex: 'planTopic',
+        dataIndex: 'landNumber',
         placeholder: '请选择',
       },
       {
         title: '房屋面积',
-        dataIndex: 'total',
+        dataIndex: 'floorSpace',
         disabled: true,
         placeholder: '待填报',
         inputType: 'inputNumber',
@@ -85,16 +86,16 @@ const list = {
       },
       {
         title: '估价时点',
-        dataIndex: 'planDesc',
+        dataIndex: 'evaluateTime',
       },{
         title: '承租人',
-        dataIndex: 'planDesc1',
+        dataIndex: 'tenant',
       },{
         title: '记录员',
-        dataIndex: 'planDesc3',
+        dataIndex: 'registrar',
       },{
         title: '签收日期',
-        dataIndex: 'planDesc5',
+        dataIndex: 'lodgmentTime',
         inputType: 'datePicker',
       },{
         title: '评估员',
@@ -103,21 +104,21 @@ const list = {
         selectList: [],
       },{
         title: '估价师',
-        dataIndex: 'planDesc1',
+        dataIndex: 'evaluator',
         inputType: 'select',
         selectList: [],
       },{
         title: '区位基准价',
-        dataIndex: 'planDesc1',
+        dataIndex: 'referencePrice',
       },{
         title: '报告编号',
-        dataIndex: 'planDesc1',
+        dataIndex: 'reportNumber',
       },{
         title: '报告年份',
-        dataIndex: 'planDesc1',
+        dataIndex: 'reportDate',
       },{
         title: '报表样式',
-        dataIndex: 'tabClass',
+        dataIndex: 'reportForm',
         inputType: 'select',
         selectList: [
           {
@@ -151,29 +152,29 @@ const list = {
         ],
       },{
         title: '住改非面积',
-        dataIndex: 'planDesc1',
+        dataIndex: 'zgfArea',
         inputType: 'inputNumber',
         disabled: true,
 
       },{
         title: '经营年限',
-        dataIndex: 'planDesc1',
+        dataIndex: 'manageYear',
         disabled: true,
 
       },{
         title: '单位统称',
-        dataIndex: 'planDesc1',
+        dataIndex: 'unitAs',
 
       },{
         title: '委托方',
-        dataIndex: 'planDesc1',
+        dataIndex: 'entrustingParty',
         inputType: 'select',
         selectList: [],
         wrapperCol: {span: 9.2},
 
       },{
         title: '报告标题',
-        dataIndex: 'planDesc1',
+        dataIndex: 'reportTitle',
         inputType: 'select',
         selectList: [],
         wrapperCol: {span: 9.2},
@@ -185,37 +186,37 @@ const list = {
         selectList: [],
       },{
         title: '区位级别',
-        dataIndex: 'planDesc1',
+        dataIndex: 'regionalLevel',
         inputType: 'select',
         selectList: [],
       },{
         title: '结构等级',
-        dataIndex: 'planDesc1',
+        dataIndex: 'structureLevel',
         inputType: 'select',
         selectList: [],
       },{
         title: '层次/总层',
-        dataIndex: 'planDesc1',
+        dataIndex: 'level',
       },{
         title: '朝向',
         inputType: 'select',
         selectList: [],
-        dataIndex: 'planDesc1',
+        dataIndex: 'toward',
       },{
         title: '成套与否',
         inputType: 'select',
         selectList: [],
-        dataIndex: 'planDesc1',
+        dataIndex: 'isComplete',
       },{
         title: '地大于房单价',
-        dataIndex: 'planDesc1',
+        dataIndex: 'ddyfPrice',
       },{
         title: '地大于房面积',
-        dataIndex: 'planDesc1',
+        dataIndex: 'ddyfArea',
 
       },{
         title: '新建不满5年补偿%',
-        dataIndex: 'planDesc1',
+        dataIndex: 'xjbmwnCompensation',
       },
 
       {
@@ -233,10 +234,10 @@ const list = {
             value: 3
           },
         ],
-        dataIndex: 'planDesc1',
+        dataIndex: 'landUse',
       },{
         title: '容积率',
-        dataIndex: 'planDesc1',
+        dataIndex: 'plotratio',
         inputType: 'inputNumber',
 
       },{
@@ -252,13 +253,13 @@ const list = {
         disabled: true
       },{
         title: '评估目的',
-        dataIndex: 'planDesc1',
+        dataIndex: 'evaluationPurpose',
       },{
         title: '评估单位',
-        dataIndex: 'planDesc1',
+        dataIndex: 'assessmentUnit',
       },{
         title: '土地重新取得价格',
-        dataIndex: 'planDesc1',
+        dataIndex: 'landGetPrice',
         inputType: 'inputNumber',
         disabled: true
       },{
@@ -269,92 +270,134 @@ const list = {
         dataIndex: 'planDesc1',
       },{
         title: '备注',
-        dataIndex: 'planDesc2',
+        dataIndex: 'mark',
         inputType: 'textArea',
         wrapperCol: {span: 9.2}
       },
       {
         title: '表格备注',
-        dataIndex: 'planDesc1',
+        dataIndex: 'tableNote',
         inputType: 'textArea',
         wrapperCol: {span: 13.9},
       },
     ],
     tabColumns: [
-      idColumns,
+      {
+        title: '房号',
+        dataIndex: 'roomNumber',
+        scopedSlots: {customRender: "roomNumber"},
+      },
       {
         title: '面积(m2)',
-        dataIndex: 'total',
+        dataIndex: 'area',
         scopedSlots: {customRender: "total"},
         inputType: 'inputNumber',
         fixed: 'left',
         width: 100,
       },
       {
+        title: '住改非面积',
+        dataIndex: 'zgfArea',
+        scopedSlots: {customRender: "zgfArea"},
+        inputType: 'inputNumber',
+        fixed: 'left',
+        width: 100,
+      },
+      {
         title: '基准价格',
-        dataIndex: 'templateDesc',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'benchmark',
+        scopedSlots: {customRender: "benchmark"},
         width: 145,
 
       },{
         title: '成套修正系数',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'setCorrectionFactor',
+        scopedSlots: {customRender: "setCorrectionFactor"},
         width: 120,
       },{
         title: '结构修正系数',
-        dataIndex: 'templateDesc3',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'structuralCorrectionFactor',
+        scopedSlots: {customRender: "structuralCorrectionFactor"},
         width: 120,
 
       },{
         title: '成新修正系数',
-        dataIndex: 'templateDesc4',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'newCorrectionFactor',
+        scopedSlots: {customRender: "newCorrectionFactor"},
         width: 120,
 
       },{
         title: '朝向修正系数',
-        dataIndex: 'templateDesc5',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'orientationCorrectionFactor',
+        scopedSlots: {customRender: "orientationCorrectionFactor"},
         width: 120,
 
       },{
         title: '层次修正系数',
-        dataIndex: 'templateDesc6',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'levelCorrectionFactor',
+        scopedSlots: {customRender: "levelCorrectionFactor"},
         width: 120,
 
       },{
         title: '实体因素修正系数',
-        dataIndex: 'templateDesc7',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'solidFactorCorrectionFactor',
+        scopedSlots: {customRender: "solidFactorCorrectionFactor"},
         width: 120,
 
       },{
-        title: '评估单价',
-        dataIndex: 'templateDesc8',
-        scopedSlots: {customRender: "createTime"},
-        width: 100,
 
       },{
         title: '产权人补偿%',
-        dataIndex: 'templateDesc9',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'tompensationPropertyOwner',
+        scopedSlots: {customRender: "tompensationPropertyOwner"},
         width: 120,
 
       },{
         title: '承租人补偿%',
-        dataIndex: 'templateDesc10',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'tenantCompensation',
+        scopedSlots: {customRender: "tenantCompensation"},
         width: 120,
 
+      },
+      // {
+      //   title: '扣减规费%',
+      //   dataIndex: 'templateDesc11',
+      //   scopedSlots: {customRender: "createTime"},
+      //   width: 110,
+      // },
+      {
+        title: '商业用途修正系数%',
+        dataIndex: 'commercialUseCorrectionFactor',
+        scopedSlots: {customRender: "commercialUseCorrectionFactor"},
+        width: 110,
       },{
-        title: '扣减规费%',
-        dataIndex: 'templateDesc11',
-        scopedSlots: {customRender: "createTime"},
+        title: '商业街道路线修正系数',
+        dataIndex: 'commercialStreetCorrectionFactor',
+        scopedSlots: {customRender: "commercialStreetCorrectionFactor"},
+        width: 110,
+      },{
+        title: '商业用途实体修正系数',
+        dataIndex: 'commercialEntityCorrectionFactor',
+        scopedSlots: {customRender: "commercialEntityCorrectionFactor"},
+        width: 110,
+      },{
+        title: '营业用房单价',
+        dataIndex: 'unitPrice',
+        inputType: 'inputNumber',
+        scopedSlots: {customRender: "unitPrice"},
+        width: 110,
+      },{
+        title: '非住宅加权',
+        dataIndex: 'nonresidentialWeightingw',
+        scopedSlots: {customRender: "nonresidentialWeightingw"},
+        width: 110,
+      },{
+        title: '营业用房加权单价',
+        dataIndex: 'weightedUnitPriceBusinessPremises',
+        scopedSlots: {customRender: "weightedUnitPriceBusinessPremises"},
         width: 110,
       },
+
       editColumns
     ],
     tab6: [
