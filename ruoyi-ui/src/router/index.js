@@ -65,6 +65,19 @@ export const constantRoutes = [
       }
     ]
   },
+  // {
+  //   path: '/house',
+  //   component: Layout,
+  //   redirect: '/house/baseInfo',
+  //   children: [
+  //     {
+  //       path: '/house/baseInfo',
+  //       component: () => import('@/views/project/assess/baseInfo'),
+  //       name: '基本信息',
+  //       meta: { title: '房屋评估', icon: 'dashboard', noCache: true, affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/user',
     component: Layout,
