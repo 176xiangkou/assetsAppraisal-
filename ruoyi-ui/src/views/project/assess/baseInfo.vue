@@ -1,7 +1,7 @@
 <template>
   <div class="formDetail">
     <p style="margin: 15px 0 0 15px" class="i_title">基本信息</p>
-    <div style="width: 90%">
+    <div style="width: 100%">
       <BaseForm :formList="formList.formColumns"
                 :formBind.sync="formParams"
                 style="justify-content: flex-start"
@@ -15,9 +15,9 @@
                      :isEditor="isEditor"
                      :nameObj="{label: '房屋信息', button: '新增', tabBasePramas: {objectType: '文本'}}"
                      @change="onChange"
-                     :columns="formList.tabColumns">
+                     :columns="formList[formParams.tabClass]">
           <template slot-scope="{tableRow}"
-                    v-for="(item, index) in formList.tabColumns"
+                    v-for="(item, index) in formList[formParams.tabClass]"
                     :slot="item.scopedSlots.customRender">
             <FormInput
               :whole-type="item.wholeType || (isEditor ? 'input' : 'span')"
@@ -53,7 +53,7 @@
         tabData: [],
         wholeType: 'input',
         isEditor: true,
-        formParams: {}
+        formParams: {tabClass: 'tabColumns'},
       }
     },
     watch: {
@@ -64,7 +64,11 @@
             return total + (item.total || 0)
           }, 0))
         }
-      }
+      },
+      // 'formParams.tabClass': function (val) {
+      //   this.tabKey
+      // }
+
     },
     methods: {
       submitAll() {

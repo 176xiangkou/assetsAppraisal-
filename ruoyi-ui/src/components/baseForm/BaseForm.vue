@@ -56,7 +56,7 @@
     },
     data() {
       return {
-        form: this.$form.createForm(this),
+        // form: this.$form.createForm(this),
       };
     },
     computed: {
@@ -66,28 +66,28 @@
     },
     mounted() {},
     methods: {
-      computeFormItem() {
-
-      },
-      mergeWidgetProps(form) {
-        let defaultConfig = this.defaultWidgetProps1(form);
-        if (this.generateWidgetProps) {
-          defaultConfig = this.generateWidgetProps(form);
-        }
-        return {
-          ...defaultConfig,
-          ...form.widgetProps
-        };
-      },
-      defaultWidgetProps1(form) {
-        const defaultProps = { allowClear: true };
-        defaultProps.placeholder = form.widget.includes('input')
-          ?
-          `请输入${form.label}`
-          :
-          `请输入${form.label}`;
-        return defaultProps;
-      }
+      // computeFormItem() {
+      //
+      // },
+      // mergeWidgetProps(form) {
+      //   let defaultConfig = this.defaultWidgetProps1(form);
+      //   if (this.generateWidgetProps) {
+      //     defaultConfig = this.generateWidgetProps(form);
+      //   }
+      //   return {
+      //     ...defaultConfig,
+      //     ...form.widgetProps
+      //   };
+      // },
+      // defaultWidgetProps1(form) {
+      //   const defaultProps = { allowClear: true };
+      //   defaultProps.placeholder = form.widget.includes('input')
+      //     ?
+      //     `请输入${form.label}`
+      //     :
+      //     `请输入${form.label}`;
+      //   return defaultProps;
+      // }
     },
   };
 </script>

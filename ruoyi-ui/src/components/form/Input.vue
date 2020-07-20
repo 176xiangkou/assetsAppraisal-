@@ -12,7 +12,8 @@
                 <span>{{value}}</span>
             </template>
             <template v-else-if="inputType === 'input'">
-                <div :class="{'has-error' : (value && validateForm.type && !regExpConfig[validateForm.type].test(value))}">
+                <!--<div :class="{'has-error' : (value && validateForm.type && !regExpConfig[validateForm.type].test(value))}">-->
+                <div>
                     <a-input :value="value"
                              v-bind="{allowClear, placeholder, ...$attrs }"
                              :style="{width: contentWidth}"
@@ -117,6 +118,8 @@
     // import {regExpConfig} from '@/utils/regExpConfig'
     // import { downloadFile } from '@/utils/helper'
     import moment from 'moment'
+    import 'ant-design-vue';
+    import 'ant-design-vue/dist/antd.less';
 
     export default {
         name: 'formInput',
@@ -169,7 +172,7 @@
             return {
                 uploadObj: {name: '', url: ''},
                 SHOW_PARENT,
-                regExpConfig,
+                // regExpConfig,
                 isError: false
             }
         },
@@ -257,11 +260,16 @@
 
     .form-input-wraper {
         width: 100%;
-
+        overflow: hidden;
         .ant-calendar-picker, .ant-select {
             width: 100%;
             min-width: 100px;
         }
+      & ::v-deep .ant-select-dropdown-menu {
+        .ant-select-dropdown-menu-item {
+          white-space: unset;
+        }
+      }
 
         // display: inline-block;
     }

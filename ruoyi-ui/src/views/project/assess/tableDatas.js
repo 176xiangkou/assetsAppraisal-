@@ -55,6 +55,7 @@ const list = {
       {
         title: '房屋坐落',
         dataIndex: 'templateCode',
+        wrapperCol: {span: 9.2},
       },
       {
         title: '房屋产权人',
@@ -93,7 +94,8 @@ const list = {
         dataIndex: 'planDesc3',
       },{
         title: '签收日期',
-        dataIndex: 'planDesc1',
+        dataIndex: 'planDesc5',
+        inputType: 'datePicker',
       },{
         title: '评估员',
         dataIndex: 'planDesc1',
@@ -115,10 +117,13 @@ const list = {
         dataIndex: 'planDesc1',
       },{
         title: '报表样式',
-        dataIndex: 'planDesc1',
+        dataIndex: 'tabClass',
         inputType: 'select',
         selectList: [
           {
+            text: '住宅',
+            value: 'tabColumns'
+          },{
             text: '非住宅非营业',
             value: 'tab1'
           },{
@@ -257,15 +262,16 @@ const list = {
         inputType: 'inputNumber',
         disabled: true
       },{
-        title: '备注',
-        dataIndex: 'planDesc1',
-        wrapperCol: {span: 9.2}
-      },{
         title: '土地使用权类型',
         dataIndex: 'planDesc1',
       },{
         title: '初审员',
         dataIndex: 'planDesc1',
+      },{
+        title: '备注',
+        dataIndex: 'planDesc2',
+        inputType: 'textArea',
+        wrapperCol: {span: 9.2}
       },
       {
         title: '表格备注',
@@ -297,59 +303,153 @@ const list = {
         width: 120,
       },{
         title: '结构修正系数',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc3',
         scopedSlots: {customRender: "createTime"},
         width: 120,
 
       },{
         title: '成新修正系数',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc4',
         scopedSlots: {customRender: "createTime"},
         width: 120,
 
       },{
         title: '朝向修正系数',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc5',
         scopedSlots: {customRender: "createTime"},
         width: 120,
 
       },{
         title: '层次修正系数',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc6',
         scopedSlots: {customRender: "createTime"},
         width: 120,
 
       },{
         title: '实体因素修正系数',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc7',
         scopedSlots: {customRender: "createTime"},
         width: 120,
 
       },{
         title: '评估单价',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc8',
         scopedSlots: {customRender: "createTime"},
         width: 100,
 
       },{
         title: '产权人补偿%',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc9',
         scopedSlots: {customRender: "createTime"},
         width: 120,
 
       },{
         title: '承租人补偿%',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc10',
         scopedSlots: {customRender: "createTime"},
         width: 120,
 
       },{
         title: '扣减规费%',
-        dataIndex: 'templateDesc1',
+        dataIndex: 'templateDesc11',
         scopedSlots: {customRender: "createTime"},
         width: 110,
       },
       editColumns
+    ],
+    tab6: [
+      idColumns,
+      {
+        title: '建筑面积(m2)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },
+      {
+        title: '重置价格(元/m2)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      }, {
+        title: '房屋状况修正',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '层高修正',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '成新修正',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '评估单价(元/m2)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '评估金额(元)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },
+    ],
+    tab8: [
+      idColumns,
+      {
+        title: '建筑面积(m2)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },
+      {
+        title: '重置价格(元/m2)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      }, {
+        title: '房屋状况修正',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '层高修正',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '成新修正',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '评估单价(元/m2)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },{
+        title: '评估金额(元)',
+        dataIndex: 'total',
+        scopedSlots: {customRender: "total"},
+        inputType: 'inputNumber',
+        step: 0.01,
+      },
     ],
   },
   updateHouse: {
@@ -494,6 +594,114 @@ const list = {
         scopedSlots: {customRender: "number"},
 
         wholeType: 'span'
+      },{
+        title: '成新率',
+        dataIndex: 'newRate',
+        scopedSlots: {customRender: "newRate"},
+        inputType: 'inputNumber'
+      },{
+        title: '评估值',
+        dataIndex: 'values',
+        scopedSlots: {customRender: "values"},
+        inputType: 'inputNumber',
+        wholeType: 'span',
+        step: 0.4
+      },idsColumns,
+      {
+        title: '单位',
+        dataIndex: 'unit',
+        scopedSlots: {customRender: "unit"},
+        wholeType: 'span'
+      },
+      editColumns
+    ]
+  },
+  twiceApply: {
+    tabColumns: [
+      {
+        title: '分类名称',
+        dataIndex: 'templateStatus',
+        scopedSlots: {customRender: "templateStatus"},
+        inputType: 'select',
+        selectList: []
+      },
+      {
+        title: '名称',
+        dataIndex: 'price',
+        scopedSlots: {customRender: "price"},
+        inputType: 'select',
+        selectList: []
+      },{
+        title: '单价',
+        dataIndex: 'gongshi1',
+        step: 0.01,
+        scopedSlots: {customRender: "gongshi1"},
+      },{
+        title: '公式',
+        dataIndex: 'gongshi',
+        scopedSlots: {customRender: "gongshi"},
+      },{
+        title: '数量',
+        dataIndex: 'number',
+        scopedSlots: {customRender: "number"},
+
+        wholeType: 'span'
+      },{
+        title: '成新率',
+        dataIndex: 'templateDesc1',
+        scopedSlots: {customRender: "createTime1"},
+        inputType: 'inputNumber'
+      },{
+        title: '评估值',
+        dataIndex: 'values',
+        scopedSlots: {customRender: "values"},
+        inputType: 'inputNumber',
+        wholeType: 'span',
+        step: 0.0001
+      },idsColumns,
+      {
+        title: '单位',
+        dataIndex: 'unit',
+        scopedSlots: {customRender: "unit"},
+        wholeType: 'span'
+      },
+      editColumns
+    ],
+    tabColumns1: [
+      {
+        title: '名称',
+        dataIndex: 'name',
+        scopedSlots: {customRender: "name"},
+        inputType: 'select',
+        selectList: [
+          {
+            text: '名称1',
+            value: 1,
+          },{
+            text: '名称2JAO',
+            value: 2,
+          },{
+            text: '名称3wwJpi',
+            value: 3,
+          },
+        ]
+      },
+      {
+        title: '单价',
+        dataIndex: 'price',
+        scopedSlots: {customRender: "price"},
+        wholeType: 'span'
+      },{
+        title: '公式',
+        dataIndex: 'gongshi',
+        scopedSlots: {customRender: "gongshi"},
+      },{
+        title: '数量',
+        dataIndex: 'number',
+        scopedSlots: {customRender: "number"},
+
+        wholeType: 'span',
+        width: 100
       },{
         title: '成新率',
         dataIndex: 'newRate',

@@ -43,8 +43,15 @@
 </template>
 
 <script>
+  import { Table, Col, Row, Icon } from 'ant-design-vue';
   export default {
     name: "editorTable",
+    components: {
+      'a-table': Table,
+      'a-col': Col,
+      'a-row': Row,
+      'a-icon': Icon
+    },
     props: {
       nameObj: {
         type: Object,
