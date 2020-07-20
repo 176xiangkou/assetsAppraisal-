@@ -47,10 +47,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="landArea"  column="landArea"  />
 		<result property="landUseTypy"  column="landUseTypy"  />
 		<result property="examinationMember"  column="examinationMember"  />
-		<association property="HouseInfo"    column="houseInfo" javaType="HouseInfo" resultMap="houseInfoResult" />
+		<association property="HouseInfo"    column="houseInfo" javaType="HouseInfo" resultMap="HouseInfoResult" />
 	</resultMap>
 	
-	<resultMap  type="HouseInfo" id="houseInfoResult">
+	<resultMap  type="HouseInfo" id="HouseInfoResult">
 		<id property="id"  column="id"  />
 		<result property="roomNumber"  column="roomNumber"  />
 		<result property="area"  column="area"  />
@@ -164,7 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 
-	<insert id="insertHouse" parameterType="HouseBase" useGeneratedKeys="true" keyProperty="userId">
+	<insert id="insertHouse" parameterType="HouseBase"  >
  		insert into h_project(
 		<if test="projectName != null and projectName != ''">projectName,</if>
 		<if test="houseLocated != null and houseLocated != ''">houseLocated,</if>
@@ -364,8 +364,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 
-	<delete id="deleteUserById" parameterType="Long">
- 		delete from h_project where houseId = #{houseId}
+	<delete id="deleteHouseById" parameterType="String">
+ 		delete from h_project where projectId = #{projectId}
  	</delete>
 
 	

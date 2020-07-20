@@ -77,9 +77,9 @@ public class HouseController extends BaseController
     @PreAuthorize("@ss.hasPermi('house:base:remove')")
     @Log(title = "房产管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{userId}")
-    public AjaxResult remove(@PathVariable Long houseId)
+    public AjaxResult remove(@PathVariable String projectId)
     {
-        return toAjax(houseService.deleteHouseById(houseId));
+        return toAjax(houseService.deleteHouseById(projectId));
     }
 
 }

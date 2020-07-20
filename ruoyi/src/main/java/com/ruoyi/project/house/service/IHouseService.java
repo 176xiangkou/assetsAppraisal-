@@ -43,6 +43,6 @@ public interface IHouseService
      * @param houseId 房产基本ID
      * @return 结果
      */
-    public int deleteHouseById(Long houseId);
+    public int deleteHouseById(String houseId);
 
 }

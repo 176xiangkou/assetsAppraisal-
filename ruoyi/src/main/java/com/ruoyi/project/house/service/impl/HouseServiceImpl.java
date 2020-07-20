@@ -45,7 +45,7 @@ public class HouseServiceImpl implements IHouseService
         for(int i = 0;i < houseBaseList.size();i ++ ){
             List<HouseInfo> list = houseMapper.selectHouseInfoListByProjectId(houseBaseList.get(i).getProjectId());
              houseBaseList.get(i).setHouseInfo(list);
-        } 
+        }
         return houseBaseList;
     }
 
@@ -94,13 +94,13 @@ public class HouseServiceImpl implements IHouseService
     /**
      * 通过房产基本ID删除房产基本
      * 
-     * @param houseId 房产基本ID
+     * @param projectId 房产基本ID
      * @return 结果
      */
     @Override
-    public int deleteHouseById(Long houseId)
+    public int deleteHouseById(String projectId)
     {
-        return houseMapper.deleteHouseById(houseId);
+        return houseMapper.deleteHouseById(projectId);
     }
 
 
