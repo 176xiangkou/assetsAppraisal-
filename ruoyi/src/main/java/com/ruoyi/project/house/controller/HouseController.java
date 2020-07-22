@@ -48,6 +48,20 @@ public class HouseController extends BaseController
     }
 
     /**
+     * 根据projectId查询房产信息
+     */
+    @PreAuthorize("@ss.hasPermi('house:base:getHouseBaseById')")
+    @GetMapping("/getHouseBaseById")
+    public AjaxResult getHouseBaseById(String projectId)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        HouseBase house = new HouseBase();
+        house.setProjectId(projectId);
+        List<HouseBase> list = houseService.selectHouseList(house);
+        ajax.put("houseBase",list.get(0));
+        return ajax;
+    }
+    /**
      * 新增房产
      */
     @PreAuthorize("@ss.hasPermi('house:base:add')")
