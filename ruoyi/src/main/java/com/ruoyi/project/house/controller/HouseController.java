@@ -52,14 +52,13 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:getHouseBaseById')")
     @GetMapping("/getHouseBaseById")
-    public AjaxResult getHouseBaseById(String projectId)
+    public TableDataInfo getHouseBaseById(String projectId)
     {
         AjaxResult ajax = AjaxResult.success();
         HouseBase house = new HouseBase();
         house.setProjectId(projectId);
         List<HouseBase> list = houseService.selectHouseList(house);
-        ajax.put("houseBase",list.get(0));
-        return ajax;
+        return getDataTable(list);
     }
     /**
      * 新增房产
