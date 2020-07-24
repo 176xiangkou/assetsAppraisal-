@@ -20,7 +20,8 @@ public interface HouseMapper
      * @param house 房产基本信息
      * @return 房产基本信息集合信息
      */
-    public List<HouseBase> selectHouseList(HouseBase house);/**
+    public List<HouseBase> selectHouseList(HouseBase house);
+    /**
      * 根据条件分页查询房屋列表
      *
      * @param projectId 房产ID

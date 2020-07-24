@@ -40,7 +40,7 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:list')")
     @GetMapping("/list")
-    public TableDataInfo list(HouseBase house)
+    public TableDataInfo list(@Validated @RequestBody HouseBase house)
     {
         startPage();
         List<HouseBase> list = houseService.selectHouseList(house);
