@@ -100,7 +100,10 @@ public class HouseServiceImpl implements IHouseService
     @Override
     public int deleteHouseById(String projectId)
     {
-        return houseMapper.deleteHouseById(projectId);
+        int row = houseMapper.deleteHouseById(projectId);
+        houseMapper.deleteHouseInfoById(projectId);
+        houseMapper.deleteProjectHouseById(projectId);
+        return  row;
     }
 
 

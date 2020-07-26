@@ -71,4 +71,19 @@ public interface HouseMapper
      */
     public int deleteHouseById(@Param("projectId") String projectId);
 
+    /**
+     * 通过房产基本ID删除房屋信息
+     *
+     * @param projectId 房产基本ID
+     * @return 结果
+     */
+    public int deleteHouseInfoById(@Param("projectId") String projectId);
+    /**
+     * 通过房产基本ID删除房产房屋关系信息
+     *
+     * @param projectId 房产基本ID
+     * @return 结果
+     */
+    public int deleteProjectHouseById(@Param("projectId") String projectId);
+
 }

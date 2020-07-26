@@ -374,5 +374,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		delete from h_project where projectId = #{projectId}
  	</delete>
 
-	
+    <delete id="deleteHouseInfoById" parameterType="String">
+ 		delete  from h_houseinfo where houseInfoId in (select houseId from h_projecthouse where projectId = #{projectId})
+ 	</delete>
+    <delete id="deleteProjectHouseById" parameterType="String">
+ 		  delete  from h_projecthouse where  projectId =  #{projectId}
+ 	</delete>
 </mapper> 

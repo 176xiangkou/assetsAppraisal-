@@ -66,7 +66,7 @@ public class HouseController extends BaseController
     @PreAuthorize("@ss.hasPermi('house:base:add')")
     @Log(title = "房产管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody HouseBase house)
+    public AjaxResult add(@RequestBody HouseBase house)
     {
         house.setCreateBy(SecurityUtils.getUsername());
         return toAjax(houseService.insertHouse(house));
@@ -77,8 +77,8 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:edit')")
     @Log(title = "房产管理", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@Validated @RequestBody HouseBase house)
+    @PutMapping("/updateHouse")
+    public AjaxResult edit( @RequestBody HouseBase house)
     {
         house.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(houseService.updateHouse(house));
@@ -89,7 +89,7 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:remove')")
     @Log(title = "房产管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{projectId}")
     public AjaxResult remove(@PathVariable String projectId)
     {
         return toAjax(houseService.deleteHouseById(projectId));
