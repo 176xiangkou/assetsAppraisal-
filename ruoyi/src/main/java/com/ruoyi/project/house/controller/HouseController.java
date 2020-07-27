@@ -46,7 +46,15 @@ public class HouseController extends BaseController
         List<HouseBase> list = houseService.selectHouseList(house);
         return getDataTable(list);
     }
-
+    /**
+     * 查询用户
+     */
+    @PreAuthorize("@ss.hasPermi('house:base:getUser')")
+    @GetMapping("/getUser")
+    public String getUser()
+    {
+        return SecurityUtils.getUsername();
+    }
     /**
      * 根据projectId查询房产信息
      */
@@ -89,10 +97,10 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:remove')")
     @Log(title = "房产管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{projectId}")
-    public AjaxResult remove(@PathVariable String projectId)
+    @DeleteMapping("/{houseBaseId}")
+    public AjaxResult remove(@PathVariable String houseBaseId)
     {
-        return toAjax(houseService.deleteHouseById(projectId));
+        return toAjax(houseService.deleteHouseById(houseBaseId));
     }
 
 }

@@ -19,6 +19,8 @@ public class HouseBase extends BaseEntity
     private Long id;
     /** 项目名称*/
     private String projectName;
+    /** 房产id*/
+    private String houseBaseId;
     /** 房屋坐落*/
     private String houseLocated;
     /** 房屋产权人*/
@@ -42,7 +44,7 @@ public class HouseBase extends BaseEntity
     /** 估价师*/
     private String valuer;
     /** 区位基准价*/
-    private String referencePrice;
+    private Long referencePrice;
     /** 报告编号*/
     private String reportNumber;
     /** 报告年份*/
@@ -99,7 +101,8 @@ public class HouseBase extends BaseEntity
     private String landUseTypy;
     /** 房产基本信息id*/
     private String examinationMember;
-
+    /**房屋信息*/
+    private List<HouseInfo> houseInfo;
     public String getLandArea() {
         return landArea;
     }
@@ -124,7 +127,14 @@ public class HouseBase extends BaseEntity
         this.examinationMember = examinationMember;
     }
 
-    private List<HouseInfo> houseInfo;
+
+    public String getHouseBaseId() {
+        return houseBaseId;
+    }
+
+    public void setHouseBaseId(String houseBaseId) {
+        this.houseBaseId = houseBaseId;
+    }
 
     public Long getId() {
         return id;
@@ -230,11 +240,11 @@ public class HouseBase extends BaseEntity
         this.valuer = valuer;
     }
 
-    public String getReferencePrice() {
+    public Long getReferencePrice() {
         return referencePrice;
     }
 
-    public void setReferencePrice(String referencePrice) {
+    public void setReferencePrice(Long referencePrice) {
         this.referencePrice = referencePrice;
     }
 

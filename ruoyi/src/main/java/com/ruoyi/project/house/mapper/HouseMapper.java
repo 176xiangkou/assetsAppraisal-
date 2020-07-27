@@ -24,10 +24,10 @@ public interface HouseMapper
     /**
      * 根据条件分页查询房屋列表
      *
-     * @param projectId 房产ID
+     * @param houseBaseId 房产ID
      * @return 房屋集合信息
      */
-    public List<HouseInfo> selectHouseInfoListByProjectId(@Param("projectId") String projectId);
+    public List<HouseInfo> selectHouseInfoListByProjectId(@Param("houseBaseId") String houseBaseId);
 
 
     /**
@@ -66,24 +66,24 @@ public interface HouseMapper
     /**
      * 通过房产基本ID删除房产基本
      *
-     * @param projectId 房产基本ID
+     * @param houseBaseId 房产基本ID
      * @return 结果
      */
-    public int deleteHouseById(@Param("projectId") String projectId);
+    public int deleteHouseById(@Param("houseBaseId") String houseBaseId);
 
     /**
      * 通过房产基本ID删除房屋信息
      *
-     * @param projectId 房产基本ID
+     * @param houseBaseId 房产基本ID
      * @return 结果
      */
-    public int deleteHouseInfoById(@Param("projectId") String projectId);
+    public int deleteHouseInfoById(@Param("houseBaseId") String houseBaseId);
     /**
      * 通过房产基本ID删除房产房屋关系信息
      *
-     * @param projectId 房产基本ID
+     * @param houseBaseId 房产基本ID
      * @return 结果
      */
-    public int deleteProjectHouseById(@Param("projectId") String projectId);
+    public int deleteProjectHouseById(@Param("houseBaseId") String houseBaseId);
 
 }

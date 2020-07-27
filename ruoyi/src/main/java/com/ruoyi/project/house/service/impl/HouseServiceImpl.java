@@ -43,7 +43,7 @@ public class HouseServiceImpl implements IHouseService
     {
         List<HouseBase> houseBaseList = houseMapper.selectHouseList(house);
         for(int i = 0;i < houseBaseList.size();i ++ ){
-            List<HouseInfo> list = houseMapper.selectHouseInfoListByProjectId(houseBaseList.get(i).getProjectId());
+            List<HouseInfo> list = houseMapper.selectHouseInfoListByProjectId(houseBaseList.get(i).getHouseBaseId());
              houseBaseList.get(i).setHouseInfo(list);
         }
         return houseBaseList;
@@ -59,19 +59,21 @@ public class HouseServiceImpl implements IHouseService
     public int insertHouse(HouseBase house)
     {
         // 新增房产基本信息
-        String projectId = UUID.randomUUID().toString();
-        house.setProjectId(projectId);
+        String houseBaseId = UUID.randomUUID().toString();
+        house.setHouseBaseId(houseBaseId);
         int rows = houseMapper.insertHouse(house);
         List<HouseInfo> houseInfoList = house.getHouseInfo();
-        for(HouseInfo h : houseInfoList){
-            String houseInfoId = UUID.randomUUID().toString();
-            h.setHouseInfoId(houseInfoId);
-            // 新增房fa信息
-            int row = houseMapper.insertHouseInfo(h);
-            HouseBaseInfo houseBaseInfo = new HouseBaseInfo();
-            houseBaseInfo.setProjectId(projectId);
-            houseBaseInfo.setHouseId(houseInfoId);
-            houseMapper.insertHouseBaseInfo(houseBaseInfo);
+        if(houseInfoList.size() > 0){
+            for(HouseInfo h : houseInfoList){
+                String houseInfoId = UUID.randomUUID().toString();
+                h.setHouseInfoId(houseInfoId);
+                // 新增房屋信息
+                int row = houseMapper.insertHouseInfo(h);
+                HouseBaseInfo houseBaseInfo = new HouseBaseInfo();
+                houseBaseInfo.setHouseBaseId(houseBaseId);
+                houseBaseInfo.setHouseId(houseInfoId);
+                houseMapper.insertHouseBaseInfo(houseBaseInfo);
+            }
         }
 
         return rows;
@@ -94,15 +96,15 @@ public class HouseServiceImpl implements IHouseService
     /**
      * 通过房产基本ID删除房产基本
      * 
-     * @param projectId 房产基本ID
+     * @param houseBaseId 房产基本ID
      * @return 结果
      */
     @Override
-    public int deleteHouseById(String projectId)
+    public int deleteHouseById(String houseBaseId)
     {
-        int row = houseMapper.deleteHouseById(projectId);
-        houseMapper.deleteHouseInfoById(projectId);
-        houseMapper.deleteProjectHouseById(projectId);
+        int row = houseMapper.deleteHouseById(houseBaseId);
+        houseMapper.deleteHouseInfoById(houseBaseId);
+        houseMapper.deleteProjectHouseById(houseBaseId);
         return  row;
     }
 
