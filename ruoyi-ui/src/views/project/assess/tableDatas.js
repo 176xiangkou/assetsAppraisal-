@@ -50,8 +50,9 @@ const list = {
         title: '项目名称',
         dataIndex: 'projectName',
         wrapperCol: {span: 9.2},
-        inputType: 'select',
-        selectList: [],
+        // inputType: 'select',
+        disabled: true,
+        // selectList: [],
       },
       {
         title: '房屋坐落',
@@ -343,8 +344,6 @@ const list = {
         dataIndex: 'solidFactorCorrectionFactor',
         scopedSlots: {customRender: "solidFactorCorrectionFactor"},
         width: 120,
-
-      },{
 
       },{
         title: '产权人补偿%',
