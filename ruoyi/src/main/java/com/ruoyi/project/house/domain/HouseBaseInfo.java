@@ -15,7 +15,7 @@ public class HouseBaseInfo
     /**
      * 房产基本信息id
      */
-    private String projectId;
+    private String houseBaseId;
 
     /**
      * 房屋id
@@ -30,12 +30,12 @@ public class HouseBaseInfo
         this.id = id;
     }
 
-    public String getProjectId() {
-        return projectId;
+    public String getHouseBaseId() {
+        return houseBaseId;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
+    public void setHouseBaseId(String houseBaseId) {
+        this.houseBaseId = houseBaseId;
     }
 
     public String getHouseId() {

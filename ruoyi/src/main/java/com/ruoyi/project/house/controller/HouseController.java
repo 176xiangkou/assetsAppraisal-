@@ -40,26 +40,33 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:list')")
     @GetMapping("/list")
-    public TableDataInfo list(HouseBase house)
+    public TableDataInfo list(@Validated @RequestBody HouseBase house)
     {
         startPage();
         List<HouseBase> list = houseService.selectHouseList(house);
         return getDataTable(list);
     }
-
+    /**
+     * 查询用户
+     */
+    @PreAuthorize("@ss.hasPermi('house:base:getUser')")
+    @GetMapping("/getUser")
+    public String getUser()
+    {
+        return SecurityUtils.getUsername();
+    }
     /**
      * 根据projectId查询房产信息
      */
     @PreAuthorize("@ss.hasPermi('house:base:getHouseBaseById')")
     @GetMapping("/getHouseBaseById")
-    public AjaxResult getHouseBaseById(String projectId)
+    public TableDataInfo getHouseBaseById(String projectId)
     {
         AjaxResult ajax = AjaxResult.success();
         HouseBase house = new HouseBase();
         house.setProjectId(projectId);
         List<HouseBase> list = houseService.selectHouseList(house);
-        ajax.put("houseBase",list.get(0));
-        return ajax;
+        return getDataTable(list);
     }
     /**
      * 新增房产
@@ -67,7 +74,7 @@ public class HouseController extends BaseController
     @PreAuthorize("@ss.hasPermi('house:base:add')")
     @Log(title = "房产管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody HouseBase house)
+    public AjaxResult add(@RequestBody HouseBase house)
     {
         house.setCreateBy(SecurityUtils.getUsername());
         return toAjax(houseService.insertHouse(house));
@@ -78,8 +85,8 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:edit')")
     @Log(title = "房产管理", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@Validated @RequestBody HouseBase house)
+    @PutMapping("/updateHouse")
+    public AjaxResult edit( @RequestBody HouseBase house)
     {
         house.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(houseService.updateHouse(house));
@@ -90,10 +97,10 @@ public class HouseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('house:base:remove')")
     @Log(title = "房产管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userId}")
-    public AjaxResult remove(@PathVariable String projectId)
+    @DeleteMapping("/{houseBaseId}")
+    public AjaxResult remove(@PathVariable String houseBaseId)
     {
-        return toAjax(houseService.deleteHouseById(projectId));
+        return toAjax(houseService.deleteHouseById(houseBaseId));
     }
 
 }

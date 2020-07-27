@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="HouseBase" id="HouseBaseResult">
 		<id property="id"  column="id"  />
 		<result property="projectName"  column="projectName"  />
+		<result property="houseBaseId"  column="houseBaseId"  />
 		<result property="houseLocated"  column="houseLocated"  />
 		<result property="propertyOwner"  column="propertyOwner"  />
 		<result property="titleCertificateNumber"  column="titleCertificateNumber"  />
@@ -47,7 +48,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="landArea"  column="landArea"  />
 		<result property="landUseTypy"  column="landUseTypy"  />
 		<result property="examinationMember"  column="examinationMember"  />
-		<association property="HouseInfo"    column="houseInfo" javaType="HouseInfo" resultMap="HouseInfoResult" />
 	</resultMap>
 	
 	<resultMap  type="HouseInfo" id="HouseInfoResult">
@@ -73,10 +73,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="nonresidentialWeightingw"  column="nonresidentialWeightingw"  />
 		<result property="weightedUnitPriceBusinessPremises"  column="weightedUnitPriceBusinessPremises"  />
 	</resultMap>
+	<resultMap  type="HouseBaseInfo" id="HouseBaseInfoResult">
+		<id property="id"  column="id"  />
+		<result property="houseBaseId"  column="houseBaseId"  />
+		<result property="houseId"  column="houseId"  />
+
+	</resultMap>
 
 	<sql id="selectHouseVo">
 				 SELECT
 			t.id,
+			t.houseBaseId,
 			t.projectName,
 			t.houseLocated,
 			t.propertyOwner,
@@ -147,7 +154,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			t.create_time,
 			t.houseInfoId
 		FROM
-			from h_houseinfo t
+			  h_houseinfo t
     </sql>
     
     <select id="selectHouseList" parameterType="HouseBase" resultMap="HouseBaseResult">
@@ -155,17 +162,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="id != null and id != 0">
 			AND t.id = #{id}
 		</if>
+		<if test="projectId != null and projectId != ''">
+			AND t.projectId = #{projectId}
+		</if>
+		<if test="houseBaseId != null and houseBaseId != ''">
+			AND t.houseBaseId = #{houseBaseId}
+		</if>
+		<if test="projectName != null and projectName != ''">
+			AND t.projectName = #{projectName}
+		</if>
 	</select>
     <select id="selectHouseInfoListByProjectId" parameterType="String" resultMap="HouseInfoResult">
 		<include refid="selectHouseInfoVo"/>
-		left join h_projecthouse hp on hp.houseId = t.houseInfoId where
-		<if test="projectId != null and projectId != ''">
-			AND  hp.projectId = #{projectId}
+		left join h_projecthouse hp on hp.houseId = t.houseInfoId where 1=1
+		<if test="houseBaseId != null and houseBaseId != ''">
+			AND  hp.houseBaseId = #{houseBaseId}
 		</if>
 	</select>
 
 	<insert id="insertHouse" parameterType="HouseBase"  >
  		insert into h_project(
+		<if test="houseBaseId != null and projectName != ''">houseBaseId,</if>
 		<if test="projectName != null and projectName != ''">projectName,</if>
 		<if test="houseLocated != null and houseLocated != ''">houseLocated,</if>
 		<if test="propertyOwner != null and propertyOwner != ''">propertyOwner,</if>
@@ -210,6 +227,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			create_time
  		)values(
 		<if test="id != null and id != ''"> #{id},</if>
+		<if test="houseBaseId != null and houseBaseId != ''"> #{houseBaseId},</if>
 		<if test="projectName != null and projectName != ''"> #{projectName},</if>
 		<if test="houseLocated != null and houseLocated != ''"> #{houseLocated},</if>
 		<if test="propertyOwner != null and propertyOwner != ''"> #{propertyOwner},</if>
@@ -301,13 +319,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		sysdate()
 		)
 	</insert>
-	<insert id="insertHouseBaseInfo" parameterType="HouseBaseInfo" useGeneratedKeys="true" keyProperty="projectId">
-		insert into sys_project(
-		<if test="projectId != null and projectId != ''">projectId,</if>
+	<insert id="insertHouseBaseInfo" parameterType="HouseBaseInfo"  >
+		insert into h_projecthouse(
+		<if test="houseBaseId != null and houseBaseId != ''">houseBaseId,</if>
 		<if test="houseId != null and houseId != ''">houseId,</if>
 		createTime
 		)values(
-		<if test="projectId != null and projectId != ''">#{projectId},</if>
+		<if test="houseBaseId != null and houseBaseId != ''">#{houseBaseId},</if>
 		<if test="houseId != null and houseId != ''">#{houseId},</if>
 		sysdate()
 		)
@@ -318,6 +336,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		update h_project
  		<set>
 			<if test="id != null and id != ''">  id = #{id},</if>
+			<if test="houseBaseId != null and houseBaseId != ''">  houseBaseId = #{houseBaseId},</if>
 			<if test="projectName != null and projectName != ''">  projectName = #{projectName},</if>
 			<if test="houseLocated != null and houseLocated != ''">  houseLocated = #{houseLocated},</if>
 			<if test="propertyOwner != null and propertyOwner != ''">  propertyOwner = #{propertyOwner},</if>
@@ -365,8 +384,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 
 	<delete id="deleteHouseById" parameterType="String">
- 		delete from h_project where projectId = #{projectId}
+ 		delete from h_project where houseBaseId = #{houseBaseId}
  	</delete>
 
-	
+    <delete id="deleteHouseInfoById" parameterType="String">
+ 		delete  from h_houseinfo where houseInfoId in (select houseId from h_projecthouse where houseBaseId = #{houseBaseId})
+ 	</delete>
+    <delete id="deleteProjectHouseById" parameterType="String">
+ 		  delete  from h_projecthouse where  houseBaseId =  #{houseBaseId}
+ 	</delete>
 </mapper> 
