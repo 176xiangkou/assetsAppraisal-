@@ -64,8 +64,8 @@
         deep: true,
         handler(val) {
           if (val) {
-            const {id, label, houseId} = val;
-            if (houseId) return this.getProjectDetail(houseId);
+            const {id, label, houseBaseId} = val;
+            if (houseBaseId) return this.getProjectDetail(houseBaseId);
             this.$set(this.formParams, 'projectId', id);
             this.$set(this.formParams, 'projectName', label);
           }
@@ -105,8 +105,8 @@
 
       },
       onChange() {},
-      getProjectDetail(id) {
-        getProjectDetail(id).then(res => {
+      getProjectDetail(houseBaseId) {
+        getProjectDetail({houseBaseId}).then(res => {
 
         })
       }
@@ -115,8 +115,8 @@
     },
     created() {
       if (this.projectObj) {
-        const {id, label, houseId} = this.projectObj;
-        if (houseId) return this.getProjectDetail(houseId);
+        const {id, label, houseBaseId} = this.projectObj;
+        if (houseBaseId) return this.getProjectDetail(houseBaseId);
         this.$set(this.formParams, 'projectId', id);
         this.$set(this.formParams, 'projectName', label);
       }

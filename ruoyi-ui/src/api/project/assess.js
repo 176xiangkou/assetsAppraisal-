@@ -41,10 +41,11 @@ export function getHouseBaseById(params) {
 }
 
 // 查询项目详细
-export function getProjectDetail(projectId) {
+export function getProjectDetail(params) {
   return request({
-    url: '/system/project/' + projectId,
-    method: 'get'
+    url: '/house/base/getHouseBaseByHouseBaseId',
+    method: 'get',
+    params
   })
 }
 

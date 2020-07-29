@@ -100,7 +100,7 @@ const list = {
         inputType: 'datePicker',
       },{
         title: '评估员',
-        dataIndex: 'planDesc1',
+        dataIndex: 'evaluator',
         inputType: 'select',
         selectList: [],
       },{
@@ -182,7 +182,7 @@ const list = {
 
       },{
         title: '土地性质',
-        dataIndex: 'planDesc1',
+        dataIndex: 'landProperty',
         inputType: 'select',
         selectList: [],
       },{
