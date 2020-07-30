@@ -44,10 +44,12 @@
   import FormInput from '@/components/form/Input'
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
-  import {houseBaseAdd} from "../../../api/project/assess";
+  import {getProjectDetail, houseBaseAdd, updateHouseBase} from "../../../api/project/assess";
+  import {listProject} from "../../../api/project/project";
   export default {
     name: "formDetail",
     components: {editorTable, BaseForm, FormInput},
+    props: ['projectObj'],
     data() {
       return {
         formList: getFormDatas('baseInfo'),
@@ -58,6 +60,17 @@
       }
     },
     watch: {
+      projectObj: {
+        deep: true,
+        handler(val) {
+          if (val) {
+            const {id, label, houseBaseId} = val;
+            if (houseBaseId) return this.getProjectDetail(houseBaseId);
+            this.$set(this.formParams, 'projectId', id);
+            this.$set(this.formParams, 'projectName', label);
+          }
+        }
+      },
       tabData: {
         deep: true,
         handler(val) {
@@ -73,8 +86,14 @@
     },
     methods: {
       submitAll() {
-        houseBaseAdd({HouseBase: this.formParams, HouseInfo: this.tabData}).then(() => {
-
+        const api = {
+          'add': houseBaseAdd,
+          'update': updateHouseBase
+        };
+        const {id} = this.formParams;
+        api[id ? 'update' : 'add']( {...this.formParams, houseInfo: this.tabData }).then(() => {
+             this.$message.success(id ? '修改信息成功！' : '新增信息成功！');
+             this.$emit('changeStatus', false);
         })
       },
       remove(index) {
@@ -86,16 +105,21 @@
 
       },
       onChange() {},
+      getProjectDetail(houseBaseId) {
+        getProjectDetail({houseBaseId}).then(res => {
+
+        })
+      }
+
 
     },
     created() {
-      const {type, id, categoryPid} = this.$route.query;
-      if (type === 'detail') {
-        this.wholeType = 'span';
-        this.isEditor =false;
+      if (this.projectObj) {
+        const {id, label, houseBaseId} = this.projectObj;
+        if (houseBaseId) return this.getProjectDetail(houseBaseId);
+        this.$set(this.formParams, 'projectId', id);
+        this.$set(this.formParams, 'projectName', label);
       }
-      if (categoryPid) this.formParams = {categoryPid, id: 0};
-      if (id) this.getList(id);
     }
   }
 </script>

@@ -14,12 +14,16 @@
           />
         </div>
         <div class="head-container">
+          {{selectId}}
           <el-tree
+            :current-node-key="projectObj.id"
+            :highlight-current="true"
             :data="deptOptions"
             :props="defaultProps"
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             ref="tree"
+            node-key="id"
             default-expand-all
             @node-click="handleNodeClick"
           />
@@ -49,49 +53,49 @@
                   type="primary"
                   icon="el-icon-plus"
                   size="mini"
-                  :disabled="!queryParams.deptId"
+                  :disabled="!projectObj.id"
                   @click="handleAdd"
                   v-hasPermi="['system:user:add']"
                 >新增</el-button>
               </el-col>
-              <el-col :span="1.5">
-                <el-button
-                  type="success"
-                  icon="el-icon-edit"
-                  size="mini"
-                  :disabled="single"
-                  @click="handleUpdate"
-                  v-hasPermi="['system:user:edit']"
-                >修改</el-button>
-              </el-col>
+              <!--<el-col :span="1.5">-->
+                <!--<el-button-->
+                  <!--type="success"-->
+                  <!--icon="el-icon-edit"-->
+                  <!--size="mini"-->
+                  <!--:disabled="single"-->
+                  <!--@click="handleUpdate"-->
+                  <!--v-hasPermi="['system:user:edit']"-->
+                <!--&gt;修改</el-button>-->
+              <!--</el-col>-->
               <el-col :span="1.5">
                 <el-button
                   type="danger"
                   icon="el-icon-delete"
                   size="mini"
                   :disabled="multiple"
-                  @click="handleDelete"
+                  @click="handleDelete()"
                   v-hasPermi="['system:user:remove']"
                 >删除</el-button>
               </el-col>
-              <el-col :span="1.5">
-                <el-button
-                  type="info"
-                  icon="el-icon-upload2"
-                  size="mini"
-                  @click="handleImport"
-                  v-hasPermi="['system:user:import']"
-                >导入</el-button>
-              </el-col>
-              <el-col :span="1.5">
-                <el-button
-                  type="warning"
-                  icon="el-icon-download"
-                  size="mini"
-                  @click="handleExport"
-                  v-hasPermi="['system:user:export']"
-                >导出</el-button>
-              </el-col>
+              <!--<el-col :span="1.5">-->
+                <!--<el-button-->
+                  <!--type="info"-->
+                  <!--icon="el-icon-upload2"-->
+                  <!--size="mini"-->
+                  <!--@click="handleImport"-->
+                  <!--v-hasPermi="['system:user:import']"-->
+                <!--&gt;导入</el-button>-->
+              <!--</el-col>-->
+              <!--<el-col :span="1.5">-->
+                <!--<el-button-->
+                  <!--type="warning"-->
+                  <!--icon="el-icon-download"-->
+                  <!--size="mini"-->
+                  <!--@click="handleExport"-->
+                  <!--v-hasPermi="['system:user:export']"-->
+                <!--&gt;导出</el-button>-->
+              <!--</el-col>-->
             </el-row>
 
           </el-form-item>
@@ -101,12 +105,12 @@
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="40" align="center" />
           <el-table-column label="编号" align="center" prop="userId" />
-          <el-table-column label="项目名称" align="center" prop="userName" :show-overflow-tooltip="true" />
-          <el-table-column label="委托方" align="center" prop="nickName" :show-overflow-tooltip="true" />
-          <el-table-column label="产权人" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
-          <el-table-column label="坐落" align="center" prop="phonenumber" width="120" />
-          <el-table-column label="面积" align="center" prop="phonenumber" width="120" />
-          <el-table-column label="价格" align="center" prop="phonenumber" width="120" />
+          <el-table-column label="项目名称" width="200" align="center" prop="projectName" />
+          <el-table-column label="委托方" align="center" prop="entrustingParty" :show-overflow-tooltip="true" />
+          <el-table-column label="产权人" align="center" prop="propertyOwne" :show-overflow-tooltip="true" />
+          <el-table-column label="坐落" align="center" prop="houseLocated" width="120" />
+          <el-table-column label="面积" align="center" prop="floorSpace" width="120" />
+          <el-table-column label="价格" align="center" prop="referencePrice" width="120" />
           <el-table-column label="时间" align="center" prop="createTime" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -134,13 +138,13 @@
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['system:user:remove']"
               >删除</el-button>
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-key"
-                @click="handleResetPwd(scope.row)"
-                v-hasPermi="['system:user:resetPwd']"
-              >重置</el-button>
+              <!--<el-button-->
+                <!--size="mini"-->
+                <!--type="text"-->
+                <!--icon="el-icon-key"-->
+                <!--@click="handleResetPwd(scope.row)"-->
+                <!--v-hasPermi="['system:user:resetPwd']"-->
+              <!--&gt;重置</el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -160,7 +164,7 @@
       v-model="open"
       @ok="handleOk"
     >
-      <assess />
+      <assess :projectObj="projectObj" @changeStatus="changeStatus"/>
     </a-modal>
     <!-- 添加或修改参数配置对话框 -->
     <!--<el-dialog :title="title" custom-class="newProjectDio" :visible.sync="open" :width="'90vw'">-->
@@ -212,12 +216,14 @@
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
   import assess from '../assess/assess'
   import {listProject} from "../../../api/project/project";
+  import {getHouseBaseById, houseBaseDelete} from "../../../api/project/assess";
 
   export default {
     name: "User",
     components: { Treeselect, assess },
     data() {
       return {
+        projectObj: {},
         // 遮罩层
         loading: false,
         // 选中数组
@@ -310,7 +316,8 @@
               trigger: "blur"
             }
           ]
-        }
+        },
+        selectId: ''
       };
     },
     watch: {
@@ -320,7 +327,7 @@
       }
     },
     created() {
-      this.getList();
+      // this.getList();
       this.getTreeselect();
       this.getDicts("sys_normal_disable").then(response => {
         this.statusOptions = response.data;
@@ -336,11 +343,19 @@
       handleOk() {
 
       },
+      changeStatus(status) {
+        this.open = status;
+        this.getList();
+      },
       handleCancel() {
         this.open = false;
       },
-      /** 查询用户列表 */
+      /** 查询列表 */
       getList() {
+        getHouseBaseById({houseBaseId: this.projectObj.id, ...this.queryParams}).then(res => {
+          this.userList = res.rows;
+          this.total = res.total;
+        })
         // this.loading = true;
         // listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
         //     this.userList = response.rows;
@@ -354,33 +369,42 @@
         this.loading = true;
         listProject().then(
           response => {
-            // response.rows.map(item => {
-            //   item.label = item.projectName
-            //   item.id = item.projectId
-            // });
-            // this.deptOptions = response.rows;
-            //   console.log(this.deptOptions);
-            this.deptOptions = [
-              {
-                id: 100,
-                label: "中诚评估项目1"
-              },{
-                id: 130,
-                label: "新建土地项目"
-              },{
-                id: 102,
-                label: "中诚评估项目3"
-              },{
-                id: 1010,
-                label: "中诚评估项目4"
-              },{
-                id: 1017,
-                label: "中诚评估项目5"
-              },{
-                id: 110,
-                label: "中诚评估项目6"
-              },
-            ];
+            response.rows.map(item => {
+              item.label = item.projectName
+              item.id = item.projectId
+
+            });
+            // this.projectObj.id = response.rows[0].projectId;
+            // this.getList();
+            this.$nextTick(() => {
+              this.$refs.tree.setCheckedKeys([response.rows[0].projectId]);//获取已经设置的资源后渲染
+            });
+            // this.$set(this.selectId, response.rows[0].projectId.toString());
+            // this.selectId = response.rows[0].projectId;
+            this.deptOptions = response.rows;
+
+              console.log(this.deptOptions);
+            // this.deptOptions = [
+            //   {
+            //     id: 100,
+            //     label: "中诚评估项目1"
+            //   },{
+            //     id: 130,
+            //     label: "新建土地项目"
+            //   },{
+            //     id: 102,
+            //     label: "中诚评估项目3"
+            //   },{
+            //     id: 1010,
+            //     label: "中诚评估项目4"
+            //   },{
+            //     id: 1017,
+            //     label: "中诚评估项目5"
+            //   },{
+            //     id: 110,
+            //     label: "中诚评估项目6"
+            //   },
+            // ];
 
             // this.total = response.total;
             this.loading = false;
@@ -394,8 +418,12 @@
       },
       // 节点单击事件
       handleNodeClick(data) {
-        this.queryParams.deptId = data.id;
+        console.log(data);
+        this.projectObj = data;
+        // this.queryParams.deptId = data.id;
+        // this.queryParams.label = data.label;
         this.getList();
+
       },
       // 用户状态修改
       handleStatusChange(row) {
@@ -448,7 +476,9 @@
       },
       // 多选框选中数据
       handleSelectionChange(selection) {
-        this.ids = selection.map(item => item.userId);
+        console.log(selection);
+        this.ids = selection.map(item => { return item.houseBaseId });
+        console.log(this.ids);
         this.single = selection.length != 1;
         this.multiple = !selection.length;
       },
@@ -466,19 +496,21 @@
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
-        this.reset();
-        this.getTreeselect();
-        const userId = row.userId || this.ids;
-        getUser(userId).then(response => {
-          this.form = response.data;
-          this.postOptions = response.posts;
-          this.roleOptions = response.roles;
-          this.form.postIds = response.postIds;
-          this.form.roleIds = response.roleIds;
-          this.open = true;
-          this.title = "修改项目";
-          this.form.password = "";
-        });
+        this.$set(this.projectObj, 'houseBaseId', row.houseBaseId)
+        this.open = true;
+        // this.reset();
+        // this.getTreeselect();
+        // const userId = row.userId || this.ids;
+        // getUser(userId).then(response => {
+        //   this.form = response.data;
+        //   this.postOptions = response.posts;
+        //   this.roleOptions = response.roles;
+        //   this.form.postIds = response.postIds;
+        //   this.form.roleIds = response.roleIds;
+        //   this.open = true;
+        //   this.title = "修改项目";
+        //   this.form.password = "";
+        // });
       },
       /** 重置密码按钮操作 */
       handleResetPwd(row) {
@@ -524,14 +556,23 @@
         });
       },
       /** 删除按钮操作 */
-      handleDelete(row) {
-        const userIds = row.userId || this.ids;
-        this.$confirm('是否确认删除用户编号为"' + userIds + '"的数据项?', "警告", {
+      handleDelete(row = null) {
+        console.log(this.ids);
+
+        this.$confirm('是否确认删除该房产信息？', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delUser(userIds);
+          if (!row) {
+            console.log(111, row);
+            for (let item of ids) {
+              return houseBaseDelete(item);
+            }
+          }
+         else {
+            houseBaseDelete(row.houseBaseId);
+          }
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");

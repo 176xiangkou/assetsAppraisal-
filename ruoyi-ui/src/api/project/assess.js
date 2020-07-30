@@ -1,26 +1,51 @@
 import request from '@/utils/request'
 
 // 提交
-export function houseBaseAdd() {
+export function houseBaseAdd(data) {
   return request({
     url: '/house/base' ,
-    method: 'post'
+    method: 'post',
+    data
+  })
+}
+// 修改项目
+export function updateHouseBase(data) {
+  return request({
+    url: '/house/base',
+    method: 'put',
+    data
+  })
+}
+// 删除项目
+export function houseBaseDelete(id) {
+  return request({
+    url: '/house/base/' + id,
+    method: 'delete'
   })
 }
 // 查询项目列表
-export function listProject(query) {
+export function baseList(query) {
   return request({
-    url: '/system/project/list',
+    url: '/house/base/list',
     method: 'get',
     params: query
   })
 }
+// 查询项目列表
+export function getHouseBaseById(params) {
+  return request({
+    url: '/house/base/getHouseBaseById',
+    method: 'get',
+    params
+  })
+}
 
 // 查询项目详细
-export function getProject(projectId) {
+export function getProjectDetail(params) {
   return request({
-    url: '/system/project/' + projectId,
-    method: 'get'
+    url: '/house/base/getHouseBaseByHouseBaseId',
+    method: 'get',
+    params
   })
 }
 
@@ -33,14 +58,7 @@ export function addProject(data) {
   })
 }
 
-// 修改项目
-export function updateProject(data) {
-  return request({
-    url: '/system/project',
-    method: 'put',
-    data: data
-  })
-}
+
 
 // 项目数据权限
 export function dataScope(data) {
@@ -64,13 +82,7 @@ export function changeRoleStatus(roleId, status) {
   })
 }
 
-// 删除项目
-export function delProject(projectId) {
-  return request({
-    url: '/system/project/' + projectId,
-    method: 'delete'
-  })
-}
+
 
 // 导出项目
 export function exportRole(query) {

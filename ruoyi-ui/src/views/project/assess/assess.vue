@@ -2,7 +2,7 @@
   <div class="houseIndex">
     <a-tabs default-active-key="基本信息" @change="callback">
       <a-tab-pane :key="item.label" :tab="item.label" v-for="item in tabs">
-        <component :is="item.key"/>
+        <component :is="item.key" :projectObj="projectObj" @changeStatus="(status) => $emit('changeStatus', status)"/>
       </a-tab-pane>
     </a-tabs>
     <!--<a-button type="primary">-->
@@ -19,7 +19,16 @@
   // import twiceApply from './twiceApply'
   // import trimPrice from './trimPrice'
     export default {
-        name: "index",
+      name: "index",
+      props: ['projectObj'],
+      // watch: {
+      //   projectObj: {
+      //     deep: true,
+      //     handler(val) {
+      //       this.
+      //     }
+      //   }
+      // },
       // components: {baseInfo, updateHouse, twiceApply, trimPrice},
       data() {
           return {

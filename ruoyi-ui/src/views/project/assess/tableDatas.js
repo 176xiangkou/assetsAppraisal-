@@ -50,8 +50,9 @@ const list = {
         title: '项目名称',
         dataIndex: 'projectName',
         wrapperCol: {span: 9.2},
-        inputType: 'select',
-        selectList: [],
+        // inputType: 'select',
+        disabled: true,
+        // selectList: [],
       },
       {
         title: '房屋坐落',
@@ -99,7 +100,7 @@ const list = {
         inputType: 'datePicker',
       },{
         title: '评估员',
-        dataIndex: 'planDesc1',
+        dataIndex: 'evaluator',
         inputType: 'select',
         selectList: [],
       },{
@@ -181,7 +182,7 @@ const list = {
 
       },{
         title: '土地性质',
-        dataIndex: 'planDesc1',
+        dataIndex: 'landProperty',
         inputType: 'select',
         selectList: [],
       },{
@@ -343,8 +344,6 @@ const list = {
         dataIndex: 'solidFactorCorrectionFactor',
         scopedSlots: {customRender: "solidFactorCorrectionFactor"},
         width: 120,
-
-      },{
 
       },{
         title: '产权人补偿%',
