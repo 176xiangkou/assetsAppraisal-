@@ -11,7 +11,7 @@ export function houseBaseAdd(data) {
 // 修改项目
 export function updateHouseBase(data) {
   return request({
-    url: '/house/base',
+    url: '/house/base/updateHouse',
     method: 'put',
     data
   })

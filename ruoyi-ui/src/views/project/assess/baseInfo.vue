@@ -12,25 +12,25 @@
     <div class="main">
       <editorTable :tabData.sync="tabData"
                    :scroll="{ x: 980}"
-                     :isEditor="isEditor"
-                     :nameObj="{label: '房屋信息', button: '新增', tabBasePramas: {objectType: '文本'}}"
-                     @change="onChange"
-                     :columns="formList[formParams.reportForm]">
-          <template slot-scope="{tableRow}"
-                    v-for="(item, index) in formList[formParams.reportForm]"
-                    :slot="item.scopedSlots.customRender">
-            <FormInput
-              :whole-type="item.wholeType || (isEditor ? 'input' : 'span')"
-              v-if="item.scopedSlots.customRender !== 'edit'"
-              :key="index"
-              v-bind="item"
-              v-model="tabData[tableRow.index][item.dataIndex]"
-            />
-          </template>
-          <div slot="edit" slot-scope="{tableRow}"  class="edit" v-if="isEditor">
-            <a @click="remove(tableRow.index)">移除</a>
-          </div>
-        </editorTable>
+                   :isEditor="isEditor"
+                   :nameObj="{label: '房屋信息', button: '新增', tabBasePramas: {objectType: '文本'}}"
+                   @change="onChange"
+                   :columns="formList[formParams.reportForm]">
+        <template slot-scope="{tableRow}"
+                  v-for="(item, index) in formList[formParams.reportForm]"
+                  :slot="item.scopedSlots.customRender">
+          <FormInput
+            :whole-type="item.wholeType || (isEditor ? 'input' : 'span')"
+            v-if="item.scopedSlots.customRender !== 'edit'"
+            :key="index"
+            v-bind="item"
+            v-model="tabData[tableRow.index][item.dataIndex]"
+          />
+        </template>
+        <div slot="edit" slot-scope="{tableRow}" class="edit" v-if="isEditor">
+          <a @click="remove(tableRow.index)">移除</a>
+        </div>
+      </editorTable>
     </div>
     <div style="margin: 0 auto;display: block;text-align: center">
       <a-button type="primary" @click="submitAll()">保存</a-button>
@@ -46,6 +46,7 @@
   import BaseForm from "../../../components/baseForm/BaseForm";
   import {getProjectDetail, houseBaseAdd, updateHouseBase} from "../../../api/project/assess";
   import {listProject} from "../../../api/project/project";
+
   export default {
     name: "formDetail",
     components: {editorTable, BaseForm, FormInput},
@@ -91,9 +92,9 @@
           'update': updateHouseBase
         };
         const {id} = this.formParams;
-        api[id ? 'update' : 'add']( {...this.formParams, houseInfo: this.tabData }).then(() => {
-             this.$message.success(id ? '修改信息成功！' : '新增信息成功！');
-             this.$emit('changeStatus', false);
+        api[id ? 'update' : 'add']({...this.formParams, houseInfo: this.tabData}).then(() => {
+          this.$message.success(id ? '修改信息成功！' : '新增信息成功！');
+          this.$emit('changeStatus', false);
         })
       },
       remove(index) {
@@ -104,10 +105,14 @@
         console.log(val);
 
       },
-      onChange() {},
+      onChange() {
+      },
       getProjectDetail(houseBaseId) {
         getProjectDetail({houseBaseId}).then(res => {
-
+          const {house} = res;
+          if (!house) return
+          this.formParams = res.house;
+          this.tabData = res.house.houseInfo
         })
       }
 
@@ -117,6 +122,7 @@
       if (this.projectObj) {
         const {id, label, houseBaseId} = this.projectObj;
         if (houseBaseId) return this.getProjectDetail(houseBaseId);
+        this.formParams = {reportForm: 'tabColumns'}
         this.$set(this.formParams, 'projectId', id);
         this.$set(this.formParams, 'projectName', label);
       }
@@ -126,6 +132,8 @@
 
 <style scoped lang="scss">
   .formDetail {
-    &::v-deep .ant-table td { white-space: nowrap; }
+    &::v-deep .ant-table td {
+      white-space: nowrap;
+    }
   }
 </style>

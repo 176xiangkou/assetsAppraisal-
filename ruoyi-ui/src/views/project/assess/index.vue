@@ -566,7 +566,7 @@
         }).then(function() {
           if (!row) {
             console.log(111, row);
-            for (let item of ids) {
+            for (let item of this.ids) {
               return houseBaseDelete(item);
             }
           }

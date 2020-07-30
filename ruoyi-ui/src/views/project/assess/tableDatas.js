@@ -117,6 +117,10 @@ const list = {
       },{
         title: '报告年份',
         dataIndex: 'reportDate',
+        inputType: 'datePicker',
+        mode: 'year',
+        dateFormat: 'YYYY'
+
       },{
         title: '报表样式',
         dataIndex: 'reportForm',

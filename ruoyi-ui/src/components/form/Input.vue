@@ -24,10 +24,13 @@
             <template v-else-if="inputType === 'datePicker'">
                 <a-date-picker v-bind="{placeholder, allowClear, ...$attrs }"
                                :showToday="false"
+                               @focus="() => isOpen = true"
+                               :open="isOpen"
                                :show-time="dateFormat !=='YYYY-MM-DD' ? true : false"
                                :format="dateFormat"
                                :style="{width: contentWidth}"
-                               @change="(val) => {$emit('input', val ? moment(val._d).format(dateFormat) : '')}"
+                               @change="(val) => {isOpen = false, $emit('input', val ? moment(val._d).format(dateFormat) : '')}"
+                               @panelChange="(val) => {isOpen = false, $emit('input', val ? moment(val._d).format(dateFormat) : '')}"
                                :value="value ? moment(value, dateFormat) : null"></a-date-picker>
             </template>
             <template v-else-if="inputType === 'select'">
@@ -170,6 +173,7 @@
         },
         data() {
             return {
+              isOpen: false,
                 uploadObj: {name: '', url: ''},
                 SHOW_PARENT,
                 // regExpConfig,
