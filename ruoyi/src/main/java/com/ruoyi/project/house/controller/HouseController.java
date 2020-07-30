@@ -56,7 +56,7 @@ public class HouseController extends BaseController
         return SecurityUtils.getUsername();
     }
     /**
-     * 根据projectId查询房产信息
+     * 根据projectId查询房产列表
      */
     @PreAuthorize("@ss.hasPermi('house:base:getHouseBaseById')")
     @GetMapping("/getHouseBaseById")
@@ -67,6 +67,20 @@ public class HouseController extends BaseController
         house.setProjectId(projectId);
         List<HouseBase> list = houseService.selectHouseList(house);
         return getDataTable(list);
+    }
+    /**
+     * 根据houseBaseId查询房产信息
+     */
+    @PreAuthorize("@ss.hasPermi('house:base:getHouseBaseByHouseBaseId')")
+    @GetMapping("/getHouseBaseByHouseBaseId")
+    public AjaxResult getHouseBaseByHouseBaseId(String houseBaseId)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        HouseBase house = new HouseBase();
+        house.setHouseBaseId(houseBaseId);
+        List<HouseBase> list = houseService.selectHouseList(house);
+        ajax.put("house",list.get(0));
+        return  ajax;
     }
     /**
      * 新增房产

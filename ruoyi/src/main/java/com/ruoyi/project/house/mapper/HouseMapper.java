@@ -61,6 +61,13 @@ public interface HouseMapper
      * @return 结果
      */
     public int updateHouse(HouseBase house);
+    /**
+     * 修改房屋信息
+     *
+     * @param houseInfo 房房屋信息
+     * @return 结果
+     */
+    public int updateHouseInfo(HouseInfo houseInfo);
 
 
     /**

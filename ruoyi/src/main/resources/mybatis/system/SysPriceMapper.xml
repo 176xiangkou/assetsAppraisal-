@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysPriceMapper">
+
+	<resultMap type="SysPrice" id="SysPriceResult">
+		<id     property="id"       column="id"        />
+		<result property="price"      column="price"       />
+		<result property="name"      column="name"       />
+		<result property="createBy"     column="create_by"      />
+		<result property="createTime"   column="create_time"    />
+		<result property="updateBy"     column="update_by"      />
+		<result property="updateTime"   column="update_time"    />
+	</resultMap>
+	
+ 	<sql id="selectPriceVo">
+	    select   r.id, r.price, r.name, r.create_time, r.create_by,r.update_by,r.update_time
+        from h_pricename r
+    </sql>
+
+
+    <select id="selectPriceList" parameterType="SysPrice" resultMap="SysPriceResult">
+		<include refid="selectPriceVo"/>
+			where 1=1
+		<if test="id != null and id != 0">
+			AND r.id = #{id}
+		</if>
+		<if test="price != null and price != ''">
+			AND r.price = price
+		</if>
+		<if test="name != null and name != ''">
+			AND r.name = name
+		</if>
+		<if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+		</if>
+		<if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+		</if>
+	</select>
+
+	<select id="selectPriceById" parameterType="Long" resultMap="SysPriceResult">
+		<include refid="selectPriceVo"/>
+		where 1=1
+		<if test="_parameter != null and _parameter != 0">
+			AND r.id = #{_parameter}
+		</if>
+	</select>
+	
+
+	<insert id="insertPrice" parameterType="SysPrice" useGeneratedKeys="true" keyProperty="id">
+ 		insert into sys_PriceName(
+ 			<if test="price != null and price != ''">price,</if>
+ 			<if test="name != null and name != ''">name,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+ 			<if test="price != null and price != ''">#{price},</if>
+ 			<if test="PriceIdName != null and PriceIdName != ''">#{PriceIdName},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<update id="updatePrice" parameterType="SysPrice">
+ 		update sys_PriceName
+ 		<set>
+ 			<if test="price != null and price != ''">price = #{price},</if>
+ 			<if test="name != null and name != ''">name = #{name},</if>
+ 			<if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where id = #{id}
+	</update>
+
+	
+	<delete id="deletePriceById" parameterType="Long">
+ 		delete from sys_PriceName where id = #{id}
+ 	</delete>
+ 	
+ 	<delete id="deletePriceByIds" parameterType="Long">
+		 delete from  sys_PriceName   where id in
+ 		<foreach collection="array" item="id" open="(" separator="," close=")">
+ 			#{id}
+        </foreach> 
+ 	</delete>
+
+</mapper> 

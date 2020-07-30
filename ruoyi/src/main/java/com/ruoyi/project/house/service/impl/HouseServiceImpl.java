@@ -89,7 +89,12 @@ public class HouseServiceImpl implements IHouseService
     @Transactional
     public int updateHouse(HouseBase house)
     {
-        return houseMapper.updateHouse(house);
+        int row =    houseMapper.updateHouse(house);
+        List<HouseInfo> list = house.getHouseInfo();
+        for(HouseInfo h : list){
+            houseMapper.updateHouseInfo(h);
+        }
+        return row;
     }
 
 
