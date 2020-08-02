@@ -27,10 +27,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND r.id = #{id}
 		</if>
 		<if test="price != null and price != ''">
-			AND r.price = price
+			AND r.price = #{price}
 		</if>
 		<if test="name != null and name != ''">
-			AND r.name = name
+			AND r.name = #{name}
 		</if>
 		<if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
 			and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
@@ -50,20 +50,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 
 	<insert id="insertPrice" parameterType="SysPrice" useGeneratedKeys="true" keyProperty="id">
- 		insert into sys_PriceName(
+ 		insert into h_PriceName(
  			<if test="price != null and price != ''">price,</if>
  			<if test="name != null and name != ''">name,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
  			create_time
  		)values(
  			<if test="price != null and price != ''">#{price},</if>
- 			<if test="PriceIdName != null and PriceIdName != ''">#{PriceIdName},</if>
+ 			<if test="name != null and name != ''">#{name},</if>
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
  			sysdate()
  		)
 	</insert>
 	<update id="updatePrice" parameterType="SysPrice">
- 		update sys_PriceName
+ 		update h_PriceName
  		<set>
  			<if test="price != null and price != ''">price = #{price},</if>
  			<if test="name != null and name != ''">name = #{name},</if>
@@ -75,11 +75,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	
 	<delete id="deletePriceById" parameterType="Long">
- 		delete from sys_PriceName where id = #{id}
+ 		delete from h_PriceName where id = #{id}
  	</delete>
  	
  	<delete id="deletePriceByIds" parameterType="Long">
-		 delete from  sys_PriceName   where id in
+		 delete from  h_PriceName   where id in
  		<foreach collection="array" item="id" open="(" separator="," close=")">
  			#{id}
         </foreach> 

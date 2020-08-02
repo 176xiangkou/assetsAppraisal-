@@ -72,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="unitPrice"  column="unitPrice"  />
 		<result property="nonresidentialWeightingw"  column="nonresidentialWeightingw"  />
 		<result property="weightedUnitPriceBusinessPremises"  column="weightedUnitPriceBusinessPremises"  />
+		<result property="houseInfoId"  column="houseInfoId"  />
 	</resultMap>
 	<resultMap  type="HouseBaseInfo" id="HouseBaseInfoResult">
 		<id property="id"  column="id"  />
@@ -294,6 +295,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="unitPrice != null and unitPrice != ''">  unitPrice ,</if>
 		<if test="nonresidentialWeightingw != null and nonresidentialWeightingw != ''">  nonresidentialWeightingw ,</if>
 		<if test="weightedUnitPriceBusinessPremises != null and weightedUnitPriceBusinessPremises != ''">  weightedUnitPriceBusinessPremises ,</if>
+		<if test="houseInfoId != null and houseInfoId != ''">  houseInfoId ,</if>
 		create_time
 		)values(
 		<if test="roomNumber != null and roomNumber != ''">  #{roomNumber} ,</if>
@@ -316,6 +318,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="unitPrice != null and unitPrice != ''">  #{unitPrice} ,</if>
 		<if test="nonresidentialWeightingw != null and nonresidentialWeightingw != ''">  #{nonresidentialWeightingw} ,</if>
 		<if test="weightedUnitPriceBusinessPremises != null and weightedUnitPriceBusinessPremises != ''">  #{weightedUnitPriceBusinessPremises} ,</if>
+		<if test="houseInfoId != null and houseInfoId != ''">  #{houseInfoId} ,</if>
 		sysdate()
 		)
 	</insert>
