@@ -45,7 +45,8 @@
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
   import {getProjectDetail, houseBaseAdd, updateHouseBase} from "../../../api/project/assess";
-  import {listProject} from "../../../api/project/project";
+  import {getProject, listProject} from "../../../api/project/project";
+  import {getDicts} from "../../../api/system/dict/data";
 
   export default {
     name: "formDetail",
@@ -63,13 +64,8 @@
     watch: {
       projectObj: {
         deep: true,
-        handler(val) {
-          if (val) {
-            const {id, label, houseBaseId} = val;
-            if (houseBaseId) return this.getProjectDetail(houseBaseId);
-            this.$set(this.formParams, 'projectId', id);
-            this.$set(this.formParams, 'projectName', label);
-          }
+        handler() {
+          this.initData()
         }
       },
       tabData: {
@@ -108,24 +104,52 @@
       onChange() {
       },
       getProjectDetail(houseBaseId) {
+        console.log(56768768787);
         getProjectDetail({houseBaseId}).then(res => {
           const {house} = res;
           if (!house) return
-          this.formParams = res.house;
-          this.tabData = res.house.houseInfo
+          this.formParams = house;
+          this.tabData = house.houseInfo
         })
-      }
+      },
+      initData() {
+        if (this.projectObj) {
+          const {id, label, houseBaseId, entrustName} = this.projectObj;
+          if (houseBaseId) return this.getProjectDetail(houseBaseId);
+          this.formParams = {reportForm: 'tabColumns'}
+          this.tabData = []
+          Object.assign(this.formParams, {'projectId': id, entrustingParty: entrustName, projectName: label})
+          // this.$set(this.formParams, 'projectId', id);
+          // this.$set(this.formParams, 'entrustingParty', id);
+          // this.$set(this.formParams, 'projectName', label);
+        }
+      },
 
+      getDicts(type) {
+        const index = this.formList.formColumns.findIndex(item => {
+          return item.dataIndex === type
+        })
+        getDicts(type).then(res => {
+           res.data.map(item => {
+             const {dictLabel, dictValue} = item;
+               item.text = dictLabel
+               item.value = dictValue
+           });
 
+           this.formList.formColumns[index].selectList = res.data;
+        })
+      },
     },
     created() {
-      if (this.projectObj) {
-        const {id, label, houseBaseId} = this.projectObj;
-        if (houseBaseId) return this.getProjectDetail(houseBaseId);
-        this.formParams = {reportForm: 'tabColumns'}
-        this.$set(this.formParams, 'projectId', id);
-        this.$set(this.formParams, 'projectName', label);
-      }
+      this.initData();
+      this.getDicts('regionalLevel');
+      this.getDicts('landProperty');
+      this.getDicts('toward');
+      this.getDicts('structureLevel');
+      this.getDicts('evaluator');
+      this.getDicts('valuer');
+      // this.getDicts('reportTitle');
+
     }
   }
 </script>

@@ -56,17 +56,18 @@
                   :disabled="!projectObj.id"
                   @click="handleAdd"
                   v-hasPermi="['system:user:add']"
-                >新增</el-button>
+                >新增
+                </el-button>
               </el-col>
               <!--<el-col :span="1.5">-->
-                <!--<el-button-->
-                  <!--type="success"-->
-                  <!--icon="el-icon-edit"-->
-                  <!--size="mini"-->
-                  <!--:disabled="single"-->
-                  <!--@click="handleUpdate"-->
-                  <!--v-hasPermi="['system:user:edit']"-->
-                <!--&gt;修改</el-button>-->
+              <!--<el-button-->
+              <!--type="success"-->
+              <!--icon="el-icon-edit"-->
+              <!--size="mini"-->
+              <!--:disabled="single"-->
+              <!--@click="handleUpdate"-->
+              <!--v-hasPermi="['system:user:edit']"-->
+              <!--&gt;修改</el-button>-->
               <!--</el-col>-->
               <el-col :span="1.5">
                 <el-button
@@ -76,25 +77,26 @@
                   :disabled="multiple"
                   @click="handleDelete()"
                   v-hasPermi="['system:user:remove']"
-                >删除</el-button>
+                >删除
+                </el-button>
               </el-col>
               <!--<el-col :span="1.5">-->
-                <!--<el-button-->
-                  <!--type="info"-->
-                  <!--icon="el-icon-upload2"-->
-                  <!--size="mini"-->
-                  <!--@click="handleImport"-->
-                  <!--v-hasPermi="['system:user:import']"-->
-                <!--&gt;导入</el-button>-->
+              <!--<el-button-->
+              <!--type="info"-->
+              <!--icon="el-icon-upload2"-->
+              <!--size="mini"-->
+              <!--@click="handleImport"-->
+              <!--v-hasPermi="['system:user:import']"-->
+              <!--&gt;导入</el-button>-->
               <!--</el-col>-->
               <!--<el-col :span="1.5">-->
-                <!--<el-button-->
-                  <!--type="warning"-->
-                  <!--icon="el-icon-download"-->
-                  <!--size="mini"-->
-                  <!--@click="handleExport"-->
-                  <!--v-hasPermi="['system:user:export']"-->
-                <!--&gt;导出</el-button>-->
+              <!--<el-button-->
+              <!--type="warning"-->
+              <!--icon="el-icon-download"-->
+              <!--size="mini"-->
+              <!--@click="handleExport"-->
+              <!--v-hasPermi="['system:user:export']"-->
+              <!--&gt;导出</el-button>-->
               <!--</el-col>-->
             </el-row>
 
@@ -103,14 +105,14 @@
 
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="40" align="center" />
-          <el-table-column label="编号" align="center" prop="userId" />
-          <el-table-column label="项目名称" width="200" align="center" prop="projectName" />
-          <el-table-column label="委托方" align="center" prop="entrustingParty" :show-overflow-tooltip="true" />
-          <el-table-column label="产权人" align="center" prop="propertyOwne" :show-overflow-tooltip="true" />
-          <el-table-column label="坐落" align="center" prop="houseLocated" width="120" />
-          <el-table-column label="面积" align="center" prop="floorSpace" width="120" />
-          <el-table-column label="价格" align="center" prop="referencePrice" width="120" />
+          <el-table-column type="selection" width="40" align="center"/>
+          <el-table-column label="编号" align="center" width="50" prop="id"/>
+          <el-table-column label="项目名称" width="200" align="center" prop="projectName"/>
+          <el-table-column label="委托方" width="150" align="center" prop="entrustingParty"/>
+          <el-table-column label="产权人" align="center" prop="propertyOwne" :show-overflow-tooltip="true"/>
+          <el-table-column label="坐落" align="center" prop="houseLocated" width="120"/>
+          <el-table-column label="面积" align="center" prop="floorSpace" width="120"/>
+          <el-table-column label="价格" align="center" prop="referencePrice" width="120"/>
           <el-table-column label="时间" align="center" prop="createTime" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -129,7 +131,8 @@
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:user:edit']"
-              >修改</el-button>
+              >修改
+              </el-button>
               <el-button
                 v-if="scope.row.userId !== 1"
                 size="mini"
@@ -137,13 +140,14 @@
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['system:user:remove']"
-              >删除</el-button>
+              >删除
+              </el-button>
               <!--<el-button-->
-                <!--size="mini"-->
-                <!--type="text"-->
-                <!--icon="el-icon-key"-->
-                <!--@click="handleResetPwd(scope.row)"-->
-                <!--v-hasPermi="['system:user:resetPwd']"-->
+              <!--size="mini"-->
+              <!--type="text"-->
+              <!--icon="el-icon-key"-->
+              <!--@click="handleResetPwd(scope.row)"-->
+              <!--v-hasPermi="['system:user:resetPwd']"-->
               <!--&gt;重置</el-button>-->
             </template>
           </el-table-column>
@@ -159,10 +163,12 @@
       </el-col>
     </el-row>
     <a-modal
+      :destroyOnClose="true"
       wrapClassName="newProjectDio"
       :title="title"
       v-model="open"
       @ok="handleOk"
+      @cancel="() => changeStatus(false)"
     >
       <assess :projectObj="projectObj" @changeStatus="changeStatus"/>
     </a-modal>
@@ -195,7 +201,8 @@
           <em>点击上传</em>
         </div>
         <div class="el-upload__tip" slot="tip">
-          <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的用户数据
+          <el-checkbox v-model="upload.updateSupport"/>
+          是否更新已经存在的用户数据
           <el-link type="info" style="font-size:12px" @click="importTemplate">下载模板</el-link>
         </div>
         <div class="el-upload__tip" style="color:red" slot="tip">提示：仅允许导入“xls”或“xlsx”格式文件！</div>
@@ -209,9 +216,19 @@
 </template>
 
 <script>
-  import { listUser, getUser, delUser, addUser, updateUser, exportUser, resetUserPwd, changeUserStatus, importTemplate } from "@/api/system/user";
-  import { getToken } from "@/utils/auth";
-  import { treeselect } from "@/api/system/dept";
+  import {
+    listUser,
+    getUser,
+    delUser,
+    addUser,
+    updateUser,
+    exportUser,
+    resetUserPwd,
+    changeUserStatus,
+    importTemplate
+  } from "@/api/system/user";
+  import {getToken} from "@/utils/auth";
+  import {treeselect} from "@/api/system/dept";
   import Treeselect from "@riophae/vue-treeselect";
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
   import assess from '../assess/assess'
@@ -220,7 +237,7 @@
 
   export default {
     name: "User",
-    components: { Treeselect, assess },
+    components: {Treeselect, assess},
     data() {
       return {
         projectObj: {},
@@ -273,7 +290,7 @@
           // 是否更新已经存在的用户数据
           updateSupport: 0,
           // 设置上传的请求头部
-          headers: { Authorization: "Bearer " + getToken() },
+          headers: {Authorization: "Bearer " + getToken()},
           // 上传的地址
           url: process.env.VUE_APP_BASE_API + "/system/user/importData"
         },
@@ -289,19 +306,19 @@
         // 表单校验
         rules: {
           userName: [
-            { required: true, message: "用户名称不能为空", trigger: "blur" }
+            {required: true, message: "用户名称不能为空", trigger: "blur"}
           ],
           nickName: [
-            { required: true, message: "用户昵称不能为空", trigger: "blur" }
+            {required: true, message: "用户昵称不能为空", trigger: "blur"}
           ],
           deptId: [
-            { required: true, message: "归属部门不能为空", trigger: "blur" }
+            {required: true, message: "归属部门不能为空", trigger: "blur"}
           ],
           password: [
-            { required: true, message: "用户密码不能为空", trigger: "blur" }
+            {required: true, message: "用户密码不能为空", trigger: "blur"}
           ],
           email: [
-            { required: true, message: "邮箱地址不能为空", trigger: "blur" },
+            {required: true, message: "邮箱地址不能为空", trigger: "blur"},
             {
               type: "email",
               message: "'请输入正确的邮箱地址",
@@ -309,7 +326,7 @@
             }
           ],
           phonenumber: [
-            { required: true, message: "手机号码不能为空", trigger: "blur" },
+            {required: true, message: "手机号码不能为空", trigger: "blur"},
             {
               pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
               message: "请输入正确的手机号码",
@@ -345,6 +362,8 @@
       },
       changeStatus(status) {
         this.open = status;
+        const {projectName, projectId, entrustName} = this.projectObj
+        this.projectObj = {id: projectId, projectName, projectId, entrustName};
         this.getList();
       },
       handleCancel() {
@@ -352,7 +371,7 @@
       },
       /** 查询列表 */
       getList() {
-        getHouseBaseById({houseBaseId: this.projectObj.id, ...this.queryParams}).then(res => {
+        getHouseBaseById({projectId: this.projectObj.projectId, ...this.queryParams}).then(res => {
           this.userList = res.rows;
           this.total = res.total;
         })
@@ -383,7 +402,7 @@
             // this.selectId = response.rows[0].projectId;
             this.deptOptions = response.rows;
 
-              console.log(this.deptOptions);
+            console.log(this.deptOptions);
             // this.deptOptions = [
             //   {
             //     id: 100,
@@ -432,11 +451,11 @@
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        }).then(function() {
+        }).then(function () {
           return changeUserStatus(row.userId, row.status);
         }).then(() => {
           this.msgSuccess(text + "成功");
-        }).catch(function() {
+        }).catch(function () {
           row.status = row.status === "0" ? "1" : "0";
         });
       },
@@ -477,22 +496,26 @@
       // 多选框选中数据
       handleSelectionChange(selection) {
         console.log(selection);
-        this.ids = selection.map(item => { return item.houseBaseId });
+        this.ids = selection.map(item => {
+          return item.houseBaseId
+        });
         console.log(this.ids);
         this.single = selection.length != 1;
         this.multiple = !selection.length;
       },
       /** 新增按钮操作 */
       handleAdd() {
-        this.reset();
-        this.getTreeselect();
-        getUser().then(response => {
-          this.postOptions = response.posts;
-          this.roleOptions = response.roles;
-          this.open = true;
-          this.title = "新建项目";
-          this.form.password = this.initPassword;
-        });
+        // this.reset();
+        // this.getTreeselect();
+        // getUser().then(response => {
+        //   this.postOptions = response.posts;
+        //   this.roleOptions = response.roles;
+        this.$set(this.projectObj, 'hytouseBaseId', null)
+        console.log('2222', this.projectObj.houseBaseId);
+        this.open = true;
+        //   this.title = "新建项目";
+        //   this.form.password = this.initPassword;
+        // });
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
@@ -517,7 +540,7 @@
         this.$prompt('请输入"' + row.userName + '"的新密码', "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消"
-        }).then(({ value }) => {
+        }).then(({value}) => {
           resetUserPwd(row.userId, value).then(response => {
             if (response.code === 200) {
               this.msgSuccess("修改成功，新密码是：" + value);
@@ -525,10 +548,11 @@
               this.msgError(response.msg);
             }
           });
-        }).catch(() => {});
+        }).catch(() => {
+        });
       },
       /** 提交按钮 */
-      submitForm: function() {
+      submitForm: function () {
         this.$refs["form"].validate(valid => {
           if (valid) {
             if (this.form.userId != undefined) {
@@ -563,20 +587,16 @@
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        }).then(function() {
-          if (!row) {
-            console.log(111, row);
-            for (let item of this.ids) {
-              return houseBaseDelete(item);
-            }
+        }).then(async () => {
+          if (row) this.ids = [row.houseBaseId];
+          console.log(111, row);
+          for (let item of this.ids) {
+            await houseBaseDelete(item).then(() => {
+            });
           }
-         else {
-            houseBaseDelete(row.houseBaseId);
-          }
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(function() {});
+          await this.getList();
+          await this.msgSuccess("删除成功");
+        })
       },
       /** 导出按钮操作 */
       handleExport() {
@@ -585,11 +605,12 @@
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
-        }).then(function() {
+        }).then(function () {
           return exportUser(queryParams);
         }).then(response => {
           this.download(response.msg);
-        }).catch(function() {});
+        }).catch(function () {
+        });
       },
       /** 导入按钮操作 */
       handleImport() {
@@ -611,7 +632,7 @@
         this.upload.open = false;
         this.upload.isUploading = false;
         this.$refs.upload.clearFiles();
-        this.$alert(response.msg, "导入结果", { dangerouslyUseHTMLString: true });
+        this.$alert(response.msg, "导入结果", {dangerouslyUseHTMLString: true});
         this.getList();
       },
       // 提交上传文件
