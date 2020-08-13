@@ -63,11 +63,9 @@ public class SysPriceController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:project:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable Long id)
-    {AjaxResult ajax = AjaxResult.success();
-        ajax.put(AjaxResult.DATA_TAG, priceService.selectPriceById(id));
-        ajax.put("price", priceService.selectPriceById(null));
-        //AjaxResult.success(projectService.selectProjectById(projectId));
-        return ajax;
+    {
+
+        return AjaxResult.success(priceService.selectPriceById(id).get(0));
     }
 
     /**
@@ -102,7 +100,7 @@ public class SysPriceController extends BaseController
     /**
      * 删除项目
      */
-    @PreAuthorize("@ss.hasPermi('system:project:remove')")
+    @PreAuthorize("@ss.hasPermi('system:price:remove')")
     @Log(title = "项目管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

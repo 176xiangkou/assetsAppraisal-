@@ -3,6 +3,7 @@ package com.ruoyi.project.house.domain;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
@@ -38,6 +39,8 @@ public class HouseBase extends BaseEntity
     /** 记录员*/
     private String registrar;
     /** 签收日期*/
+
+    @JSONField(format ="yyyy-MM-dd HH:mm:ss")
     private Date lodgmentTime;
     /** 评估员*/
     private String evaluator;
@@ -48,6 +51,8 @@ public class HouseBase extends BaseEntity
     /** 报告编号*/
     private String reportNumber;
     /** 报告年份*/
+
+    @JSONField(format ="yyyy-MM-dd HH:mm:ss")
     private Date reportDate;
     /** 报告样式*/
     private String reportForm;
