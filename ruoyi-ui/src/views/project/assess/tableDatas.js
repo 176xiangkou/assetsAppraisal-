@@ -105,7 +105,7 @@ const list = {
         selectList: [],
       },{
         title: '估价师',
-        dataIndex: 'evaluator',
+        dataIndex: 'valuer',
         inputType: 'select',
         selectList: [],
       },{
@@ -173,15 +173,16 @@ const list = {
       },{
         title: '委托方',
         dataIndex: 'entrustingParty',
-        inputType: 'select',
-        selectList: [],
+        disabled: true,
+        // inputType: 'select',
+        // selectList: [],
         wrapperCol: {span: 9.2},
 
       },{
         title: '报告标题',
         dataIndex: 'reportTitle',
-        inputType: 'select',
-        selectList: [],
+        // inputType: 'select',
+        // selectList: [],
         wrapperCol: {span: 9.2},
 
       },{
@@ -210,7 +211,13 @@ const list = {
       },{
         title: '成套与否',
         inputType: 'select',
-        selectList: [],
+        selectList: [{
+          text: '是',
+          value: '是'
+        },{
+          text: '否',
+          value: '否'
+        },],
         dataIndex: 'isComplete',
       },{
         title: '地大于房单价',
