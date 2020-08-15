@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.house.mapper.CheckPriceHouseMapper">
+
+	<resultMap type="CheckPriceHouse" id="CheckPriceHouseResult">
+		<id     property="id"       column="id"        />
+		<result     property="categoryName"       column="categoryName"        />
+		<result     property="name"       column="name"        />
+		<result     property="unitPrice"       column="unitPrice"        />
+		<result     property="formula"       column="formula"        />
+		<result     property="number"       column="number"        />
+		<result     property="newRate"       column="newRate"        />
+		<result     property="assessmentValue"       column="assessmentValue"        />
+		<result     property="serialNumber"       column="serialNumber"        />
+		<result     property="unit"       column="unit"        />
+		<result     property="projectId"       column="projectId"        />
+		<result     property="houseBaseId"       column="houseBaseId"        />
+		<result property="createBy"     column="create_by"      />
+		<result property="createTime"   column="create_time"    />
+		<result property="updateBy"     column="update_by"      />
+		<result property="updateTime"   column="update_time"    />
+	</resultMap>
+	
+ 	<sql id="selectCheckPriceHouseVo">
+	    select   r.id,
+				r.categoryName,
+				r.name,
+				r.unitPrice,
+				r.formula,
+				r.number,
+				r.newRate,
+				r.assessmentValue,
+				r.serialNumber,
+				r.unit,
+				r.projectId,
+				r.houseBaseId,
+				r.create_by,
+				r.create_time,
+				r.update_by,
+				r.update_time
+        from h_check_price_house r
+    </sql>
+
+
+    <select id="selectCheckPriceHouseList" parameterType="CheckPriceHouse" resultMap="CheckPriceHouseResult">
+		<include refid="selectCheckPriceHouseVo"/>
+			where 1=1
+		<if test="id != null and id != 0">
+			AND r.id = #{id}
+		</if>
+		<if test="projectId != null and projectId != 0">
+			AND r.projectId = #{projectId}
+		</if>
+	</select>
+
+	<select id="selectCheckPriceHouseById" parameterType="Long" resultMap="CheckPriceHouseResult">
+		<include refid="selectCheckPriceHouseVo"/>
+		where 1=1
+		<if test="_parameter != null and _parameter != 0">
+			AND r.id = #{_parameter}
+		</if>
+	</select>
+	
+
+	<insert id="insertCheckPriceHouse" parameterType="CheckPriceHouse" useGeneratedKeys="true" keyProperty="id">
+ 		insert into h_check_price_house(
+		<if test="categoryName != null and categoryName != ''">categoryName,</if>
+		<if test="name != null and name != ''">name,</if>
+		<if test="unitPrice != null and unitPrice != ''">unitPrice,</if>
+		<if test="formula != null and formula != ''">formula,</if>
+		<if test="number != null and number != ''">number,</if>
+		<if test="newRate != null and newRate != ''">newRate,</if>
+		<if test="assessmentValue != null and assessmentValue != ''">assessmentValue,</if>
+		<if test="serialNumber != null and serialNumber != ''">serialNumber,</if>
+		<if test="unit != null and unit != ''">unit,</if>
+		<if test="projectId != null and projectId != ''">projectId,</if>
+		<if test="houseBaseId != null and houseBaseId != ''">houseBaseId,</if>
+		<if test="createBy != null and createBy != ''">create_by,</if>
+		<if test="updateBy != null and updateBy != ''">update_by,</if>
+		<if test="updateTime != null and updateTime != ''">update_time,</if>
+ 			create_time
+ 		)values(
+		<if test="categoryName != null and categoryName != ''">#{categoryName},</if>
+		<if test="name != null and name != ''">#{name},</if>
+		<if test="unitPrice != null and unitPrice != ''">#{unitPrice},</if>
+		<if test="formula != null and formula != ''">#{formula},</if>
+		<if test="number != null and number != ''">#{number},</if>
+		<if test="newRate != null and newRate != ''">#{newRate},</if>
+		<if test="assessmentValue != null and assessmentValue != ''">#{assessmentValue},</if>
+		<if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+		<if test="unit != null and unit != ''">#{unit},</if>
+		<if test="projectId != null and projectId != ''">#{projectId},</if>
+		<if test="houseBaseId != null and houseBaseId != ''">#{houseBaseId},</if>
+		<if test="createBy != null and createBy != ''">#{create_by},</if>
+		<if test="updateBy != null and updateBy != ''">#{update_by},</if>
+		<if test="updateTime != null and updateTime != ''">#{updateTime},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<update id="updateCheckPriceHouse" parameterType="CheckPriceHouse">
+ 		update h_check_price_house
+ 		<set>
+			<if test="categoryName != null and categoryName != ''">#{categoryName},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="unitPrice != null and unitPrice != ''">#{unitPrice},</if>
+			<if test="formula != null and formula != ''">#{formula},</if>
+			<if test="number != null and number != ''">#{number},</if>
+			<if test="newRate != null and newRate != ''">#{newRate},</if>
+			<if test="assessmentValue != null and assessmentValue != ''">#{assessmentValue},</if>
+			<if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+			<if test="unit != null and unit != ''">#{unit},</if>
+			<if test="projectId != null and projectId != ''">#{projectId},</if>
+			<if test="createBy != null and createBy != ''">#{create_by},</if>
+			<if test="updateBy != null and updateBy != ''">#{update_by},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where id = #{id}
+	</update>
+
+	<delete id="deleteCheckPriceHouseByHouseBaseId" parameterType="String">
+ 		delete from h_check_price_house where houseBaseId = #{houseBaseId}
+ 	</delete>
+	<delete id="deleteCheckPriceHouseById" parameterType="Long">
+ 		delete from h_check_price_house where id = #{id}
+ 	</delete>
+ 	
+ 	<delete id="deleteCheckPriceHouseByIds" parameterType="Long">
+		 delete from  h_check_price_house   where id in
+ 		<foreach collection="array" item="id" open="(" separator="," close=")">
+ 			#{id}
+        </foreach> 
+ 	</delete>
+
+</mapper> 

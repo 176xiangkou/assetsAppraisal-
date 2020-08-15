@@ -1,7 +1,7 @@
 package com.ruoyi.project.house.domain;
 
 /**
- * 用户登录对象
+ * 房产房屋对应表 h_projecthouse
  * 
  * @author ruoyi
  */

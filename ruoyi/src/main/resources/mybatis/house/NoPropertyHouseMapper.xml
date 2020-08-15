@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.house.mapper.NoPropertyHouseMapper">
+
+	<resultMap type="NoPropertyHouse" id="NoPropertyHouseResult">
+		<id     property="id"       column="id"        />
+		<result     property="projectId"       column="projectId"        />
+		<result     property="houseBaseId"       column="houseBaseId"        />
+		<result     property="houseNumber"       column="houseNumber"        />
+		<result     property="area"       column="area"        />
+		<result     property="replacementPrice"       column="replacementPrice"        />
+		<result     property="conditionCorrectionFactor"       column="conditionCorrectionFactor"        />
+		<result     property="heightCorrectionFactor"       column="heightCorrectionFactor"        />
+		<result     property="newCorrectionCoefficient"       column="newCorrectionCoefficient"        />
+		<result     property="evaluatePrice"       column="evaluatePrice"        />
+		<result property="createBy"     column="create_by"      />
+		<result property="createTime"   column="create_time"    />
+		<result property="updateBy"     column="update_by"      />
+		<result property="updateTime"   column="update_time"    />
+	</resultMap>
+	
+ 	<sql id="selectNoPropertyHouseVo">
+									SELECT
+					r.id,
+					r.projectId,
+					r.houseNumber,
+					r.area,
+					r.replacementPrice,
+					r.conditionCorrectionFactor,
+					r.heightCorrectionFactor,
+					r.newCorrectionCoefficient,
+					r.evaluatePrice,
+					r.create_by,
+					r.create_time,
+					r.update_by,
+					r.update_time
+				FROM
+					h_no_property_house r
+    </sql>
+
+    <select id="selectNoPropertyHouseList" parameterType="NoPropertyHouse" resultMap="NoPropertyHouseResult">
+		<include refid="selectNoPropertyHouseVo"/>
+			where 1=1
+		<if test="id != null and id != 0">
+			AND r.id = #{id}
+		</if>
+		<if test="projectId != null and projectId != 0">
+			AND r.projectId = #{projectId}
+		</if>
+	</select>
+
+	<select id="selectNoPropertyHouseById" parameterType="Long" resultMap="NoPropertyHouseResult">
+		<include refid="selectNoPropertyHouseVo"/>
+		where 1=1
+		<if test="_parameter != null and _parameter != 0">
+			AND r.id = #{_parameter}
+		</if>
+	</select>
+	
+
+	<insert id="insertNoPropertyHouse" parameterType="NoPropertyHouse" useGeneratedKeys="true" keyProperty="id">
+ 		insert into h_no_property_house(
+		<if test="houseNumber != null and houseNumber != ''">houseNumber,</if>
+		<if test="replacementPrice != null and replacementPrice != ''">replacementPrice,</if>
+		<if test="area != null and area != ''">area,</if>
+		<if test="replacementPrice != null and replacementPrice != ''">replacementPrice,</if>
+		<if test="conditionCorrectionFactor != null and  conditionCorrectionFactor != ''">conditionCorrectionFactor,</if>
+		<if test="heightCorrectionFactor != null and  heightCorrectionFactor != ''">heightCorrectionFactor,</if>
+		<if test="newCorrectionCoefficient != null and  newCorrectionCoefficient != ''">newCorrectionCoefficient,</if>
+		<if test="evaluatePrice != null and  evaluatePrice != ''">evaluatePrice,</if>
+		<if test="projectId != null and projectId != ''">projectId,</if>
+		<if test="houseBaseId != null and houseBaseId != ''">houseBaseId,</if>
+		<if test="createBy != null and createBy != ''">create_by,</if>
+		<if test="updateBy != null and updateBy != ''">update_by,</if>
+		<if test="updateTime != null and updateTime != ''">update_time,</if>
+ 			create_time
+ 		)values(
+		<if test="houseNumber != null and houseNumber != ''">#{houseNumber},</if>
+		<if test="replacementPrice != null and replacementPrice != ''">#{replacementPrice},</if>
+		<if test="area != null and area != ''">#{area},</if>
+		<if test="replacementPrice != null and replacementPrice != ''">#{replacementPrice},</if>
+		<if test="conditionCorrectionFactor != null and  conditionCorrectionFactor != ''">#{conditionCorrectionFactor},</if>
+		<if test="heightCorrectionFactor != null and  heightCorrectionFactor != ''">#{heightCorrectionFactor},</if>
+		<if test="newCorrectionCoefficient != null and  newCorrectionCoefficient != ''">#{newCorrectionCoefficient},</if>
+		<if test="evaluatePrice != null and  evaluatePrice != ''">#{evaluatePrice},</if>
+		<if test="projectId != null and projectId != ''">#{projectId},</if>
+		<if test="houseBaseId != null and houseBaseId != ''">#{houseBaseId},</if>
+		<if test="createBy != null and createBy != ''">#{updateBy},</if>
+		<if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+		<if test="updateTime != null and updateTime != ''">#{updateBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<update id="updateNoPropertyHouse" parameterType="NoPropertyHouse">
+ 		update h_no_property_house
+ 		<set>
+			<if test="houseNumber != null and houseNumber != ''">#{houseNumber},</if>
+			<if test="nonRedevelopedArea != null and nonRedevelopedArea != ''">#{nonRedevelopedArea},</if>
+			<if test="operationsDuration != null and operationsDuration != ''">#{operationsDuration},</if>
+			<if test="nonStreetResidents != null and nonStreetResidents != ''">#{nonStreetResidents},</if>
+			<if test="increaseAmountCompensation != null and  increaseAmountCompensation != ''">#{ increaseAmountCompensation},</if>
+			<if test="projectId != null and projectId != ''">#{projectId},</if>
+			<if test="createBy != null and creatBy != ''">#{createBy},</if>
+			<if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where id = #{id}
+	</update>
+
+	
+	<delete id="deleteNoPropertyHouseById" parameterType="Long">
+ 		delete from h_no_property_house where id = #{id}
+ 	</delete>
+	<delete id="deleteNoPropertyHouseByHouseBaseId" parameterType="String">
+ 		delete from h_no_property_house where houseBaseId = #{houseBaseId}
+ 	</delete>
+ 	
+ 	<delete id="deleteNoPropertyHouseByIds" parameterType="Long">
+		 delete from  h_no_property_house   where id in
+ 		<foreach collection="array" item="id" open="(" separator="," close=")">
+ 			#{id}
+        </foreach> 
+ 	</delete>
+
+</mapper> 

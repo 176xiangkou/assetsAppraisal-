@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.house.mapper.NonStreetHouseMapper">
+
+	<resultMap type="NonStreetHouse" id="NonStreetHouseResult">
+		<id     property="id"       column="id"        />
+		<result     property="houseNumber"       column="houseNumber"        />
+		<result     property="nonRedevelopedArea"       column="nonRedevelopedArea"        />
+		<result     property="operationsDuration"       column="operationsDuration"        />
+		<result     property="nonStreetResidents"       column="nonStreetResidents"        />
+		<result     property="increaseAmountCompensation"       column="increaseAmountCompensation"        />
+		<result     property="projectId"       column="projectId"        />
+		<result     property="houseBaseId"       column="houseBaseId"        />
+		<result property="createBy"     column="create_by"      />
+		<result property="createTime"   column="create_time"    />
+		<result property="updateBy"     column="update_by"      />
+		<result property="updateTime"   column="update_time"    />
+	</resultMap>
+	
+ 	<sql id="selectNonStreetHouseVo">
+					select  r.id,
+r.houseNumber,
+r.nonRedevelopedArea,
+r.operationsDuration,
+r.nonStreetResidents,
+r.increaseAmountCompensation,
+r.houseBaseId,
+r.projectId,
+r.create_by,
+r.create_time,
+r.update_by,
+r.update_time
+        from h_non_street_house r
+    </sql>
+
+
+    <select id="selectNonStreetHouseList" parameterType="NonStreetHouse" resultMap="NonStreetHouseResult">
+		<include refid="selectNonStreetHouseVo"/>
+			where 1=1
+		<if test="id != null and id != 0">
+			AND r.id = #{id}
+		</if>
+		<if test="projectId != null and projectId != 0">
+			AND r.projectId = #{projectId}
+		</if>
+	</select>
+
+	<select id="selectNonStreetHouseById" parameterType="Long" resultMap="NonStreetHouseResult">
+		<include refid="selectNonStreetHouseVo"/>
+		where 1=1
+		<if test="_parameter != null and _parameter != 0">
+			AND r.id = #{_parameter}
+		</if>
+	</select>
+	
+
+	<insert id="insertNonStreetHouse" parameterType="NonStreetHouse" useGeneratedKeys="true" keyProperty="id">
+ 		insert into h_non_street_house(
+		<if test="houseNumber != null and houseNumber != ''">houseNumber,</if>
+		<if test="nonRedevelopedArea != null and nonRedevelopedArea != ''">nonRedevelopedArea,</if>
+		<if test="operationsDuration != null and operationsDuration != ''">operationsDuration,</if>
+		<if test="nonStreetResidents != null and nonStreetResidents != ''">nonStreetResidents,</if>
+		<if test="increaseAmountCompensation != null and increaseAmountCompensation != ''">increaseAmountCompensation,</if>
+		<if test="houseBaseId != null and houseBaseId != ''">houseBaseId,</if>
+		<if test="projectId != null and projectId != ''">projectId,</if>
+		<if test="createBy != null and createBy != ''">create_by,</if>
+		<if test="updateBy != null and updateBy != ''">update_by,</if>
+		<if test="updateTime != null and updateTime != ''">update_time,</if>
+ 			create_time
+ 		)values(
+		<if test="houseNumber != null and houseNumber!= ''">#{houseNumber},</if>
+		<if test="nonRedevelopedArea != null and nonRedevelopedArea!= ''">#{nonRedevelopedArea},</if>
+		<if test="operationsDuration != null and operationsDuration!= ''">#{operationsDuration},</if>
+		<if test="nonStreetResidents != null and nonStreetResidents!= ''">#{nonStreetResidents},</if>
+		<if test="increaseAmountCompensation != null and increaseAmountCompensation!= ''">#{increaseAmountCompensation},</if>
+		<if test="houseBaseId != null and houseBaseId!= ''">#{houseBaseId},</if>
+		<if test="projectId != null and projectId!= ''">#{projectId},</if>
+		<if test="createBy != null and createBy!= ''">#{create_by},</if>
+		<if test="updateBy != null and updateBy!= ''">#{update_by},</if>
+		<if test="updateTime != null and updateTime!= ''">#{update_time},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	<update id="updateNonStreetHouse" parameterType="NonStreetHouse">
+ 		update h_non_street_house
+ 		<set>
+			<if test="projectId != null and projectId != ''">#{projectId},</if>
+			<if test="houseNumber != null and houseNumber != ''">#{houseNumber},</if>
+			<if test="area != null and area != ''">#{area},</if>
+			<if test="conditionCorrectionFactor != null and conditionCorrectionFactor != ''">#{conditionCorrectionFactor},</if>
+			<if test="heightCorrectionFactor != null and heightCorrectionFactor != ''">#{heightCorrectionFactor},</if>
+			<if test="newCorrectionCoefficient != null and newCorrectionCoefficient != ''">#{newCorrectionCoefficient},</if>
+			<if test="evaluatePrice != null and evaluatePrice != ''">#{evaluatePrice},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+			<if test="updateTime != null and updateTime != ''">#{updateTime},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where id = #{id}
+	</update>
+	<delete id="deleteNonStreetHouseByHouseBaseId" parameterType="String">
+ 		delete from h_non_street_house where houseBaseId = #{houseBaseId}
+ 	</delete>
+	
+	<delete id="deleteNonStreetHouseById" parameterType="Long">
+ 		delete from h_non_street_house where id = #{id}
+ 	</delete>
+ 	
+ 	<delete id="deleteNonStreetHouseByIds" parameterType="Long">
+		 delete from  h_non_street_house   where id in
+ 		<foreach collection="array" item="id" open="(" separator="," close=")">
+ 			#{id}
+        </foreach> 
+ 	</delete>
+
+</mapper> 
