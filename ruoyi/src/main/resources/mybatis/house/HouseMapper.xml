@@ -183,7 +183,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="insertHouse" parameterType="HouseBase"  >
  		insert into h_project(
-		<if test="houseBaseId != null and projectName != ''">houseBaseId,</if>
+		<if test="houseBaseId != null and houseBaseId != ''">houseBaseId,</if>
 		<if test="projectName != null and projectName != ''">projectName,</if>
 		<if test="houseLocated != null and houseLocated != ''">houseLocated,</if>
 		<if test="propertyOwner != null and propertyOwner != ''">propertyOwner,</if>

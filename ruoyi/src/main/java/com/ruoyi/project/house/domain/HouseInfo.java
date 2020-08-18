@@ -5,7 +5,7 @@ import com.ruoyi.framework.web.domain.BaseEntity;
 import java.util.Date;
 
 /**
- * 房屋信息 h_house
+ * 房屋信息 h_houseinfo
  * 
  * @author ruoyi
  */
