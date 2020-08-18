@@ -1,7 +1,7 @@
 <template>
   <div class="houseIndex">
-    <a-tabs default-active-key="基本信息" @change="callback">
-      <a-tab-pane :key="item.label" :tab="item.label" v-for="item in tabs">
+    <a-tabs default-active-key="基本信息" @change="callback" v-model="currentKeys">
+      <a-tab-pane :key="item.label" :tab="item.label" v-for="(item, index) in tabs" :disabled="index > 0 && !projectObj.houseBaseId">
         <component :is="item.key" :projectObj="projectObj" @changeStatus="(status) => $emit('changeStatus', status)"/>
       </a-tab-pane>
     </a-tabs>
@@ -30,8 +30,17 @@
       //   }
       // },
       // components: {baseInfo, updateHouse, twiceApply, trimPrice},
+      watch: {
+        projectObj: {
+          deep: true,
+          handler() {
+            this.currentKeys = '基本信息'
+          }
+        }
+      },
       data() {
           return {
+            currentKeys: '基本信息',
             tabs: [{
               label: '基本信息',
               key: resolve =>

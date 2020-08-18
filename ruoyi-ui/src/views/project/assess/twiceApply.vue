@@ -3,7 +3,7 @@
     <editorTable :tabData.sync="tabObj[bItem.tabKey]"
                  :isEditor="isEditor"
                  v-for="bItem in tablesKey"
-                 :nameObj="{label: bItem.label, button: '新增', tabBasePramas: {unit: '元/m2', newRate: 1, houseNum: getDefaultHouseNum(bItem.tabKey)}}"
+                 :nameObj="{label: bItem.label, button: '新增', tabBasePramas: {houseBaseId: projectObj.houseBaseId, unit: '元/m2', newRate: 1, serialNumber: getDefaultHouseNum(bItem.tabKey)}}"
                  @change="onChange"
                  :columns="formList[bItem.columnKey]">
       <template slot-scope="{tableRow}"
@@ -13,7 +13,7 @@
           v-if="item.scopedSlots.customRender !== 'edit'"
           :key="index"
           @change="(val) => getTotal(bItem.tabKey, tableRow.index, val, item.scopedSlots.customRender)"
-          v-bind="{wholeType: isEditor, ...item}"
+          v-bind="{wholeType: isEditor ? 'input' : 'span', ...item}"
           v-model="tabObj[bItem.tabKey][tableRow.index][item.dataIndex]"
         />
       </template>
@@ -27,7 +27,7 @@
       </div>
     </editorTable>
     <div style="margin: 0 auto;display: block;text-align: center">
-      <a-button type="primary" @click="submitAll">保存</a-button>
+      <a-button type="primary" @click="submitAll()">保存</a-button>
     </div>
   </div>
 </template>
@@ -38,9 +38,11 @@
   import FormInput from '@/components/form/Input'
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
+  import {addCheck, checkList} from '@/api/project/assess'
   export default {
     name: "trimPrice",
     components: {editorTable, BaseForm, FormInput},
+    props: ['projectObj'],
     data() {
       return {
         formList: getFormDatas('twiceApply'),
@@ -59,20 +61,28 @@
         ]
       }
     },
+    watch: {
+      projectObj: {
+        deep: true,
+        handler() {
+          this.checkList();
+        }
+      }
+    },
     methods: {
       getDefaultHouseNum(key) {
         if (key === 'tabData') {
           const length = this.tabObj.tabData.length
-          return  length ? this.tabObj.tabData[length-1].houseNum : 1
+          return  length ? this.tabObj.tabData[length-1].serialNumber : 1
         }
       },
       getTotal(tabKey, index, val, customRender) {
         let list = this.tabObj[tabKey][index]
-        if (customRender === 'gongshi') {
+        if (customRender === 'formula') {
           try {
             this.tabObj[tabKey][index].number = eval(val);
-            if (list.price)
-              this.tabObj[tabKey][index].values = list.number * list.price;
+            if (list.unitPrice)
+              this.tabObj[tabKey][index].assessmentValue = list.number * list.unitPrice;
           } catch (e) {
           }
         } else if (customRender === 'name') {
@@ -81,7 +91,9 @@
 
       },
       submitAll() {
-
+         addCheck( this.tabObj.tabData).then(() => {
+           this.$message.success('保存成功')
+         })
       },
       remove(tabKey, index) {
         this.tabObj[tabKey].splice(index, 1);
@@ -90,6 +102,11 @@
       selectRows(val) {
         console.log(val);
 
+      },
+      checkList() {
+        checkList({houseBaseId: this.projectObj.houseBaseId}).then(res => {
+           this.tabObj.tabData = res.data;
+        })
       },
       onChange() {},
 
@@ -101,8 +118,11 @@
         this.wholeType = 'span';
         this.isEditor =false;
       }
-      if (categoryPid) this.formParams = {categoryPid, id: 0};
-      if (id) this.getList(id);
+      this.getDicts("categoryName").then(response => {
+        this.formList.tabColumns[0].selectList = response.data
+      });
+      this.checkList();
+
     }
   }
 </script>
