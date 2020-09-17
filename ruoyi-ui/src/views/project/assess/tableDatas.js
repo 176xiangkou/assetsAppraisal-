@@ -89,16 +89,16 @@ const list = {
         title: '估价时点',
         dataIndex: 'evaluateTime',
       },{
-        title: '承租人',
+        title: '使用人',
         dataIndex: 'tenant',
       },{
         title: '记录员',
         dataIndex: 'registrar',
-      },{
+      },/*{
         title: '签收日期',
         dataIndex: 'lodgmentTime',
         inputType: 'datePicker',
-      },{
+      },*/{
         title: '评估员',
         dataIndex: 'evaluator',
         inputType: 'select',
@@ -108,10 +108,10 @@ const list = {
         dataIndex: 'valuer',
         inputType: 'select',
         selectList: [],
-      },{
+      },/*{
         title: '区位基准价',
         dataIndex: 'referencePrice',
-      },{
+      },*/{
         title: '报告编号',
         dataIndex: 'reportNumber',
       },{
@@ -161,17 +161,17 @@ const list = {
         inputType: 'inputNumber',
         disabled: true,
 
-      },{
+      },/*{
         title: '经营年限',
         dataIndex: 'manageYear',
         disabled: true,
 
-      },{
+      },*/{
         title: '单位统称',
         dataIndex: 'unitAs',
 
       },{
-        title: '委托方',
+        title: '估价委托员',
         dataIndex: 'entrustingParty',
         disabled: true,
         // inputType: 'select',
@@ -190,33 +190,36 @@ const list = {
         dataIndex: 'landProperty',
         inputType: 'select',
         selectList: [],
-      },{
+      },/*{
         title: '区位级别',
         dataIndex: 'regionalLevel',
         inputType: 'select',
         selectList: [],
-      },{
+      },*//*{
         title: '结构等级',
         dataIndex: 'structureLevel',
         inputType: 'select',
         selectList: [],
-      },{
+      },*//*{
         title: '层次/总层',
         dataIndex: 'level',
-      },{
+      },*//*{
         title: '朝向',
         inputType: 'select',
         selectList: [],
         dataIndex: 'toward',
-      },{
+      },*/{
         title: '成套与否',
         inputType: 'select',
         selectList: [{
-          text: '是',
-          value: '是'
+          text: '成套',
+          value: '成套'
         },{
-          text: '否',
-          value: '否'
+          text: '非成套',
+          value: '非成套'
+        },{
+          text: '独立门院',
+          value: '独立门院'
         },],
         dataIndex: 'isComplete',
       },{
@@ -226,10 +229,10 @@ const list = {
         title: '地大于房面积',
         dataIndex: 'ddyfArea',
 
-      },{
+      },/*{
         title: '新建不满5年补偿%',
         dataIndex: 'xjbmwnCompensation',
-      },
+      },*/
 
       {
         title: '土地用途',
@@ -247,12 +250,12 @@ const list = {
           },
         ],
         dataIndex: 'landUse',
-      },{
+      },/*{
         title: '容积率',
         dataIndex: 'plotratio',
         inputType: 'inputNumber',
 
-      },{
+      },*/{
         // title: '附着物前空行*1',
         dataIndex: 'planDesc1',
         inputType: 'inputNumber',
@@ -281,17 +284,17 @@ const list = {
         title: '初审员',
         dataIndex: 'planDesc1',
       },{
-        title: '备注',
+        title: '表格备注',
         dataIndex: 'mark',
         inputType: 'textArea',
         wrapperCol: {span: 9.2}
       },
-      {
-        title: '表格备注',
-        dataIndex: 'tableNote',
-        inputType: 'textArea',
-        wrapperCol: {span: 13.9},
-      },
+      // {
+      //   title: '表格备注',
+      //   dataIndex: 'tableNote',
+      //   inputType: 'textArea',
+      //   wrapperCol: {span: 13.9},
+      // },
     ],
     tabColumns: [
       {
@@ -300,7 +303,7 @@ const list = {
         scopedSlots: {customRender: "roomNumber"},
       },
       {
-        title: '面积(m2)',
+        title: '建筑面积(m2)',
         dataIndex: 'area',
         scopedSlots: {customRender: "total"},
         inputType: 'inputNumber',
@@ -509,7 +512,7 @@ const list = {
     tabColumns: [
       idColumns,
       {
-        title: '面积(m2)',
+        title: '建筑面积(m2)',
         dataIndex: 'area',
         scopedSlots: {customRender: "area"},
         inputType: 'inputNumber',
@@ -571,7 +574,11 @@ const list = {
         dataIndex: 'name',
         scopedSlots: {customRender: "name"},
         inputType: 'select',
-        selectList: []
+        selectList: [],
+        labelName: 'name',
+        valueName: 'id',
+        valType: 'Number',
+        allowClear: false
       },
       {
         title: '单价',
@@ -619,7 +626,13 @@ const list = {
         dataIndex: 'name',
         scopedSlots: {customRender: "name"},
         inputType: 'select',
-        selectList: []
+        selectList: [],
+        labelName: 'name',
+        valueName: 'id',
+        valType: 'Number',
+        allowClear: false
+
+
       },
       {
         title: '单价',
@@ -667,19 +680,25 @@ const list = {
         inputType: 'select',
         labelName: 'dictLabel',
         valueName: 'dictCode',
-        selectList: []
+        selectList: [],
+        valType: 'Number'
       },
       {
         title: '名称',
         dataIndex: 'name',
         scopedSlots: {customRender: "name"},
         inputType: 'select',
-        selectList: []
+        selectList: [],
+        labelName: 'name',
+        valueName: 'id',
+        valType: 'Number',
+        allowClear: false
       },{
         title: '单价',
         dataIndex: 'unitPrice',
         step: 0.01,
         scopedSlots: {customRender: "unitPrice"},
+        wholeType: 'span'
       },{
         title: '公式',
         dataIndex: 'formula',

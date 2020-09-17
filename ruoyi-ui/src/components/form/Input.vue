@@ -38,7 +38,7 @@
                           showSearch
                           :defaultValue="value"
                           :filterOption="filterOption"
-                          :value="value"
+                          :value="($attrs.valType === 'Number' && value) ? parseInt(value) : value"
                           :style="{width: contentWidth}"
                           @change="(val, option) => {$emit('input', val);$emit('change', {val, option})}"
                           v-bind="{allowClear,placeholder, ...$attrs}"

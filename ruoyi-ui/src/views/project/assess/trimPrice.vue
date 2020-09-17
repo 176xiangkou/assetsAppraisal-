@@ -39,8 +39,9 @@
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
   import {decorateAttached, decorateAttachedList} from '@/api/project/assess'
+  import {listPrice} from "../../../api/project/price";
 
-  
+
   export default {
     name: "trimPrice",
     components: {editorTable, BaseForm, FormInput},
@@ -85,18 +86,26 @@
         }
       },
       getTotal(tabKey, index, val, customRender) {
-        let list = this.tabObj[tabKey][index]
-        if (customRender === 'formula') {
+        let list = this.tabObj[tabKey][index];
+        if (customRender === 'name') {
+          // 切换名称改变单价和单位
+          const slist = this.formList.tabColumns[0].selectList.find(item => {
+            return item.id === val.val
+          })
+          this.tabObj[tabKey][index].unitPrice = slist ? slist.price : '';
+          list.unitPrice = slist ? parseInt(slist.price) : '';
+        }
+        if (customRender === 'formula' || customRender === 'name') {
           try {
-            this.tabObj[tabKey][index].number = eval(val);
+            if (customRender === 'formula') {
+              this.tabObj[tabKey][index].number = eval(val)
+              // else this.tabObj[tabKey][index].number = 0
+            }
             if (list.unitPrice)
-              this.tabObj[tabKey][index].assessmentValue = list.number * list.unitPrice;
+              this.tabObj[tabKey][index].assessmentValue = (list.number || 0) * list.unitPrice;
           } catch (e) {
           }
-        } else if (customRender === 'name') {
-          // 切换名称改变单价和单位
         }
-
       },
       submitAll() {
         const {tabData, tabData1} = this.tabObj;
@@ -119,6 +128,14 @@
 
       },
       onChange() {},
+      getList() {
+        listPrice().then(
+          response => {
+            this.formList.tabColumns[0].selectList = response.rows
+            this.formList.tabColumns1[0].selectList = response.rows
+          }
+        );
+      },
 
     },
     created() {
@@ -128,6 +145,7 @@
         this.wholeType = 'span';
         this.isEditor =false;
       }
+      this.getList();
       this.decorateAttachedList();
     }
   }

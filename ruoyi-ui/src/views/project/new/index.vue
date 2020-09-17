@@ -34,7 +34,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button> 
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
       </el-form-item>
     </el-form>
 
@@ -80,7 +80,7 @@
       <el-table-column label="创建时间" align="center" prop="createTime" />
       <el-table-column label="创建者" align="center" prop="createBy" :show-overflow-tooltip="true" />
       <el-table-column label="委托方名称" align="center" prop="entrustName" :show-overflow-tooltip="true" />
-      <el-table-column label="创建者" align="center" prop="entrustCreateBy" width="120" /> 
+      <el-table-column label="创建者" align="center" prop="entrustCreateBy" width="120" />
       <el-table-column label="委托方创建时间" align="center" prop="entrustCreateTime" width="160">
         <template slot-scope="scope">
            <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -122,26 +122,26 @@
         </el-form-item>
         <el-form-item label="牵头人" prop="initiator">
           <el-input v-model="form.initiator" placeholder="请输入牵头人" />
-        </el-form-item> 
+        </el-form-item>
         <el-form-item label="技术负责人" prop="technicalDirector">
           <el-input v-model="form.technicalDirector" placeholder="请输入技术负责人" />
-        </el-form-item> 
+        </el-form-item>
         <el-form-item label="图纸复核" prop="drawingReview">
           <el-input v-model="form.drawingReview" placeholder="请输入图纸复核" />
-        </el-form-item>  
-        <el-form-item label="委托方">
+        </el-form-item>
+        <el-form-item label="估价委托员">
               <el-select v-model="form.entrustId"   placeholder="请选择">
                 <el-option
                   v-for="item in entrustOptions"
                   :key="item.entrustId"
                   :label="item.entrustName"
-                  :value="item.entrustId" 
+                  :value="item.entrustId"
                 ></el-option>
               </el-select>
-        </el-form-item>     
+        </el-form-item>
         <el-form-item label="创建者" prop="createBy">
           <el-input v-model="form.createBy" placeholder="请输入创建者" />
-        </el-form-item> 
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -260,12 +260,12 @@ export default {
       defaultProps: {
         children: "children",
         label: "label"
-      }, 
+      },
       // 表单校验
       rules: {
         projectName: [
           { required: true, message: "项目名称不能为空", trigger: "blur" }
-        ] 
+        ]
       }
     };
   },
@@ -360,7 +360,7 @@ export default {
     reset() {
       if (this.$refs.menu != undefined) {
         this.$refs.menu.setCheckedKeys([]);
-      } 
+      }
 
       this.form = {
         projectId: undefined,
@@ -394,21 +394,21 @@ export default {
     handleAdd() {
       this.reset();
       this.getMenuTreeselect();
-      getEntrust().then(response => { 
+      getEntrust().then(response => {
         this.entrustOptions = response.data;
         this.open = true;
-        this.title = "添加项目"; 
-      }); 
+        this.title = "添加项目";
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const projectId = row.projectId  || this.ids 
+      const projectId = row.projectId  || this.ids
       /**  this.$nextTick(() => {
-        
+
       });   */
       getProject(projectId).then(response => {
-        this.form = response.data;  
+        this.form = response.data;
         this.entrustOptions = response.entrusts;
         this.open = true;
         this.title = "修改项目";
@@ -430,7 +430,7 @@ export default {
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.projectId != undefined) { 
+          if (this.form.projectId != undefined) {
             updateProject(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
@@ -440,7 +440,7 @@ export default {
                 this.msgError(response.msg);
               }
             });
-          } else { 
+          } else {
             addProject(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");

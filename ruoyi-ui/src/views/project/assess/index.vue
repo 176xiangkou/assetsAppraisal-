@@ -108,11 +108,11 @@
           <el-table-column type="selection" width="40" align="center"/>
           <el-table-column label="编号" align="center" width="50" prop="id"/>
           <el-table-column label="项目名称" width="200" align="center" prop="projectName"/>
-          <el-table-column label="委托方" width="150" align="center" prop="entrustingParty"/>
+          <el-table-column label="估价委托员" width="150" align="center" prop="entrustingParty"/>
           <el-table-column label="产权人" align="center" prop="propertyOwne" :show-overflow-tooltip="true"/>
           <el-table-column label="坐落" align="center" prop="houseLocated" width="120"/>
-          <el-table-column label="面积" align="center" prop="floorSpace" width="120"/>
-          <el-table-column label="价格" align="center" prop="referencePrice" width="120"/>
+          <el-table-column label="建筑面积" align="center" prop="floorSpace" width="120"/>
+          <el-table-column label="估价金额" align="center" prop="referencePrice" width="120"/>
           <el-table-column label="时间" align="center" prop="createTime" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -166,6 +166,7 @@
       :destroyOnClose="true"
       wrapClassName="newProjectDio"
       :title="title"
+      :footer="null"
       v-model="open"
       @ok="handleOk"
       @cancel="() => changeStatus(false)"
