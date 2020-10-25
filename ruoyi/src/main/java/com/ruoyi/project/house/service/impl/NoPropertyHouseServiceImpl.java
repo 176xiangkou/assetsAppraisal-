@@ -63,7 +63,10 @@ public class NoPropertyHouseServiceImpl implements INoPropertyHouseService
     {
         // 修改未确权房屋信息
         int row = 0;
-        noPropertyHouseMapper.deleteNoPropertyHouseByHouseBaseId(noPropertyHouseList.get(0).getHouseBaseId());
+        if(noPropertyHouseList != null && !("").equals(noPropertyHouseList.get(0).getHouseBaseId())){
+            noPropertyHouseMapper.deleteNoPropertyHouseByHouseBaseId(noPropertyHouseList.get(0).getHouseBaseId());
+        }
+
         for(NoPropertyHouse n : noPropertyHouseList){
             row = noPropertyHouseMapper.insertNoPropertyHouse(n);
         }

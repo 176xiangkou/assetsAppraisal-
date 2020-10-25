@@ -6,7 +6,7 @@ import com.ruoyi.project.system.domain.SysPrice;
 import java.util.List;
 
 /**
- * 委托方表 数据层
+ *   数据层
  * 
  * @author ruoyi
  */

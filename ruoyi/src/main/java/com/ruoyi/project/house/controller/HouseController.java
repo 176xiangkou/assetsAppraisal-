@@ -3,6 +3,7 @@ package com.ruoyi.project.house.controller;
 import java.util.List;
 
 import com.ruoyi.project.house.domain.HouseBase;
+import com.ruoyi.project.house.domain.HouseInfo;
 import com.ruoyi.project.house.service.IHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -91,7 +92,7 @@ public class HouseController extends BaseController
     public AjaxResult add(@RequestBody HouseBase house)
     {
         house.setCreateBy(SecurityUtils.getUsername());
-        return toAjax(houseService.insertHouse(house));
+        return AjaxResult.success(houseService.insertHouse(house));
     }
 
     /**
@@ -103,7 +104,7 @@ public class HouseController extends BaseController
     public AjaxResult edit( @RequestBody HouseBase house)
     {
         house.setUpdateBy(SecurityUtils.getUsername());
-        return toAjax(houseService.updateHouse(house));
+        return AjaxResult.success(houseService.updateHouse(house));
     }
 
     /**
@@ -114,7 +115,35 @@ public class HouseController extends BaseController
     @DeleteMapping("/{houseBaseId}")
     public AjaxResult remove(@PathVariable String houseBaseId)
     {
-        return toAjax(houseService.deleteHouseById(houseBaseId));
+        return AjaxResult.success(houseService.deleteHouseById(houseBaseId));
+    }
+
+    /**
+     * 根据houseBaseId获取房屋面积总和
+     */
+    @PreAuthorize("@ss.hasPermi('house:base:getHouseBaseArea')")
+    @GetMapping("/getHouseBaseArea")
+    public AjaxResult getHouseBaseArea(String houseBaseId)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        HouseBase house = new HouseBase();
+        house.setHouseBaseId(houseBaseId);
+        List<HouseBase> list = houseService.selectHouseList(house);
+
+          List<HouseInfo> houseInfoList = list.get(0).getHouseInfo();
+        double sumCount = 0;
+        double zgf = 0;
+        for(HouseInfo n : houseInfoList){
+            if(n.getArea() != null && !"".equals(n.getArea())){
+                sumCount = sumCount + Double.parseDouble(n.getArea());
+            }
+            if(n.getZgfArea() != null && !"".equals(n.getZgfArea())){
+                zgf = zgf + Double.parseDouble(n.getZgfArea());
+            }
+        }
+        ajax.put("sumCount",sumCount);
+        ajax.put("zgf",zgf);
+        return  ajax;
     }
 
 }

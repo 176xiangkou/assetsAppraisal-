@@ -81,7 +81,9 @@ public class AttachedPriceHouseServiceImpl implements IAttachedPriceHouseService
     public int updateAttachedPriceHouse(List<AttachedPriceHouse> attachedPriceHouseList)
     {
         int row = 0;
-        attachedPriceHouseMapper.deleteAttachedPriceHouseByHouseBaseId(attachedPriceHouseList.get(0).getHouseBaseId());
+        if(attachedPriceHouseList != null && !("").equals(attachedPriceHouseList.get(0).getHouseBaseId())) {
+            attachedPriceHouseMapper.deleteAttachedPriceHouseByHouseBaseId(attachedPriceHouseList.get(0).getHouseBaseId());
+        }
         for(AttachedPriceHouse n : attachedPriceHouseList){
             row = attachedPriceHouseMapper.insertAttachedPriceHouse(n);
         }

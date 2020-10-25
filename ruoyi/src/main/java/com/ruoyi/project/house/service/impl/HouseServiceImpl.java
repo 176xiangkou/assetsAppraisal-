@@ -61,19 +61,25 @@ public class HouseServiceImpl implements IHouseService
         // 新增房产基本信息
         String houseBaseId = UUID.randomUUID().toString();
         house.setHouseBaseId(houseBaseId);
-        int rows = houseMapper.insertHouse(house);
-        List<HouseInfo> houseInfoList = house.getHouseInfo();
-        if(houseInfoList.size() > 0){
-            for(HouseInfo h : houseInfoList){
-                String houseInfoId = UUID.randomUUID().toString();
-                h.setHouseInfoId(houseInfoId);
-                // 新增房屋信息
-                int row = houseMapper.insertHouseInfo(h);
-                HouseBaseInfo houseBaseInfo = new HouseBaseInfo();
-                houseBaseInfo.setHouseBaseId(houseBaseId);
-                houseBaseInfo.setHouseId(houseInfoId);
-                houseMapper.insertHouseBaseInfo(houseBaseInfo);
+        int rows = 0;
+        if("1".equals(house.getOnBaseInfo())){
+             rows = houseMapper.insertHouse(house);
+        }
+        if("0".equals(house.getOnBaseInfo())) {
+            List<HouseInfo> houseInfoList = house.getHouseInfo();
+            if (houseInfoList.size() > 0) {
+                for (HouseInfo h : houseInfoList) {
+                    String houseInfoId = UUID.randomUUID().toString();
+                    h.setHouseInfoId(houseInfoId);
+                    // 新增房屋信息
+                    int row = houseMapper.insertHouseInfo(h);
+                    HouseBaseInfo houseBaseInfo = new HouseBaseInfo();
+                    houseBaseInfo.setHouseBaseId(houseBaseId);
+                    houseBaseInfo.setHouseId(houseInfoId);
+                    rows = houseMapper.insertHouseBaseInfo(houseBaseInfo);
+                }
             }
+
         }
 
         return rows;
@@ -89,10 +95,15 @@ public class HouseServiceImpl implements IHouseService
     @Transactional
     public int updateHouse(HouseBase house)
     {
-        int row =    houseMapper.updateHouse(house);
-        List<HouseInfo> list = house.getHouseInfo();
-        for(HouseInfo h : list){
-            houseMapper.updateHouseInfo(h);
+        int row = 0;
+        if("1".equals(house.getOnBaseInfo())){
+             row =    houseMapper.updateHouse(house);
+        }
+        if("0".equals(house.getOnBaseInfo())) {
+            List<HouseInfo> list = house.getHouseInfo();
+            for (HouseInfo h : list) {
+                row = houseMapper.updateHouseInfo(h);
+            }
         }
         return row;
     }

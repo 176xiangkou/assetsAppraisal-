@@ -15,8 +15,11 @@ public class HouseBase extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** id */
+    /** 是否修改基本信息（1：基本信息，0：房屋信息）*/
+    private String onBaseInfo;
 
+
+    /** id */
     private Long id;
     /** 项目名称*/
     private String projectName;
@@ -52,8 +55,8 @@ public class HouseBase extends BaseEntity
     private String reportNumber;
     /** 报告年份*/
 
-    @JSONField(format ="yyyy-MM-dd HH:mm:ss")
-    private Date reportDate;
+
+    private String reportDate;
     /** 报告样式*/
     private String reportForm;
     /** 住改非面积*/
@@ -261,11 +264,11 @@ public class HouseBase extends BaseEntity
         this.reportNumber = reportNumber;
     }
 
-    public Date getReportDate() {
+    public String getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(Date reportDate) {
+    public void setReportDate(String reportDate) {
         this.reportDate = reportDate;
     }
 
@@ -459,6 +462,14 @@ public class HouseBase extends BaseEntity
 
     public void setHouseInfo(List<HouseInfo> houseInfo) {
         this.houseInfo = houseInfo;
+    }
+
+    public String getOnBaseInfo() {
+        return onBaseInfo;
+    }
+
+    public void setOnBaseInfo(String onBaseInfo) {
+        this.onBaseInfo = onBaseInfo;
     }
 
     @Override

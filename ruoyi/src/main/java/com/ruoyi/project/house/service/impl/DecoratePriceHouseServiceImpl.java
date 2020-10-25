@@ -80,7 +80,9 @@ public class DecoratePriceHouseServiceImpl implements IDecoratePriceHouseService
     public int updateDecoratePriceHouse(List<DecoratePriceHouse> decoratePriceHouseList)
     {
         int row = 0;
-        decoratePriceHouseMapper.deleteDecoratePriceHouseByHouseBaseId(decoratePriceHouseList.get(0).getHouseBaseId());
+        if(decoratePriceHouseList != null && !("").equals(decoratePriceHouseList.get(0).getHouseBaseId())) {
+            decoratePriceHouseMapper.deleteDecoratePriceHouseByHouseBaseId(decoratePriceHouseList.get(0).getHouseBaseId());
+        }
         for(DecoratePriceHouse n : decoratePriceHouseList){
             row = decoratePriceHouseMapper.insertDecoratePriceHouse(n);
         }

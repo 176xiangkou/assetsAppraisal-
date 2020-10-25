@@ -32,7 +32,6 @@ public class CheckPriceHouseController extends BaseController
     /**
      * 根据项目编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('tem:project:query')")
     @GetMapping(value = "/{houseBaseId}")
     public AjaxResult getInfo(@PathVariable String houseBaseId)
     {

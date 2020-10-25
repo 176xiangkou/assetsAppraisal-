@@ -198,7 +198,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="valuer != null and valuer != ''">valuer,</if>
 		<if test="referencePrice != null and referencePrice != ''">referencePrice,</if>
 		<if test="reportNumber != null and reportNumber != ''">reportNumber,</if>
-		<if test="reportDate != null ">reportDate,</if>
+		<if test="reportDate != null and reportDate != ''">reportDate,</if>
 		<if test="reportForm != null and reportForm != ''">reportForm,</if>
 		<if test="zgfArea != null and zgfArea != ''">zgfArea,</if>
 		<if test="manageYear != null and manageYear != ''">manageYear,</if>
@@ -243,7 +243,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="valuer != null and valuer != ''"> #{valuer},</if>
 		<if test="referencePrice != null and referencePrice != ''"> #{referencePrice},</if>
 		<if test="reportNumber != null and reportNumber != ''"> #{reportNumber},</if>
-		<if test="reportDate != null "> #{reportDate},</if>
+		<if test="reportDate != null and reportDate != ''"> #{reportDate},</if>
 		<if test="reportForm != null and reportForm != ''"> #{reportForm},</if>
 		<if test="zgfArea != null and zgfArea != ''"> #{zgfArea},</if>
 		<if test="manageYear != null and manageYear != ''"> #{manageYear},</if>
@@ -354,7 +354,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="valuer != null and valuer != ''">  valuer = #{valuer},</if>
 			<if test="referencePrice != null and referencePrice != ''">  referencePrice = #{referencePrice},</if>
 			<if test="reportNumber != null and reportNumber != ''">  reportNumber = #{reportNumber},</if>
-			<if test="reportDate != null ">  reportDate = #{reportDate},</if>
+			<if test="reportDate != null and reportDate != ''">  reportDate = #{reportDate},</if>
 			<if test="reportForm != null and reportForm != ''">  reportForm = #{reportForm},</if>
 			<if test="zgfArea != null and zgfArea != ''">  zgfArea = #{zgfArea},</if>
 			<if test="manageYear != null and manageYear != ''">  manageYear = #{manageYear},</if>
@@ -401,7 +401,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="solidFactorCorrectionFactor != null and solidFactorCorrectionFactor != ''">  solidFactorCorrectionFactor = #{solidFactorCorrectionFactor},</if>
 			<if test="evaluateUnitPrice != null">  evaluateUnitPrice = #{evaluateUnitPrice},</if>
 			<if test="tompensationPropertyOwner != null and tompensationPropertyOwner != ''">  tompensationPropertyOwner = #{tompensationPropertyOwner},</if>
-			<if test="tenantCompensation != null and tenantCompensation != ''">  valuer = #{tenantCompensation},</if>
+			<if test="tenantCompensation != null and tenantCompensation != ''">  tenantCompensation = #{tenantCompensation},</if>
 			<if test="benchmarkVO != null and benchmarkVO != ''">  benchmarkVO = #{benchmarkVO},</if>
 			<if test="commercialUseCorrectionFactor != null and commercialUseCorrectionFactor != ''">  commercialUseCorrectionFactor = #{commercialUseCorrectionFactor},</if>
 			<if test="commercialStreetCorrectionFactor != null and commercialStreetCorrectionFactor != ''">  commercialStreetCorrectionFactor = #{commercialStreetCorrectionFactor},</if>

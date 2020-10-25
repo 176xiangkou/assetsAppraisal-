@@ -25,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 									SELECT
 					r.id,
 					r.projectId,
+					r.houseBaseId,
 					r.houseNumber,
 					r.area,
 					r.replacementPrice,
@@ -46,8 +47,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="id != null and id != 0">
 			AND r.id = #{id}
 		</if>
-		<if test="projectId != null and projectId != 0">
+		<if test="projectId != null and projectId != ''">
 			AND r.projectId = #{projectId}
+		</if>
+		<if test="houseBaseId != null and houseBaseId != ''">
+			AND r.houseBaseId = #{houseBaseId}
 		</if>
 	</select>
 

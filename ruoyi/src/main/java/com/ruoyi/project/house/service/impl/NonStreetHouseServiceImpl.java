@@ -82,7 +82,9 @@ public class NonStreetHouseServiceImpl implements INonStreetHouseService
 
         // 修改未确权房屋信息
         int row = 0;
-        nonStreetHouseMapper.deleteNonStreetHouseByHouseBaseId(nonStreetHouseList.get(0).getHouseBaseId());
+        if(nonStreetHouseList != null && !("").equals(nonStreetHouseList.get(0).getHouseBaseId())) {
+            nonStreetHouseMapper.deleteNonStreetHouseByHouseBaseId(nonStreetHouseList.get(0).getHouseBaseId());
+        }
         for(NonStreetHouse n : nonStreetHouseList){
             row = nonStreetHouseMapper.insertNonStreetHouse(n);
         }

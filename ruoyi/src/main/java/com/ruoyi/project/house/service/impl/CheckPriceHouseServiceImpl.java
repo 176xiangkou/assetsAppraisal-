@@ -81,7 +81,9 @@ public class CheckPriceHouseServiceImpl implements ICheckPriceHouseService
     public int updateCheckPriceHouse(List<CheckPriceHouse> checkPriceHouseList)
     {
         int row = 0;
-        checkPriceHouseMapper.deleteCheckPriceHouseByHouseBaseId(checkPriceHouseList.get(0).getHouseBaseId());
+        if(checkPriceHouseList != null && !("").equals(checkPriceHouseList.get(0).getHouseBaseId())) {
+            checkPriceHouseMapper.deleteCheckPriceHouseByHouseBaseId(checkPriceHouseList.get(0).getHouseBaseId());
+        }
         for(CheckPriceHouse n : checkPriceHouseList){
             row = checkPriceHouseMapper.insertCheckPriceHouse(n);
         }

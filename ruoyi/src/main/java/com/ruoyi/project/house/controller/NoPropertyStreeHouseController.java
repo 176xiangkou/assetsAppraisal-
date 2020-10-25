@@ -15,7 +15,9 @@ import com.ruoyi.project.house.service.INonStreetHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 未确权房屋/非沿街
@@ -63,6 +65,29 @@ public class NoPropertyStreeHouseController extends BaseController
           row = NonStreetHouseService.updateNonStreetHouse(noPropertyStreeHouse.getNonStreetHouseList());
         return toAjax(row);
 
+    }
+
+    /**
+     * 获取住改非面积总和
+     */
+    @GetMapping(value = "/getNonStreetInfo")
+    public AjaxResult getNonStreetInfo( String houseBaseId)
+    {
+        NonStreetHouse nonStreetHouse = new NonStreetHouse();
+        nonStreetHouse.setHouseBaseId(houseBaseId);
+        NoPropertyStreeHouse noPropertyStreeHouse = new NoPropertyStreeHouse();
+        List<NonStreetHouse> nonStreetHouseList = NonStreetHouseService.selectNonStreetHouseList(nonStreetHouse);
+        List<String> list = new ArrayList<>();
+        double zgf = 0;
+        for(NonStreetHouse n : nonStreetHouseList){
+            if(n.getNonRedevelopedArea() != null && !"".equals(n.getNonRedevelopedArea())){
+                zgf = zgf + Double.parseDouble(n.getNonRedevelopedArea());
+            }
+
+        }
+
+
+        return AjaxResult.success(zgf);
     }
 
 
