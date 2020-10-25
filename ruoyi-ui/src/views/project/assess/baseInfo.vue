@@ -129,13 +129,13 @@
         const index = this.formList.formColumns.findIndex(item => {
           return item.dataIndex === type
         })
-        getDicts(type).then(res => {
+        if (index > -1)
+          getDicts(type).then(res => {
            res.data.map(item => {
              const {dictLabel, dictValue} = item;
                item.text = dictLabel
                item.value = dictValue
            });
-
            this.formList.formColumns[index].selectList = res.data;
         })
       },

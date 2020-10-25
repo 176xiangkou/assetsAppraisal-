@@ -3,7 +3,7 @@
       <editorTable :tabData.sync="tabObj[bItem.tabKey]"
                    :isEditor="isEditor"
                    v-for="bItem in tablesKey"
-                   :nameObj="{label: bItem.label, button: '新增'}"
+                   :nameObj="{label: bItem.label, button: '新增', tabBasePramas: {houseBaseId: projectObj.houseBaseId}}"
                    @change="onChange"
                    :columns="formList[bItem.columnKey]">
         <template slot-scope="{tableRow}"
@@ -12,7 +12,7 @@
           <FormInput
             v-if="item.scopedSlots.customRender !== 'edit'"
             :key="index"
-            v-bind="{wholeType: isEditor, ...item}"
+            v-bind="{wholeType: isEditor ? 'input' : 'span', ...item}"
             v-model="tabObj[bItem.tabKey][tableRow.index][item.dataIndex]"
           />
         </template>
@@ -21,7 +21,7 @@
         </div>
       </editorTable>
     <div style="margin: 0 auto;display: block;text-align: center">
-      <a-button type="primary" @click="submitAll">保存</a-button>
+      <a-button type="primary" @click="submitAll()">保存</a-button>
     </div>
   </div>
 </template>
@@ -32,9 +32,11 @@
   import FormInput from '@/components/form/Input'
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
+  import {addNoPropertyMes, noPropertyMes, updateNoPropertyMes} from "../../../api/project/assess";
   export default {
     name: "updateHouse",
     components: {editorTable, BaseForm, FormInput},
+    props: ['projectObj'],
     data() {
       return {
         formList: getFormDatas('updateHouse'),
@@ -59,8 +61,20 @@
         ]
       }
     },
+    watch: {
+      projectObj: {
+        deep: true,
+        handler() {
+          this.noPropertyMes();
+        }
+      }
+    },
     methods: {
-      submitAll() {
+      submitAll(type) {
+        const {tabData, tabData1} = this.tabObj;
+        addNoPropertyMes({noPropertyHouseList: tabData, nonStreetHouseList: tabData1}).then(() => {
+            this.$message.success('保存成功')
+        })
 
       },
       remove(tabKey, index) {
@@ -71,18 +85,42 @@
         console.log(val);
 
       },
+      addNoPropertyMes(type, pramas) {
+        const api = {
+          addNoPropertyMes,
+          updateNoPropertyMes,
+          noPropertyMes
+        }
+        api[type]({...pramas, projectId: this.projectObj.id}).then(res => {
+          if (type === 'noPropertyMes') return this.tabObj.tabData = res.data;
+          let mes = '保存成功';
+          if (type === 'updateNoPropertyMes') mes = '修改成功'
+          else if (type === 'noPropertyMes') mes = null;
+          mes && this.$message.success(mes);
+        })
+
+      },
       onChange() {},
+      noPropertyMes() {
+          noPropertyMes({houseBaseId: this.projectObj.houseBaseId}).then(res => {
+            if (!res.data) return
+              this.tabObj.tabData = res.data.noPropertyHouseList;
+              this.tabObj.tabData1 = res.data.nonStreetHouseList;
+
+          }) 
+      },
 
     },
     created() {
-      console.log(3454354, this.tabData);
+      console.log(3454354, this.projectObj);
+
       const {type, id, categoryPid} = this.$route.query;
       if (type === 'detail') {
         this.wholeType = 'span';
         this.isEditor =false;
       }
-      if (categoryPid) this.formParams = {categoryPid, id: 0};
-      if (id) this.getList(id);
+      this.noPropertyMes();
+
     }
   }
 </script>

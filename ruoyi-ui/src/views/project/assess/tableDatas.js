@@ -89,16 +89,16 @@ const list = {
         title: '估价时点',
         dataIndex: 'evaluateTime',
       },{
-        title: '承租人',
+        title: '使用人',
         dataIndex: 'tenant',
       },{
         title: '记录员',
         dataIndex: 'registrar',
-      },{
+      },/*{
         title: '签收日期',
         dataIndex: 'lodgmentTime',
         inputType: 'datePicker',
-      },{
+      },*/{
         title: '评估员',
         dataIndex: 'evaluator',
         inputType: 'select',
@@ -108,10 +108,10 @@ const list = {
         dataIndex: 'valuer',
         inputType: 'select',
         selectList: [],
-      },{
+      },/*{
         title: '区位基准价',
         dataIndex: 'referencePrice',
-      },{
+      },*/{
         title: '报告编号',
         dataIndex: 'reportNumber',
       },{
@@ -161,17 +161,17 @@ const list = {
         inputType: 'inputNumber',
         disabled: true,
 
-      },{
+      },/*{
         title: '经营年限',
         dataIndex: 'manageYear',
         disabled: true,
 
-      },{
+      },*/{
         title: '单位统称',
         dataIndex: 'unitAs',
 
       },{
-        title: '委托方',
+        title: '估价委托员',
         dataIndex: 'entrustingParty',
         disabled: true,
         // inputType: 'select',
@@ -190,33 +190,36 @@ const list = {
         dataIndex: 'landProperty',
         inputType: 'select',
         selectList: [],
-      },{
+      },/*{
         title: '区位级别',
         dataIndex: 'regionalLevel',
         inputType: 'select',
         selectList: [],
-      },{
+      },*//*{
         title: '结构等级',
         dataIndex: 'structureLevel',
         inputType: 'select',
         selectList: [],
-      },{
+      },*//*{
         title: '层次/总层',
         dataIndex: 'level',
-      },{
+      },*//*{
         title: '朝向',
         inputType: 'select',
         selectList: [],
         dataIndex: 'toward',
-      },{
+      },*/{
         title: '成套与否',
         inputType: 'select',
         selectList: [{
-          text: '是',
-          value: '是'
+          text: '成套',
+          value: '成套'
         },{
-          text: '否',
-          value: '否'
+          text: '非成套',
+          value: '非成套'
+        },{
+          text: '独立门院',
+          value: '独立门院'
         },],
         dataIndex: 'isComplete',
       },{
@@ -226,10 +229,10 @@ const list = {
         title: '地大于房面积',
         dataIndex: 'ddyfArea',
 
-      },{
+      },/*{
         title: '新建不满5年补偿%',
         dataIndex: 'xjbmwnCompensation',
-      },
+      },*/
 
       {
         title: '土地用途',
@@ -247,12 +250,12 @@ const list = {
           },
         ],
         dataIndex: 'landUse',
-      },{
+      },/*{
         title: '容积率',
         dataIndex: 'plotratio',
         inputType: 'inputNumber',
 
-      },{
+      },*/{
         // title: '附着物前空行*1',
         dataIndex: 'planDesc1',
         inputType: 'inputNumber',
@@ -281,17 +284,17 @@ const list = {
         title: '初审员',
         dataIndex: 'planDesc1',
       },{
-        title: '备注',
+        title: '表格备注',
         dataIndex: 'mark',
         inputType: 'textArea',
         wrapperCol: {span: 9.2}
       },
-      {
-        title: '表格备注',
-        dataIndex: 'tableNote',
-        inputType: 'textArea',
-        wrapperCol: {span: 13.9},
-      },
+      // {
+      //   title: '表格备注',
+      //   dataIndex: 'tableNote',
+      //   inputType: 'textArea',
+      //   wrapperCol: {span: 13.9},
+      // },
     ],
     tabColumns: [
       {
@@ -300,7 +303,7 @@ const list = {
         scopedSlots: {customRender: "roomNumber"},
       },
       {
-        title: '面积(m2)',
+        title: '建筑面积(m2)',
         dataIndex: 'area',
         scopedSlots: {customRender: "total"},
         inputType: 'inputNumber',
@@ -509,32 +512,32 @@ const list = {
     tabColumns: [
       idColumns,
       {
-        title: '面积(m2)',
-        dataIndex: 'templateStatus',
-        scopedSlots: {customRender: "templateStatus"},
+        title: '建筑面积(m2)',
+        dataIndex: 'area',
+        scopedSlots: {customRender: "area"},
         inputType: 'inputNumber',
       },
       {
         title: '重置价格',
-        dataIndex: 'templateDesc',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'houseNumber',
+        scopedSlots: {customRender: "houseNumber"},
 
       },{
         title: '状况修正系数',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'conditionCorrectionFactor',
+        scopedSlots: {customRender: "conditionCorrectionFactor"},
       },{
         title: '层高修正系数',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'heightCorrectionFactor',
+        scopedSlots: {customRender: "heightCorrectionFactor"},
       },{
         title: '成新修正系数',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'newCorrectionCoefficient',
+        scopedSlots: {customRender: "newCorrectionCoefficient"},
       },{
         title: '评估单价',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'evaluatePrice',
+        scopedSlots: {customRender: "evaluatePrice"},
         inputType: 'inputNumber'
       },
       editColumns
@@ -543,23 +546,23 @@ const list = {
       idColumns,
       {
         title: '住非改面积S3面积(m2)',
-        dataIndex: 'templateStatus',
-        scopedSlots: {customRender: "templateStatus"},
+        dataIndex: 'nonRedevelopedArea',
+        scopedSlots: {customRender: "nonRedevelopedArea"},
         inputType: 'inputNumber',
       },
       {
         title: '经营年限(年)',
-        dataIndex: 'templateDesc',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'operationsDuration',
+        scopedSlots: {customRender: "operationsDuration"},
 
       },{
         title: '非沿街住改非定额补助标准（元/m2）',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'nonStreetResidents',
+        scopedSlots: {customRender: "nonStreetResidents"},
       },{
         title: '住非改增加补偿金额（元）',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime"},
+        dataIndex: 'increaseAmountCompensation',
+        scopedSlots: {customRender: "increaseAmountCompensation"},
       },
       editColumns
     ],
@@ -568,79 +571,24 @@ const list = {
     tabColumns: [
       {
         title: '名称',
-        dataIndex: 'templateStatus',
-        scopedSlots: {customRender: "templateStatus"},
-        inputType: 'select',
-        selectList: []
-      },
-      {
-        title: '单价',
-        dataIndex: 'price',
-        scopedSlots: {customRender: "price"},
-        wholeType: 'span'
-      },{
-        title: '公式',
-        dataIndex: 'gongshi',
-        scopedSlots: {customRender: "gongshi"},
-      },{
-        title: '数量',
-        dataIndex: 'number',
-        scopedSlots: {customRender: "number"},
-
-        wholeType: 'span'
-      },{
-        title: '成新率',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime1"},
-        inputType: 'inputNumber'
-      },{
-        title: '评估值',
-        dataIndex: 'values',
-        scopedSlots: {customRender: "values"},
-        inputType: 'inputNumber',
-        wholeType: 'span',
-        step: 0.0001
-      },idsColumns,
-      {
-        title: '单位',
-        dataIndex: 'unit',
-        scopedSlots: {customRender: "unit"},
-        wholeType: 'span'
-      },{
-        title: '房号',
-        dataIndex: 'houseNum',
-        scopedSlots: {customRender: "houseNum"},
-      },
-      editColumns
-    ],
-    tabColumns1: [
-      {
-        title: '名称',
         dataIndex: 'name',
         scopedSlots: {customRender: "name"},
         inputType: 'select',
-        selectList: [
-          {
-            text: '名称1',
-            value: 1,
-          },{
-            text: '名称2JAO',
-            value: 2,
-          },{
-            text: '名称3wwJpi',
-            value: 3,
-          },
-        ]
+        selectList: [],
+        labelName: 'name',
+        valueName: 'id',
+        valType: 'Number',
+        allowClear: false
       },
       {
         title: '单价',
-        dataIndex: 'price',
-        scopedSlots: {customRender: "price"},
+        dataIndex: 'unitPrice',
+        scopedSlots: {customRender: "unitPrice"},
         wholeType: 'span'
       },{
         title: '公式',
-        dataIndex: 'gongshi',
-        scopedSlots: {customRender: "gongshi"},
+        dataIndex: 'formula',
+        scopedSlots: {customRender: "formula"},
       },{
         title: '数量',
         dataIndex: 'number',
@@ -654,11 +602,65 @@ const list = {
         inputType: 'inputNumber'
       },{
         title: '评估值',
-        dataIndex: 'values',
-        scopedSlots: {customRender: "values"},
+        dataIndex: 'assessmentValue',
+        scopedSlots: {customRender: "assessmentValue"},
         inputType: 'inputNumber',
         wholeType: 'span',
-        step: 0.4
+        step: 0.0001
+      },idsColumns,
+      {
+        title: '单位',
+        dataIndex: 'unit',
+        scopedSlots: {customRender: "unit"},
+        wholeType: 'span'
+      },{
+        title: '房号',
+        dataIndex: 'serialNumber',
+        scopedSlots: {customRender: "serialNumber"},
+      },
+      editColumns
+    ],
+    tabColumns1: [
+      {
+        title: '名称',
+        dataIndex: 'name',
+        scopedSlots: {customRender: "name"},
+        inputType: 'select',
+        selectList: [],
+        labelName: 'name',
+        valueName: 'id',
+        valType: 'Number',
+        allowClear: false
+
+
+      },
+      {
+        title: '单价',
+        dataIndex: 'unitPrice',
+        scopedSlots: {customRender: "unitPrice"},
+        wholeType: 'span'
+      },{
+        title: '公式',
+        dataIndex: 'formula',
+        scopedSlots: {customRender: "formula"},
+      },{
+        title: '数量',
+        dataIndex: 'number',
+        scopedSlots: {customRender: "number"},
+
+        wholeType: 'span'
+      },{
+        title: '成新率',
+        dataIndex: 'newRate',
+        scopedSlots: {customRender: "newRate"},
+        inputType: 'inputNumber'
+      },{
+        title: '评估值',
+        dataIndex: 'assessmentValue',
+        scopedSlots: {customRender: "assessmentValue"},
+        inputType: 'inputNumber',
+        wholeType: 'span',
+        step: 0.0001
       },idsColumns,
       {
         title: '单位',
@@ -673,26 +675,34 @@ const list = {
     tabColumns: [
       {
         title: '分类名称',
-        dataIndex: 'templateStatus',
-        scopedSlots: {customRender: "templateStatus"},
+        dataIndex: 'categoryName',
+        scopedSlots: {customRender: "categoryName"},
         inputType: 'select',
-        selectList: []
+        labelName: 'dictLabel',
+        valueName: 'dictCode',
+        selectList: [],
+        valType: 'Number'
       },
       {
         title: '名称',
-        dataIndex: 'price',
-        scopedSlots: {customRender: "price"},
+        dataIndex: 'name',
+        scopedSlots: {customRender: "name"},
         inputType: 'select',
-        selectList: []
+        selectList: [],
+        labelName: 'name',
+        valueName: 'id',
+        valType: 'Number',
+        allowClear: false
       },{
         title: '单价',
-        dataIndex: 'gongshi1',
+        dataIndex: 'unitPrice',
         step: 0.01,
-        scopedSlots: {customRender: "gongshi1"},
+        scopedSlots: {customRender: "unitPrice"},
+        wholeType: 'span'
       },{
         title: '公式',
-        dataIndex: 'gongshi',
-        scopedSlots: {customRender: "gongshi"},
+        dataIndex: 'formula',
+        scopedSlots: {customRender: "formula"},
       },{
         title: '数量',
         dataIndex: 'number',
@@ -701,13 +711,13 @@ const list = {
         wholeType: 'span'
       },{
         title: '成新率',
-        dataIndex: 'templateDesc1',
-        scopedSlots: {customRender: "createTime1"},
+        dataIndex: 'newRate',
+        scopedSlots: {customRender: "newRate"},
         inputType: 'inputNumber'
       },{
         title: '评估值',
-        dataIndex: 'values',
-        scopedSlots: {customRender: "values"},
+        dataIndex: 'assessmentValue',
+        scopedSlots: {customRender: "assessmentValue"},
         inputType: 'inputNumber',
         wholeType: 'span',
         step: 0.0001

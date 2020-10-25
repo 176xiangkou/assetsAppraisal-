@@ -3,7 +3,7 @@
     <editorTable :tabData.sync="tabObj[bItem.tabKey]"
                  :isEditor="isEditor"
                  v-for="bItem in tablesKey"
-                 :nameObj="{label: bItem.label, button: '新增', tabBasePramas: {unit: '元/m2', newRate: 1, houseNum: getDefaultHouseNum(bItem.tabKey)}}"
+                 :nameObj="{label: bItem.label, button: '新增', tabBasePramas: {houseBaseId: projectObj.houseBaseId, unit: '元/m2', newRate: 1, serialNumber: getDefaultHouseNum(bItem.tabKey)}}"
                  @change="onChange"
                  :columns="formList[bItem.columnKey]">
       <template slot-scope="{tableRow}"
@@ -13,7 +13,7 @@
           v-if="item.scopedSlots.customRender !== 'edit'"
           :key="index"
           @change="(val) => getTotal(bItem.tabKey, tableRow.index, val, item.scopedSlots.customRender)"
-          v-bind="{wholeType: isEditor, ...item}"
+          v-bind="{wholeType: isEditor ? 'input' : 'span', ...item}"
           v-model="tabObj[bItem.tabKey][tableRow.index][item.dataIndex]"
         />
       </template>
@@ -27,7 +27,7 @@
       </div>
     </editorTable>
     <div style="margin: 0 auto;display: block;text-align: center">
-      <a-button type="primary" @click="submitAll">保存</a-button>
+      <a-button type="primary" @click="submitAll()">保存</a-button>
     </div>
   </div>
 </template>
@@ -38,9 +38,14 @@
   import FormInput from '@/components/form/Input'
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
+  import {decorateAttached, decorateAttachedList} from '@/api/project/assess'
+  import {listPrice} from "../../../api/project/price";
+
+
   export default {
     name: "trimPrice",
     components: {editorTable, BaseForm, FormInput},
+    props: ['projectObj'],
     data() {
       return {
         formList: getFormDatas('trimPrice'),
@@ -65,29 +70,54 @@
         ]
       }
     },
+    watch: {
+      projectObj: {
+        deep: true,
+        handler() {
+          this.decorateAttachedList();
+        }
+      }
+    },
     methods: {
       getDefaultHouseNum(key) {
         if (key === 'tabData') {
           const length = this.tabObj.tabData.length
-          return  length ? this.tabObj.tabData[length-1].houseNum : 1
+          return  length ? this.tabObj.tabData[length-1].serialNumber : 1
         }
       },
       getTotal(tabKey, index, val, customRender) {
-        let list = this.tabObj[tabKey][index]
-        if (customRender === 'gongshi') {
+        let list = this.tabObj[tabKey][index];
+        if (customRender === 'name') {
+          // 切换名称改变单价和单位
+          const slist = this.formList.tabColumns[0].selectList.find(item => {
+            return item.id === val.val
+          })
+          this.tabObj[tabKey][index].unitPrice = slist ? slist.price : '';
+          list.unitPrice = slist ? parseInt(slist.price) : '';
+        }
+        if (customRender === 'formula' || customRender === 'name') {
           try {
-            this.tabObj[tabKey][index].number = eval(val);
-            if (list.price)
-              this.tabObj[tabKey][index].values = list.number * list.price;
+            if (customRender === 'formula') {
+              this.tabObj[tabKey][index].number = eval(val)
+              // else this.tabObj[tabKey][index].number = 0
+            }
+            if (list.unitPrice)
+              this.tabObj[tabKey][index].assessmentValue = (list.number || 0) * list.unitPrice;
           } catch (e) {
           }
-        } else if (customRender === 'name') {
-          // 切换名称改变单价和单位
         }
-
       },
       submitAll() {
-
+        const {tabData, tabData1} = this.tabObj;
+         decorateAttached({attachedPriceHouseList: tabData1, decoratePriceHouseList: tabData}).then(() => {
+           this.$message.success('保存成功')
+         })
+      },
+       decorateAttachedList() {
+        decorateAttachedList({houseBaseId: this.projectObj.houseBaseId}).then(res => {
+            this.tabObj.tabData1 = res.data.attachedPriceHouseList
+            this.tabObj.tabData = res.data.decoratePriceHouseList
+        })
       },
       remove(tabKey, index) {
         this.tabObj[tabKey].splice(index, 1);
@@ -98,6 +128,14 @@
 
       },
       onChange() {},
+      getList() {
+        listPrice().then(
+          response => {
+            this.formList.tabColumns[0].selectList = response.rows
+            this.formList.tabColumns1[0].selectList = response.rows
+          }
+        );
+      },
 
     },
     created() {
@@ -107,8 +145,8 @@
         this.wholeType = 'span';
         this.isEditor =false;
       }
-      if (categoryPid) this.formParams = {categoryPid, id: 0};
-      if (id) this.getList(id);
+      this.getList();
+      this.decorateAttachedList();
     }
   }
 </script>

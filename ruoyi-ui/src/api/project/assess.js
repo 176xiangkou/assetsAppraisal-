@@ -92,3 +92,52 @@ export function exportRole(query) {
     params: query
   })
 }
+// 查询未确权房屋信息和非沿街
+export function noPropertyMes(params) {
+  return request({
+    url: `/house/noPropertyStree/${params.houseBaseId}`,
+    method: 'get',
+    params
+  })
+}
+// 添加未确权房屋信息和非沿街 nonStreetHouseList noPropertyHouseList
+export function addNoPropertyMes(data) {
+  return request({
+    url: '/house/noPropertyStree',
+    method: 'post',
+    data
+  })
+}
+
+
+
+export function checkList(params) {
+  return request({
+    url: `/house/check/${params.houseBaseId}`,
+    method: 'get',
+    params
+  })
+}
+// checkPriceHouseList
+export function addCheck(data) {
+  return request({
+    url: '/house/check',
+    method: 'post',
+    data
+  })
+}
+export function decorateAttachedList(params) {
+  return request({
+    url: `/house/decorateAttached/${params.houseBaseId}`,
+    method: 'get',
+    params
+  })
+}
+// | attachedPriceHouseList   decoratePriceHouseList
+export function decorateAttached(data) {
+  return request({
+    url: '/house/decorateAttached',
+    method: 'post',
+    data
+  })
+}
