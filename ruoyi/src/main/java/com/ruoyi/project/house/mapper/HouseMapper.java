@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * 房产基础表 数据层
- * 
+ *
  * @author ruoyi
  */
 public interface HouseMapper
@@ -92,5 +92,12 @@ public interface HouseMapper
      * @return 结果
      */
     public int deleteProjectHouseById(@Param("houseBaseId") String houseBaseId);
+    /**
+     * 通过房产基本ID查询房产房屋关系信息
+     *
+     * @param houseBaseId 房产基本ID
+     * @return 结果
+     */
+    public List<HouseBaseInfo> selectProjectHouseById(@Param("houseBaseId") String houseBaseId);
 
 }

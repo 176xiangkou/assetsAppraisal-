@@ -25,7 +25,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 
 /**
  * 房屋信息
- * 
+ *
  * @author ruoyi
  */
 @RestController
@@ -34,7 +34,7 @@ public class HouseController extends BaseController
 {
     @Autowired
     private IHouseService houseService;
- 
+
 
     /**
      * 查询房产列表

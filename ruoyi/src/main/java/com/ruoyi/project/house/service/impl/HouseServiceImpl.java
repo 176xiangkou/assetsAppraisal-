@@ -19,7 +19,7 @@ import com.ruoyi.project.system.service.ISysUserService;
 
 /**
  * 房产基本 业务层处理
- * 
+ *
  * @author ruoyi
  */
 @Service
@@ -28,7 +28,7 @@ public class HouseServiceImpl implements IHouseService
     private static final Logger log = LoggerFactory.getLogger(HouseServiceImpl.class);
 
     @Autowired
-    private HouseMapper houseMapper; 
+    private HouseMapper houseMapper;
 
     @Autowired
     private ISysConfigService configService;
@@ -87,7 +87,7 @@ public class HouseServiceImpl implements IHouseService
 
     /**
      * 修改保存房产基本信息
-     * 
+     *
      * @param house 房产基本信息
      * @return 结果
      */
@@ -100,9 +100,15 @@ public class HouseServiceImpl implements IHouseService
              row =    houseMapper.updateHouse(house);
         }
         if("0".equals(house.getOnBaseInfo())) {
-            List<HouseInfo> list = house.getHouseInfo();
-            for (HouseInfo h : list) {
-                row = houseMapper.updateHouseInfo(h);
+            List <HouseBaseInfo> projectHouseList = houseMapper.selectProjectHouseById(house.getHouseBaseId());
+            if(projectHouseList.size() > 0) {
+                String houseId = projectHouseList.get(0).getHouseId();
+                houseMapper.deleteHouseInfoById(house.getHouseBaseId());
+                List<HouseInfo> list = house.getHouseInfo();
+                for (HouseInfo h : list) {
+                    h.setHouseInfoId(houseId);
+                    row = houseMapper.insertHouseInfo(h);
+                }
             }
         }
         return row;
@@ -111,7 +117,7 @@ public class HouseServiceImpl implements IHouseService
 
     /**
      * 通过房产基本ID删除房产基本
-     * 
+     *
      * @param houseBaseId 房产基本ID
      * @return 结果
      */
