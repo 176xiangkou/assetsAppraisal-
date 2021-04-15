@@ -141,3 +141,18 @@ export function decorateAttached(data) {
     data
   })
 }
+export function getHouseBaseArea(params) {
+  return request({
+    url: '/house/base/getHouseBaseArea',
+    method: 'get',
+    params
+  })
+}
+// 获取住改非面积总和
+export function getNonStreetInfo(params) {
+  return request({
+    url: '/house/noPropertyStree/getNonStreetInfo',
+    method: 'get',
+    params
+  })
+}

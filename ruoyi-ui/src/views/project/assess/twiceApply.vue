@@ -40,9 +40,11 @@
   import BaseForm from "../../../components/baseForm/BaseForm";
   import {addCheck, checkList} from '@/api/project/assess'
   import {listPrice} from "../../../api/project/price";
+  import trimPrice from './trimPrice'
+  import {decorateAttached, decorateAttachedList} from "../../../api/project/assess";
   export default {
     name: "trimPrice",
-    components: {editorTable, BaseForm, FormInput},
+    components: {editorTable, BaseForm, FormInput, trimPrice},
     props: ['projectObj'],
     data() {
       return {
@@ -52,12 +54,23 @@
         formParams: {},
         tabObj: {
           tabData: [],
+          tabData1: [],
+          tabData2: [],
         },
         tablesKey: [
           {
             label: '房屋其他及复核价格信息',
             tabKey: 'tabData',
             columnKey: 'tabColumns',
+          },   {
+            label: '房装装修价格信息',
+            tabKey: 'tabData1',
+            columnKey: 'tabColumns1',
+          },
+          {
+            label: '房屋附属价格信息',
+            tabKey: 'tabData2',
+            columnKey: 'tabColumns2',
           },
         ]
       }
@@ -68,41 +81,63 @@
         handler() {
           this.checkList();
         }
+      },
+      'tabObj': {
+        deep: true,
+        handler(val) {
+          Object.keys(val).map((key, index) => {
+            if (val[key].length) {
+              const tab = val[key];
+              const endList = tab[tab.length - 1]
+              const column = this.formList[this.tablesKey[index].columnKey].slice(0,8);
+              let isHaveDataNum = 0;
+              for (let item of column) {
+                if (item.dataIndex && endList[item.dataIndex]) {
+                  isHaveDataNum++;
+                }
+              }
+              if (isHaveDataNum > 2) {
+                this.tabObj[key].push({houseBaseId: this.projectObj.houseBaseId, unit: '元/m2', newRate: 1, serialNumber: this.getDefaultHouseNum(key)})
+              }
+            }
+          })
+        }
       }
     },
     methods: {
       getDefaultHouseNum(key) {
-        if (key === 'tabData') {
-          const length = this.tabObj.tabData.length
-          return  length ? this.tabObj.tabData[length-1].serialNumber : 1
-        }
+        // if (key === 'tabData') {
+          const length = this.tabObj[key].length
+          return  length ? this.tabObj[key][length-1].serialNumber : 1
+        // }
       },
       getTotal(tabKey, index, val, customRender) {
         let list = this.tabObj[tabKey][index];
         if (customRender === 'name') {
           // 切换名称改变单价和单位
-          const slist = this.formList.tabColumns[1].selectList.find(item => {
+          const slist = this.formList.tabColumns[2].selectList.find(item => {
             return item.id === val.val
           })
           this.tabObj[tabKey][index].unitPrice = slist ? slist.price : '';
           list.unitPrice = slist ? parseInt(slist.price) : '';
         }
         if (customRender === 'formula' || customRender === 'name') {
+          console.log(index, val, customRender);
+
           try {
             if (customRender === 'formula') {
-              this.tabObj[tabKey][index].number = eval(val)
-              // else this.tabObj[tabKey][index].number = 0
+              this.$set(this.tabObj[tabKey], index, {...this.tabObj[tabKey][index], number: eval(val)})
             }
             if (list.unitPrice)
-              this.tabObj[tabKey][index].assessmentValue = (list.number || 0) * list.unitPrice;
+              this.tabObj[tabKey][index].assessmentValue = ((list.number || 0) * list.unitPrice).toFixed(2);
           } catch (e) {
           }
         }
       },
-      submitAll() {
-         addCheck( this.tabObj.tabData).then(() => {
-           this.$message.success('保存成功')
+      async submitAll() {
+         await addCheck( this.tabObj.tabData).then(() => {
          })
+        await this.submitAllPrice();
       },
       remove(tabKey, index) {
         this.tabObj[tabKey].splice(index, 1);
@@ -121,23 +156,45 @@
       getList() {
         listPrice().then(
           response => {
-            this.formList.tabColumns[1].selectList = response.rows
+            this.formList.tabColumns[2].selectList = response.rows
           }
         );
       },
+      getListPrice() {
+        listPrice().then(
+          response => {
+            this.formList.tabColumns1[1].selectList = response.rows
+            this.formList.tabColumns2[1].selectList = response.rows
+          }
+        );
+      },
+      decorateAttachedList() {
+        decorateAttachedList({houseBaseId: this.projectObj.houseBaseId}).then(res => {
+          this.tabObj.tabData2 = res.data.attachedPriceHouseList
+          this.tabObj.tabData1 = res.data.decoratePriceHouseList
+        })
+      },
+      submitAllPrice() {
+        const {tabData1, tabData2} = this.tabObj;
+        decorateAttached({attachedPriceHouseList: tabData2, decoratePriceHouseList: tabData1}).then(() => {
+          this.$message.success('保存成功')
+        })
+      },
     },
     created() {
-      console.log(3454354, this.tabData);
       const {type, id, categoryPid} = this.$route.query;
       if (type === 'detail') {
         this.wholeType = 'span';
         this.isEditor =false;
       }
+      // if (this.$route.path === '/')
       this.getDicts("categoryName").then(response => {
-        this.formList.tabColumns[0].selectList = response.data
+        this.formList.tabColumns[1].selectList = response.data
       });
       this.getList();
       this.checkList();
+      this.getListPrice();
+      this.decorateAttachedList();
 
     }
   }

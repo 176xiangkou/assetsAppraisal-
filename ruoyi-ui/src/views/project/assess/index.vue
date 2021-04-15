@@ -102,9 +102,7 @@
 
           </el-form-item>
         </el-form>
-
-
-        <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
+        <el-table row-class-name="trClass" v-loading="loading" :data="userList" @selection-change="handleSelectionChange" @row-dblclick="dbClick">
           <el-table-column type="selection" width="40" align="center"/>
           <el-table-column label="编号" align="center" width="50" prop="id"/>
           <el-table-column label="项目名称" width="200" align="center" prop="projectName"/>
@@ -167,9 +165,9 @@
       wrapClassName="newProjectDio"
       :title="title"
       :footer="null"
-      v-model="open"
+      :visible.sync="open"
       @ok="handleOk"
-      @cancel="() => changeStatus(false)"
+      @cancel="() => closeModal()"
     >
       <assess :projectObj="projectObj" @changeStatus="changeStatus"/>
     </a-modal>
@@ -361,11 +359,56 @@
       handleOk() {
 
       },
-      changeStatus(status) {
-        this.open = status;
-        const {projectName, projectId, entrustName} = this.projectObj
-        this.projectObj = {id: projectId, projectName, projectId, entrustName};
-        this.getList();
+      dbClick(row, column) {
+        this.$set(this.projectObj, 'houseBaseId', row.houseBaseId)
+        this.open = true;
+        console.log(row, column);
+      },
+      closeModal() {
+          this.$confirm('此操作将不会保存修改的数据, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.open = false;
+            const {projectName, projectId, entrustName} = this.projectObj
+            this.projectObj = {id: projectId, projectName, projectId, entrustName};
+            this.getList();
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消操作'
+            });
+          });
+
+      },
+      changeStatus(status, isDeleteTip) {
+        console.log('log');
+        if (isDeleteTip) {
+          this.$confirm('此操作将不会保存修改的数据, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.open = status;
+            const {projectName, projectId, entrustName} = this.projectObj
+            this.projectObj = {id: projectId, projectName, projectId, entrustName};
+            this.getList();
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        } else {
+          this.open = status;
+          const {projectName, projectId, entrustName} = this.projectObj
+          this.projectObj = {id: projectId, projectName, projectId, entrustName};
+          this.getList();
+        }
+
+
+
       },
       handleCancel() {
         this.open = false;
@@ -643,3 +686,11 @@
     }
   };
 </script>
+<style scoped lang="less">
+  .el-table {
+    & ::v-deep .trClass {
+      cursor: pointer;
+    }
+  }
+
+</style>

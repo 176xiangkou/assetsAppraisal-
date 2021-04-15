@@ -3,7 +3,7 @@
     <editorTable :tabData.sync="tabObj[bItem.tabKey]"
                  :isEditor="isEditor"
                  v-for="bItem in tablesKey"
-                 :nameObj="{label: bItem.label, button: '新增', tabBasePramas: {houseBaseId: projectObj.houseBaseId, unit: '元/m2', newRate: 1, serialNumber: getDefaultHouseNum(bItem.tabKey)}}"
+                 :nameObj="{label: bItem.label, button: '新增', tabBasePramas: {houseBaseId: project.houseBaseId, unit: '元/m2', newRate: 1, serialNumber: getDefaultHouseNum(bItem.tabKey)}}"
                  @change="onChange"
                  :columns="formList[bItem.columnKey]">
       <template slot-scope="{tableRow}"
@@ -26,9 +26,9 @@
         <a @click="remove(bItem.tabKey,tableRow.index)">移除</a>
       </div>
     </editorTable>
-    <div style="margin: 0 auto;display: block;text-align: center">
-      <a-button type="primary" @click="submitAll()">保存</a-button>
-    </div>
+    <!--<div style="margin: 0 auto;display: block;text-align: center">-->
+      <!--<a-button type="primary" @click="submitAll()">保存</a-button>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -45,7 +45,7 @@
   export default {
     name: "trimPrice",
     components: {editorTable, BaseForm, FormInput},
-    props: ['projectObj'],
+    props: ['project'],
     data() {
       return {
         formList: getFormDatas('trimPrice'),
@@ -71,10 +71,11 @@
       }
     },
     watch: {
-      projectObj: {
+      project: {
         deep: true,
         handler() {
-          this.decorateAttachedList();
+          if (this.project)
+            this.decorateAttachedList();
         }
       }
     },
@@ -89,7 +90,7 @@
         let list = this.tabObj[tabKey][index];
         if (customRender === 'name') {
           // 切换名称改变单价和单位
-          const slist = this.formList.tabColumns[0].selectList.find(item => {
+          const slist = this.formList.tabColumns[1].selectList.find(item => {
             return item.id === val.val
           })
           this.tabObj[tabKey][index].unitPrice = slist ? slist.price : '';
@@ -102,7 +103,7 @@
               // else this.tabObj[tabKey][index].number = 0
             }
             if (list.unitPrice)
-              this.tabObj[tabKey][index].assessmentValue = (list.number || 0) * list.unitPrice;
+              this.tabObj[tabKey][index].assessmentValue = ((list.number || 0) * list.unitPrice).toFixed(2);
           } catch (e) {
           }
         }
@@ -114,7 +115,7 @@
          })
       },
        decorateAttachedList() {
-        decorateAttachedList({houseBaseId: this.projectObj.houseBaseId}).then(res => {
+        decorateAttachedList({houseBaseId: this.project.houseBaseId}).then(res => {
             this.tabObj.tabData1 = res.data.attachedPriceHouseList
             this.tabObj.tabData = res.data.decoratePriceHouseList
         })
@@ -131,8 +132,8 @@
       getList() {
         listPrice().then(
           response => {
-            this.formList.tabColumns[0].selectList = response.rows
-            this.formList.tabColumns1[0].selectList = response.rows
+            this.formList.tabColumns[1].selectList = response.rows
+            this.formList.tabColumns1[1].selectList = response.rows
           }
         );
       },
@@ -145,8 +146,11 @@
         this.wholeType = 'span';
         this.isEditor =false;
       }
-      this.getList();
-      this.decorateAttachedList();
+      if (this.project) {
+        this.getList();
+        this.decorateAttachedList();
+      }
+
     }
   }
 </script>

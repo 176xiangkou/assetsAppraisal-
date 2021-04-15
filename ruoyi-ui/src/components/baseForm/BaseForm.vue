@@ -1,19 +1,24 @@
 <template>
   <div class="formWrapper" :class="layoutType">
-    <div v-for="form in formList"
-         v-bind="$attrs"
-         :class="{'align_start': layoutType === 'vertical_form'}"
-         class="flex align_center"
-         :style="{width: `${(form.wrapperCol ? form.wrapperCol.span : (wrapperCol && wrapperCol.span)) / 24 * 100}%`}"
-         :key="form.key">
-      <label style="display: block"
-             :class="{'ant-form-item-required': form.validateForm && form.validateForm.isRequire, 'disabled': form.disabled}"
-             :style="{width: `${(form.hasOwnProperty('labelWidth') ? form.labelWidth : labelWidth)}px`}">{{form.title}}</label>
+    <template v-for="(form, index) in formList">
+      <div :key="form.key"
+           :class="{'align_start': layoutType === 'vertical_form'}"
+           class="flex align_center"
+           :style="{width: `${(form.wrapperCol ? form.wrapperCol.span : (wrapperCol && wrapperCol.span)) / 24 * 100}%`, ...$attrs.style}"
+      >
+        <label :class="{'ant-form-item-required': form.validateForm && form.validateForm.isRequire}"
+               :style="{width: `${(form.hasOwnProperty('labelWidth') ? form.labelWidth : labelWidth)}px`, display: 'block'}"
+        >
+          {{ form.title }}{{ form.labelWidth === 0 ? '' : ':' }}
+        </label>
         <FormInput
-                v-bind="{ wholeType, ...form }"
-                v-model="formBind[form.dataIndex]"
+          v-model="formBind[form.dataIndex]"
+          v-bind="{ wholeType, ...form }"
+          @change="(val, dataIndex) => $emit('change', val, dataIndex)"
         />
-    </div>
+      </div>
+      <slot v-if="$slots[`slot${index}`]" :name="`slot${index}`"></slot>
+    </template>
   </div>
 </template>
 

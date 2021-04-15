@@ -12,6 +12,7 @@
         </a-button>
       </a-row>
     </a-col>
+    {{$scopedSlots}}
     <a-col :span="24">
       <a-table
         :dataSource="tabData"
@@ -25,7 +26,7 @@
         :bordered="true"
       >
         <!-- 自定义表格渲染项 -->
-        <template v-for="(colCustom, sindex) in columnsCustom" :slot="colCustom.customRender"
+        <template v-for="(colCustom, sindex) in columnsCustom(columns)" :slot="colCustom.customRender"
                   slot-scope="text, record, index">
           <span v-if="colCustom.customRender === 'idIndex'" :key="sindex">{{index + 1}}</span>
           <slot v-else-if="colCustom.customRender && $scopedSlots[colCustom.customRender]"
@@ -65,15 +66,37 @@
       addTabs: [Function],
     },
     computed: {
-      columnsCustom() {
-        return this.columns.filter(item => {
-          return item.scopedSlots
-        }).map(item => item.scopedSlots)
-      },
+      // columnsCustom() {
+      //   return this.columns.filter(item => {
+      //     if (item.children && item.children.length > 0) {
+      //       return item
+      //     }
+      //     return item.scopedSlots
+      //   }).map(item => item.scopedSlots)
+      // },
     },
     mounted() {
+      console.log(this.columnsCustom(this.columns));
     },
     methods: {
+      columnsCustom() {
+        const arr = []
+        const func = (columns) => columns.map(item => {
+          if (item.children && item.children.length > 0) {
+            return func(item.children)
+          }
+          if (item.scopedSlots) arr.push(item.scopedSlots)
+        })
+        func(this.columns);
+        return arr;
+
+        // return columns.filter(item => {
+        //   if (item.children && item.children.length > 0) {
+        //     return this.columnsCustom(item.children)
+        //   }
+        //   return item.scopedSlots
+        // }).map(item => item.scopedSlots)
+      },
       selectRows(val) {
         console.log(val);
       },

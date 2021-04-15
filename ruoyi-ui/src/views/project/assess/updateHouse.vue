@@ -67,7 +67,50 @@
         handler() {
           this.noPropertyMes();
         }
+      },
+      'tabObj': {
+        deep: true,
+        handler(val) {
+          Object.keys(val).map((key, index) => {
+            if (val[key].length) {
+              const tab = val[key];
+              const endList = tab[tab.length - 1]
+              const column = this.formList[this.tablesKey[index].columnKey].slice(1,7);
+              let isHaveDataNum = 0;
+              for (let item of column) {
+                if (item.dataIndex && endList[item.dataIndex]) {
+                  isHaveDataNum++;
+                }
+              }
+              if (isHaveDataNum > 0) {
+                this.tabObj[key].push({houseBaseId: this.projectObj.houseBaseId})
+              }
+            }
+          })
+        }
       }
+      // 'tabObj.tabData': {
+      //   deep: true,
+      //   handler(val) {
+      //     const values = Object.values(val[val.length - 1]).filter((s) => {
+      //       return s !== ''
+      //     });
+      //     if (val.length && values.length > 1) {
+      //       this.tabObj.tabData.push({houseBaseId: this.projectObj.houseBaseId})
+      //     }
+      //   }
+      // },
+      // 'tabObj.tabData1': {
+      //   deep: true,
+      //   handler(val) {
+      //     const values = Object.values(val[val.length - 1]).filter((s) => {
+      //       return s !== ''
+      //     });
+      //     if (val.length && values.length > 1) {
+      //       this.tabObj.tabData1.push({houseBaseId: this.projectObj.houseBaseId})
+      //     }
+      //   }
+      // },
     },
     methods: {
       submitAll(type) {
@@ -107,7 +150,7 @@
               this.tabObj.tabData = res.data.noPropertyHouseList;
               this.tabObj.tabData1 = res.data.nonStreetHouseList;
 
-          }) 
+          })
       },
 
     },

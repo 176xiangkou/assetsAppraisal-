@@ -50,6 +50,14 @@
                   )
                 )
             },{
+              label: '房屋信息',
+              key: resolve =>
+                require.ensure([], () =>
+                  resolve(
+                    require('./houseTab')
+                  )
+                )
+            },{
               label: '未确权房屋/非沿街往改非',
               key: resolve =>
                 require.ensure([], () =>
@@ -58,14 +66,14 @@
                   )
                 )
             },{
-              label: '房屋装修附属价格',
+              label: '房屋装修附属价格/二次拆装费用',
               key: resolve =>
                 require.ensure([], () =>
                   resolve(
                     require('./twiceApply')
                   )
                 )
-            },{
+            },/*{
               label: '二次拆装费用',
               key: resolve =>
                 require.ensure([], () =>
@@ -73,9 +81,8 @@
                     require('./trimPrice')
                   )
                 )
-            },]
+            },*/]
           }
-
       },
       methods: {
         callback(key) {

@@ -6,32 +6,32 @@
                 :formBind.sync="formParams"
                 style="justify-content: flex-start"
                 :label-width="70"
-                :wrapper-col="{span: 4.5}"
+                :wrapper-col="{span: 5.5}"
                 :wholeType="'input'"/>
     </div>
-    <div class="main">
-      <editorTable :tabData.sync="tabData"
-                   :scroll="{ x: 980}"
-                   :isEditor="isEditor"
-                   :nameObj="{label: '房屋信息', button: '新增', tabBasePramas: {objectType: '文本'}}"
-                   @change="onChange"
-                   :columns="formList[formParams.reportForm]">
-        <template slot-scope="{tableRow}"
-                  v-for="(item, index) in formList[formParams.reportForm]"
-                  :slot="item.scopedSlots.customRender">
-          <FormInput
-            :whole-type="item.wholeType || (isEditor ? 'input' : 'span')"
-            v-if="item.scopedSlots.customRender !== 'edit'"
-            :key="index"
-            v-bind="item"
-            v-model="tabData[tableRow.index][item.dataIndex]"
-          />
-        </template>
-        <div slot="edit" slot-scope="{tableRow}" class="edit" v-if="isEditor">
-          <a @click="remove(tableRow.index)">移除</a>
-        </div>
-      </editorTable>
-    </div>
+    <!--<div class="main">-->
+      <!--<editorTable :tabData.sync="tabData"-->
+                   <!--:scroll="{ x: 980}"-->
+                   <!--:isEditor="isEditor"-->
+                   <!--:nameObj="{label: '房屋信息', button: '新增', tabBasePramas: {objectType: '文本'}}"-->
+                   <!--@change="onChange"-->
+                   <!--:columns="formList[formParams.reportForm]">-->
+        <!--<template slot-scope="{tableRow}"-->
+                  <!--v-for="(item, index) in formList[formParams.reportForm]"-->
+                  <!--:slot="item.scopedSlots.customRender">-->
+          <!--<FormInput-->
+            <!--:whole-type="item.wholeType || (isEditor ? 'input' : 'span')"-->
+            <!--v-if="item.scopedSlots.customRender !== 'edit'"-->
+            <!--:key="index"-->
+            <!--v-bind="item"-->
+            <!--v-model="tabData[tableRow.index][item.dataIndex]"-->
+          <!--/>-->
+        <!--</template>-->
+        <!--<div slot="edit" slot-scope="{tableRow}" class="edit" v-if="isEditor">-->
+          <!--<a @click="remove(tableRow.index)">移除</a>-->
+        <!--</div>-->
+      <!--</editorTable>-->
+    <!--</div>-->
     <div style="margin: 0 auto;display: block;text-align: center">
       <a-button type="primary" @click="submitAll()">保存</a-button>
     </div>
@@ -44,9 +44,16 @@
   import FormInput from '@/components/form/Input'
   // import {getTemplateDetails, saveTemplateAndParams, updateTemplateAndParams} from "@/api/wuxing/formEdit";
   import BaseForm from "../../../components/baseForm/BaseForm";
-  import {getProjectDetail, houseBaseAdd, updateHouseBase} from "../../../api/project/assess";
+  import {
+    getHouseBaseArea,
+    getNonStreetInfo,
+    getProjectDetail,
+    houseBaseAdd,
+    updateHouseBase
+  } from "../../../api/project/assess";
   import {getProject, listProject} from "../../../api/project/project";
   import {getDicts} from "../../../api/system/dict/data";
+  import eventBus from "@/utils/eventBus";
 
   export default {
     name: "formDetail",
@@ -74,11 +81,24 @@
           this.$set(this.formParams, 'floorSpace', val.reduce((total, item) => {
             return total + (item.area || 0)
           }, 0))
+          if (val.length) {
+            const endList = val[val.length - 1]
+            const column = this.formList.tabColumns.slice(0,18);
+            let isHaveDataNum = 0;
+            for (let item of column) {
+              if (item.dataIndex && endList[item.dataIndex]) {
+                isHaveDataNum++;
+              }
+            }
+            if (isHaveDataNum > 0) {
+              this.tabData.push({})
+            }
+          }
         }
       },
-      // 'formParams.tabClass': function (val) {
-      //   this.tabKey
-      // }
+      'formParams.reportForm': function (val) {
+        eventBus.$emit('reportFormChange', {data: val})
+      }
 
     },
     methods: {
@@ -88,9 +108,9 @@
           'update': updateHouseBase
         };
         const {id} = this.formParams;
-        api[id ? 'update' : 'add']({...this.formParams, houseInfo: this.tabData}).then(() => {
+        api[id ? 'update' : 'add']({...this.formParams, houseInfo: null, onBaseInfo: 1}).then(() => {
           this.$message.success(id ? '修改信息成功！' : '新增信息成功！');
-          this.$emit('changeStatus', false);
+          this.$emit('changeStatus', false, true);
         })
       },
       remove(index) {
@@ -112,10 +132,24 @@
           this.tabData = house.houseInfo
         })
       },
-      initData() {
+      getHouseBaseArea(houseBaseId) {
+        getHouseBaseArea({houseBaseId}).then(res => {
+          this.formParams.floorSpace = res.sumCount
+        })
+      },
+      getNonStreetInfo(houseBaseId) {
+        getNonStreetInfo({houseBaseId}).then(res => {
+          this.formParams.zgfArea = res.data
+        })
+      },
+      async initData() {
         if (this.projectObj) {
           const {id, label, houseBaseId, entrustName} = this.projectObj;
-          if (houseBaseId) return this.getProjectDetail(houseBaseId);
+          if (houseBaseId) {
+            await this.getHouseBaseArea(houseBaseId);
+            this.getProjectDetail(houseBaseId);
+            this.getNonStreetInfo(houseBaseId);
+          }
           this.formParams = {reportForm: 'tabColumns'}
           this.tabData = []
           Object.assign(this.formParams, {'projectId': id, entrustingParty: entrustName, projectName: label})

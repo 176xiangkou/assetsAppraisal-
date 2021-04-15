@@ -17,8 +17,8 @@
                     <a-input :value="value"
                              v-bind="{allowClear, placeholder, ...$attrs }"
                              :style="{width: contentWidth}"
-                             @change="(val) => $emit('change', val.target.value)"
-                             @input="$emit('input', $event.target.value)"></a-input>
+                             @change="(val) => {$emit('input', val.target.value), $emit('change', val.target.value, $attrs.dataIndex ) }">
+                    </a-input>
                 </div>
             </template>
             <template v-else-if="inputType === 'datePicker'">
